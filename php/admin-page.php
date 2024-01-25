@@ -98,7 +98,7 @@ function gmuw_sl_options_default() {
 /**
  * Validate plugin options
  */
-function gmuj_msi_callback_validate_options($input) {
+function gmuw_sl_callback_validate_options($input) {
 	
 	// setting_one
 
