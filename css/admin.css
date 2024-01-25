@@ -1,0 +1,9 @@
+/* General */
+  /* jQuery toggle container support */
+  .toggleContainerTrigger {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+  }
+  /* DataTables support */
+  table.data_table img.icon { width:2em; }
