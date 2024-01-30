@@ -71,6 +71,9 @@ include('php/custom-admin.php');
 // Plugin activation/deactivation
 require('php/activation-deactivation.php');
 
+// User functionality
+require('php/users.php');
+
 //Register activation hook
 register_activation_hook(
 	__FILE__,
