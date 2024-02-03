@@ -84,16 +84,16 @@ function gmuw_sl_roles_and_caps() {
   add_role('shortlink_creator','Shortlink Creator',array(
     'read' => true,
     'edit_shortlinks' => true,
-    'edit_others_shortlinks' => true,
+    //'edit_others_shortlinks' => true,
     'delete_shortlinks' => true,
     'publish_shortlinks' => true,
-    'read_private_shortlinks' => true,
-    'delete_private_shortlinks' => true,
+    //'read_private_shortlinks' => true,
+    //'delete_private_shortlinks' => true,
     'delete_published_shortlinks' => true,
-    'delete_others_shortlinks' => true,
-    'edit_private_shortlinks' => true,
+    //'delete_others_shortlinks' => true,
+    //'edit_private_shortlinks' => true,
     'edit_published_shortlinks' => true,
-    'assign_shortlink_example_taxonomy' => true,
+    //'assign_shortlink_example_taxonomy' => true,
   ));
 
   // administrator
