@@ -74,6 +74,9 @@ require('php/activation-deactivation.php');
 // User functionality
 require('php/users.php');
 
+// Shortlink functionality
+require('php/shortlinks.php');
+
 //Register activation hook
 register_activation_hook(
 	__FILE__,
