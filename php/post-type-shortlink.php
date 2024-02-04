@@ -85,7 +85,9 @@ add_action ('manage_shortlink_posts_custom_column', 'gmuw_sl_columns_shortlink',
 function gmuw_sl_columns_shortlink ($column, $post_id) {
 	switch ($column) {
         case 'shortlink_text':
+            echo '<a href="/'.get_post_meta($post_id, $column, true).'/">';
             echo get_post_meta($post_id, $column, true);
+            echo '</a>';
             break;
         case 'shortlink_url':
             echo get_post_meta($post_id, $column, true);
