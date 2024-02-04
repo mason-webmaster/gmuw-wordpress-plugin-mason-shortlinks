@@ -92,7 +92,7 @@ function gmuw_sl_columns_shortlink ($column, $post_id) {
             break;
         case 'shortlink_qr_code':
             echo '<div class="gmuw-sl-admin-list-qr-code">';
-            echo '<input class="gmuw-sl-qr-code-value" type="hidden" value="'.get_site_url() . '/shortlink/' . get_post_meta($post_id, 'shortlink_text', true).'" />';
+            echo '<input class="gmuw-sl-qr-code-value" type="hidden" value="'.get_site_url() . '/' . get_post_meta($post_id, 'shortlink_text', true).'" />';
             echo '<div class="gmuw-sl-qr-code-output" style="width:100px; height:100px;"></div>';
             echo '<a class="gmuw-sl-qr-code-download" href="#" download="qrcode.png">Download</a>';
             echo '</div>';
