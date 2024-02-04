@@ -70,8 +70,8 @@ function gmuw_sl_set_columns_shortlink ($columns) {
         $columns,
         array(
             //postmeta fields
-            'shortlink_text' => 'Shortlink Text',
-            'shortlink_url' => 'Shortlink URL',
+            'shortlink_slug' => 'Shortlink Text',
+            'shortlink_target_url' => 'Shortlink URL',
             'shortlink_qr_code' => 'QR Code',
             'date' => $date,
             'modified' => 'Modified Date',
@@ -84,17 +84,17 @@ function gmuw_sl_set_columns_shortlink ($columns) {
 add_action ('manage_shortlink_posts_custom_column', 'gmuw_sl_columns_shortlink', 10, 2);
 function gmuw_sl_columns_shortlink ($column, $post_id) {
 	switch ($column) {
-        case 'shortlink_text':
+        case 'shortlink_slug':
             echo '<a href="/'.get_post_meta($post_id, $column, true).'/">';
             echo get_post_meta($post_id, $column, true);
             echo '</a>';
             break;
-        case 'shortlink_url':
+        case 'shortlink_target_url':
             echo get_post_meta($post_id, $column, true);
             break;
         case 'shortlink_qr_code':
             echo '<div class="gmuw-sl-admin-list-qr-code">';
-            echo '<input class="gmuw-sl-qr-code-value" type="hidden" value="'.get_site_url() . '/' . get_post_meta($post_id, 'shortlink_text', true).'" />';
+            echo '<input class="gmuw-sl-qr-code-value" type="hidden" value="'.get_site_url() . '/' . get_post_meta($post_id, 'shortlink_slug', true).'" />';
             echo '<div class="gmuw-sl-qr-code-output" style="width:100px; height:100px;"></div>';
             echo '<a class="gmuw-sl-qr-code-download" href="#" download="qrcode.png">Download</a>';
             echo '</div>';
@@ -108,8 +108,8 @@ function gmuw_sl_columns_shortlink ($column, $post_id) {
 // Set which fields are sortable
 add_filter( 'manage_edit-shortlink_sortable_columns', 'gmuw_sl_sortable_shortlink_columns' );
 function gmuw_sl_sortable_shortlink_columns($columns) {
-    $columns['shortlink_text'] = 'shortlink_text';
-    $columns['shortlink_url'] = 'shortlink_url';
+    $columns['shortlink_slug'] = 'shortlink_slug';
+    $columns['shortlink_target_url'] = 'shortlink_target_url';
     $columns['modified'] = 'modified';
     return $columns;
 }

@@ -19,7 +19,7 @@ function gmuj_sl_shortlink_post_id_by_slug($shortlink_slug) {
 		'numberposts' => 1,
 		'meta_query' => array(
 		  array(
-		    'key'   => 'shortlink_text',
+		    'key'   => 'shortlink_slug',
 		    'value' => $shortlink_slug,
 		    'compare' => '=',
 		  ),
@@ -63,7 +63,7 @@ function gmuj_sl_custom_event_template($template) {
         if ($my_post_id) {
 
         	//get redirect URL for this shortlink
-        	$my_redirect_url = get_post_meta($my_post_id, 'shortlink_url', true);
+			$my_redirect_url = get_post_meta($my_post_id, 'shortlink_target_url', true);
 
             //Process redirect
 			wp_redirect( $my_redirect_url, 301 ); 
