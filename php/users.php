@@ -21,3 +21,24 @@ function gmuw_sl_user_add_customize_dashboard( $user_id ) {
     update_user_meta($user_id, 'metaboxhidden_dashboard', $default_meta_value_array);
 
 }
+
+/**
+ * Ensure that logging-in takes shortlink creators to the dashboard (rather than their profile page)
+ */
+add_filter( 'login_redirect', 'gmuw_sl_login_redirect', 10, 3 );
+function gmuw_sl_login_redirect( $redirect_to, $request, $user ) {
+
+	//is there a user to check?
+	if ( isset( $user->roles ) && is_array( $user->roles ) ) {
+		//is this user a shortlink creator?
+		if ( in_array( 'shortlink_creator', $user->roles ) ) {
+			// redirect them to the dashboard
+			return home_url().'/wp-admin/index.php';
+		} else {
+			return $redirect_to;
+		}
+	} else {
+		return $redirect_to;
+	}
+
+}
