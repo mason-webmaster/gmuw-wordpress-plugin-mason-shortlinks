@@ -21,7 +21,32 @@ jQuery(document).ready(function(){
 
 //Implement qrcode stuff
 jQuery(document).ready(function() {
-  
+
+  //load QR codes on admin list
+  //loop through the qr code output divs in the admin list
+  jQuery.each(jQuery('.gmuw-sl-admin-list-qr-code'), function(index, value) {
+
+    //get QR code-related elements for this record
+    $my_qr_code_element=jQuery(this).children('.gmuw-sl-qr-code-output')[0];
+    $my_qr_code_value=jQuery(this).children('.gmuw-sl-qr-code-value').val();
+    $my_qr_code_download_link=jQuery(this).children('.gmuw-sl-qr-code-download')[0];
+
+    //build QR code
+    $my_qr_code = new QRCode($my_qr_code_element, {
+      width : 100,
+      height : 100
+    });
+    $my_qr_code.makeCode($my_qr_code_value);
+
+    //set up download link
+    //get new QR code canvas element
+    $my_qr_code_canvas=jQuery($my_qr_code_element).children('canvas')[0];
+    //build image data URL from canvas data
+    $my_data_url = $my_qr_code_canvas.toDataURL();
+    //set link href to image data URL
+    jQuery($my_qr_code_download_link).attr("href",$my_data_url);
+  });
+
   var qrcode = new QRCode(document.getElementById("qrcode"), {
     width : 100,
     height : 100

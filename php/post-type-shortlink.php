@@ -72,6 +72,7 @@ function gmuw_sl_set_columns_shortlink ($columns) {
             //postmeta fields
             'shortlink_text' => 'Shortlink Text',
             'shortlink_url' => 'Shortlink URL',
+            'shortlink_qr_code' => 'QR Code',
             'date' => $date,
             'modified' => 'Modified Date',
         )
@@ -88,6 +89,13 @@ function gmuw_sl_columns_shortlink ($column, $post_id) {
             break;
         case 'shortlink_url':
             echo get_post_meta($post_id, $column, true);
+            break;
+        case 'shortlink_qr_code':
+            echo '<div class="gmuw-sl-admin-list-qr-code">';
+            echo '<input class="gmuw-sl-qr-code-value" type="hidden" value="'.get_site_url() . '/shortlink/' . get_post_meta($post_id, 'shortlink_text', true).'" />';
+            echo '<div class="gmuw-sl-qr-code-output" style="width:100px; height:100px;"></div>';
+            echo '<a class="gmuw-sl-qr-code-download" href="#" download="qrcode.png">Download</a>';
+            echo '</div>';
             break;
         case 'modified':
             echo gmuw_sl_get_admin_list_post_modified_cells_content($post_id);
