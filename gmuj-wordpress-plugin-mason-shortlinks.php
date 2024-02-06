@@ -89,4 +89,5 @@ register_deactivation_hook(
 	'gmuw_sl_plugin_deactivate'
 );
 
-
+//turn off WordPress 404 guessing
+add_filter('do_redirect_guess_404_permalink', '__return_false');
