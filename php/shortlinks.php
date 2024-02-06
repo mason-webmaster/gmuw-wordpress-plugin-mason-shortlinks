@@ -42,7 +42,6 @@ function gmuj_sl_shortlink_post_id_by_slug($shortlink_slug) {
 
 }
 
-
 //Add action to redirect if we determine that should use our custom event template
 add_action( 'template_redirect', 'gmuj_sl_custom_event_template' );
 
@@ -62,15 +61,33 @@ function gmuj_sl_custom_event_template($template) {
         //So did we have a shortlink with this slug?
         if ($my_post_id) {
 
-        	//get redirect URL for this shortlink
-			$my_redirect_url = get_post_meta($my_post_id, 'shortlink_target_url', true);
+			//is this shortlink active?
+			if (get_post_meta($my_post_id, 'shortlink_approved', true)) {
 
-            //Process redirect
-			wp_redirect( $my_redirect_url, 301 ); 
-			exit;
+				//get redirect URL for this shortlink
+				$my_redirect_url = get_post_meta($my_post_id, 'shortlink_target_url', true);
+
+	            //Process redirect
+				wp_redirect( $my_redirect_url, 301 );
+				exit();
+
+			} else {
+
+				//are we a shortlink editor (or admin)?
+				if (current_user_can('edit_shortlinks')) {
+
+					//redirect this user to this shortlink single post template
+					wp_redirect( get_post_permalink($my_post_id), 301 );
+					exit();
+
+				}
+
+			}
+
         }
 
     }
 
+    //if we've made it this far, we just proceed with showing the user the 404 page
     return $template;
 }
