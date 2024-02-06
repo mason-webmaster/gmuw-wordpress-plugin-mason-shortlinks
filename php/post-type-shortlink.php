@@ -70,8 +70,9 @@ function gmuw_sl_set_columns_shortlink ($columns) {
         $columns,
         array(
             //postmeta fields
-            'shortlink_slug' => 'Shortlink Text',
-            'shortlink_target_url' => 'Shortlink URL',
+            'shortlink_slug' => 'Slug',
+            'shortlink_url' => 'Shortlink URL',
+            'shortlink_target_url' => 'Target URL',
             'shortlink_approved' => 'Approved?',
             'shortlink_qr_code' => 'QR Code',
             'date' => $date,
@@ -88,6 +89,11 @@ function gmuw_sl_columns_shortlink ($column, $post_id) {
         case 'shortlink_slug':
             echo '<a href="/'.get_post_meta($post_id, $column, true).'/">';
             echo get_post_meta($post_id, $column, true);
+            echo '</a>';
+            break;
+        case 'shortlink_url':
+            echo '<a href="/'.get_post_meta($post_id, 'shortlink_slug', true).'/">';
+            echo home_url( '/' ) . get_post_meta($post_id, 'shortlink_slug', true);
             echo '</a>';
             break;
         case 'shortlink_target_url':
@@ -113,7 +119,6 @@ function gmuw_sl_columns_shortlink ($column, $post_id) {
 add_filter( 'manage_edit-shortlink_sortable_columns', 'gmuw_sl_sortable_shortlink_columns' );
 function gmuw_sl_sortable_shortlink_columns($columns) {
     $columns['shortlink_slug'] = 'shortlink_slug';
-    $columns['shortlink_target_url'] = 'shortlink_target_url';
     $columns['modified'] = 'modified';
     return $columns;
 }
