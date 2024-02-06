@@ -158,3 +158,50 @@ function gmuw_sl_custom_dashboard_meta_box_shortlinks() {
 
 }
 
+/**
+ * The approved postmeta field should be set programatically using the other submitted post meta fields, notably the target url
+ * This function handles setting the approved postmeta field when the record is saved
+  */
+add_action( 'save_post', 'gmuw_sl_save_post_shortlink' );
+function gmuw_sl_save_post_shortlink($post_id) {
+
+    // If this is a revision, get real post ID
+    if ( $parent_id = wp_is_post_revision( $post_id ) )
+        $post_id = $parent_id;
+
+    // Check if this post is the right type of post
+    if (get_post_type($post_id)=='shortlink') {
+
+        //if we're not an admin...
+        if (!current_user_can('manage_options')) {
+
+            // unhook this function so it doesn't loop infinitely
+            remove_action( 'save_post', 'gmuw_sl_save_post_shortlink' );
+
+            // find parent post_id
+            if ( $post_parent_id = wp_get_post_parent_id( $post_id ) ) {
+                $post_id = $post_parent_id;
+            }
+
+            //assume we are not approved
+            $shortlink_approved=0;
+
+            // get info needed to set approved post meta field
+            // get shortlink target url
+            $shortlink_target_url = get_post_meta($post_id, 'shortlink_target_url', true );
+
+            // does the target url start with "https://(something).gmu.edu"?
+            if (preg_match('/^https:\/\/[a-zA-Z0-9-.]+\.gmu\.edu/i',$shortlink_target_url)) {
+                $shortlink_approved=1;
+            }
+
+            // update the approved postmeta field
+            update_post_meta($post_id, 'shortlink_approved', $shortlink_approved);
+
+            // re-hook this function
+            add_action( 'save_post', 'gmuw_sl_save_post_shortlink' );
+        }
+
+    }
+
+}
