@@ -72,6 +72,7 @@ function gmuw_sl_set_columns_shortlink ($columns) {
             //postmeta fields
             'shortlink_slug' => 'Shortlink Text',
             'shortlink_target_url' => 'Shortlink URL',
+            'shortlink_approved' => 'Approved?',
             'shortlink_qr_code' => 'QR Code',
             'date' => $date,
             'modified' => 'Modified Date',
@@ -91,6 +92,9 @@ function gmuw_sl_columns_shortlink ($column, $post_id) {
             break;
         case 'shortlink_target_url':
             echo get_post_meta($post_id, $column, true);
+            break;
+        case 'shortlink_approved':
+            echo get_post_meta($post_id, 'shortlink_approved', true)==1 ? '<span class="gmuw-status gmuw-status-approved">Yes</span>' : '<span class="gmuw-status gmuw-status-unapproved">No</span>';
             break;
         case 'shortlink_qr_code':
             echo '<div class="gmuw-sl-admin-list-qr-code">';
