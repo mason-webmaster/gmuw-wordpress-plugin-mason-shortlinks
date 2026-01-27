@@ -1,0 +1,40 @@
+/* custom admin styles for site */
+
+
+/* dashicons as admin icons */
+.admin-icon {
+    font-size: 1.25rem;
+    text-decoration:none;
+    vertical-align: middle;
+}
+
+.admin-icon:before {
+    font-family: "dashicons";
+}
+
+.admin-view:before {
+    font-family: "dashicons";
+    content: "\f177";
+}
+
+.admin-edit:before {
+    font-family: "dashicons";
+    content: "\f464";
+}
+
+/* shortlink display */
+.shortlink_display {
+    font-size:3em;
+    text-align:center;
+}
+
+/* qrcode display */
+.gmuw-sl-admin-list-qr-code {
+    text-align:center;
+}
+.gmuw-sl-admin-list-qr-code .gmuw-sl-qr-code-output {
+    width:600px;
+    height:600px;
+    margin-left:auto;
+    margin-right:auto;
+}
