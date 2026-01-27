@@ -115,6 +115,7 @@ function gmuw_sl_shortlink_management_page(){
         echo '<div class="gmuw-sl-admin-list-qr-code">';
         echo '<input class="gmuw-sl-qr-code-value" type="hidden" value="'.$shortlink_url.'" />';
         echo '<div class="gmuw-sl-qr-code-output"></div>';
+        echo '<button class="gmuw-sl-qr-code-download">Download SVG</button>';
         echo '</div>';        
 
     }

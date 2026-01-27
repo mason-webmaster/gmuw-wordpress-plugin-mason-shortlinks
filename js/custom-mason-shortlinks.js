@@ -11,29 +11,45 @@ jQuery(document).ready(function(){
 	//loop through the QR code divs
 	jQuery.each(jQuery('.gmuw-sl-admin-list-qr-code'), function(index, value) {
 
-		//get QR code-related elements for this record
-		$my_qr_code_element=jQuery(this).children('.gmuw-sl-qr-code-output')[0];
-		$my_qr_code_value=jQuery(this).children('.gmuw-sl-qr-code-value').val();
+		// Get elements
+		const $container = jQuery(this).find('.gmuw-sl-qr-code-output')[0];
+		const qrValue = jQuery(this).find('.gmuw-sl-qr-code-value').val();
+		const $downloadBtn = jQuery(this).find('.gmuw-sl-qr-code-download');
 
-		//set QR code options
-		var qrcode_options = {
-		    text: $my_qr_code_value,
-		    width: 600,
-		    height: 600,
-		    colorDark: "#000000",
-		    colorLight: "#ffffff",
-		    correctLevel: QRCode.CorrectLevel.H, // "H" is required for logos (High error correction)
-		    
-		    // --- LOGO SETTINGS ---
-		    logo: "/wp-content/plugins/gmuw-wordpress-plugin-mason-shortlinks/images/mason-logo-qrcode.svg",
-		    logoWidth: 198, 
-		    logoHeight: 198,
-		    logoBackgroundTransparent: false,
-		    logoBackgroundColor: '#ffffff' 
-		};
+		// Create QR code instance
+		const qr = new QRCodeStyling({
+			width: 600,
+			height: 600,
+			type: "svg",
+			data: qrValue,
+			qrOptions: {
+				errorCorrectionLevel: "H"
+			},
+			dotsOptions: {
+				color: "#000000",
+				type: "square"
+			},
+			backgroundOptions: {
+				color: "#ffffff"
+			},
+			image: "/wp-content/plugins/gmuw-wordpress-plugin-mason-shortlinks/images/mason-logo-qrcode.svg",
+			imageOptions: {
+				crossOrigin: "anonymous",
+				margin: 0,
+				imageSize: 0.32 // roughly 189/600
+			}
+		});
 
-	    // Create the QR Code
-	    new QRCode($my_qr_code_element, qrcode_options);
+		// Render into the container
+		qr.append($container);
+
+		// Download SVG handler
+		$downloadBtn.on("click", function () {
+			qr.download({
+				name: "qr-code",
+				extension: "svg"
+			});
+		});
 
 	});
 

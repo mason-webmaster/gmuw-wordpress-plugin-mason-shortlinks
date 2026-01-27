@@ -23,8 +23,8 @@ function gmuw_sl_enqueue_general_scripts(){
 
   // enqueue the QR code script
   wp_enqueue_script(
-    'qrcode-js',
-    plugin_dir_url( __DIR__ ).'js/lib/easy.qrcode.min.js', //path to script
+    'qr-code-styling-js',
+    plugin_dir_url( __DIR__ ).'js/lib/qr-code-styling.js', //path to script
     array(),
     null,
     true
