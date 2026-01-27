@@ -18,8 +18,6 @@ jQuery(document).ready(function(){
 
 		// Create QR code instance
 		const qr = new QRCodeStyling({
-			width: 600,
-			height: 600,
 			type: "svg",
 			data: qrValue,
 			qrOptions: {
@@ -36,7 +34,7 @@ jQuery(document).ready(function(){
 			imageOptions: {
 				crossOrigin: "anonymous",
 				margin: 0,
-				imageSize: 0.32 // roughly 189/600
+				imageSize: 0.5
 			}
 		});
 
