@@ -35,3 +35,9 @@
 .gmuw-sl-admin-list-qr-code .gmuw-sl-qr-code-output {
 
 }
+
+.gmuw-sl-admin-list-qr-code .gmuw-sl-qr-code-download {
+    margin-top:2em;
+    font-size:2em;
+    padding:0.5em;
+}
