@@ -220,7 +220,13 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects){
 			$return_value.='</td>';
 			//user
 			$return_value.='<td>';
-			$return_value.=get_user_by('id', gmuw_sl_redirect_user_id_by_redirect_id($redirect->id))->user_login;
+			//if we have a user, show their login name
+			$user_id=gmuw_sl_redirect_user_id_by_redirect_id($redirect->id);
+			if ($user_id>0) {
+				$return_value.=get_user_by('id', $user_id)->user_login;
+			} else {
+				$return_value.='unknown';
+			}
 			$return_value.='</td>';
 			//admin links
 			$return_value.='<td>';

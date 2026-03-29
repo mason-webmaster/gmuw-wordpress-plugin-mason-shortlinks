@@ -235,10 +235,16 @@ function gmuw_sl_redirect_user_id_by_redirect_id($redirect_id){
 
     //get redirect's group id
     $redirect_group_id=gmuw_sl_get_redirect_fields_by_id($redirect_id)['group_id'];
-    //get group name
-    $redirect_group_name=gmuw_sl_redirects_get_group_name_by_id($redirect_group_id);
-    //get related user id from group name
-    $user_id=explode('_',$redirect_group_name)[1];
+
+    //if group_id is not 0
+    if ($redirect_group_id>0) {
+        //get group name
+        $redirect_group_name=gmuw_sl_redirects_get_group_name_by_id($redirect_group_id);
+        //get related user id from group name
+        $user_id=explode('_',$redirect_group_name)[1];
+    } else {
+        $user_id=0;
+    }
 
     //is the user group name the same as the redirect group name?
     return $user_id;
