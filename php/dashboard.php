@@ -208,14 +208,14 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects){
 			$return_value.='<tr>';
 			//label
 			$return_value.='<td>';
-			$return_value.='<a href="'.home_url().$redirect->url.'" target="_blank">';
-			$return_value.=$redirect->url;
+			$return_value.='<a title="'.home_url().$redirect->url.'" href="'.home_url().$redirect->url.'" target="_blank">';
+			$return_value.=mb_strimwidth($redirect->url,0,25,'...');
 			$return_value.='</a>';
 			$return_value.='</td>';
 			//target
 			$return_value.='<td>';
-			$return_value.='<a href="'.$redirect->action_data.'" target="_blank">';
-			$return_value.=$redirect->action_data;
+			$return_value.='<a title="'.$redirect->action_data.'" href="'.$redirect->action_data.'" target="_blank">';
+			$return_value.=mb_strimwidth($redirect->action_data,0,25,'...');
 			$return_value.='</a>';
 			$return_value.='</td>';
 			//user
