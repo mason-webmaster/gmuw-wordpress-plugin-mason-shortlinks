@@ -199,6 +199,7 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects){
 		$return_value.='<td>Label</td>';
 		$return_value.='<td>Target</td>';
 		$return_value.='<td>User</td>';
+		$return_value.='<td>Hits</td>';
 		$return_value.='<td></td>';
 		//$return_value.='<td>QR Code</td>';	
 		$return_value.='</tr>';
@@ -227,6 +228,10 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects){
 			} else {
 				$return_value.='unknown';
 			}
+			$return_value.='</td>';
+			//hits
+			$return_value.='<td>';
+				$return_value.=$redirect->last_count;
 			$return_value.='</td>';
 			//admin links
 			$return_value.='<td>';
