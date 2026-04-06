@@ -26,6 +26,29 @@ __FILE__,
 'gmuw-wordpress-plugin-mason-shortlinks'
 );
 
+//define constants
+
+//approved shortlink target domains
+define('APPROVED_DOMAINS', array(
+	'www.gmu.edu',
+	'gmu.edu',
+	'mason.my.salesforce-sites.com',
+	'gmuedu-my.sharepoint.com',
+	'masongrad.my.salesforce-sites.com',
+	'gmu.secure.force.com',
+	'gmu.az1.qualtrics.com',
+	'hyltoncenter.org',
+	'gmu.teamdynamix.com',
+	'gmu.joinhandshake.com',
+	'mason360.gmu.edu',
+	'gmu.bynder.com',
+	'gomason.com',
+	'gmu.bncollege.com',
+	'gmu.giftplans.org',
+	'gmu.campusesp.com',
+	'gmu.campus.eab.com',
+));
+
 // Load custom code modules. Comment lines here to turn on or off individual features
 
 // styles

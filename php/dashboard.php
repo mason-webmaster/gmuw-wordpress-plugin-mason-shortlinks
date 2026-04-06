@@ -60,16 +60,19 @@ function gmuw_sl_custom_dashboard_meta_box_redirects_add() {
 
 			const labelPattern = /^[a-z0-9_-]+$/;
 
+			//ensure we have a label
 			if (label === '') {
 				alert('Shortlink label is required.');
 				return false;
 			}
 
+			//ensure the label is valid
 			if (!labelPattern.test(label)) {
 				alert('Shortlink label may only contain lowercase letters, numbers, underscores, and hyphens.');
 				return false;
 			}
 
+			//ensure the target is a valid URL
 			try {
 				new URL(target);
 			} catch (e) {
@@ -77,6 +80,7 @@ function gmuw_sl_custom_dashboard_meta_box_redirects_add() {
 				return false;
 			}
 
+			//confirm
 			return confirm('Do you want to add this shortlink?');
 		}
 	</script>
@@ -109,56 +113,105 @@ function gmuw_sl_handle_dashboard_form() {
         isset( $_POST['gmuw_sl_shortlink_add_nonce'] ) &&
         wp_verify_nonce( $_POST['gmuw_sl_shortlink_add_nonce'], 'gmuw_sl_shortlink_add' )
     ) {
-        if ( ! empty( $_POST['shortlink_label'] ) && ! empty( $_POST['shortlink_target'] )) {
-            $shortlink_label = '/'.sanitize_text_field( $_POST['shortlink_label'] );
-            $shortlink_target = sanitize_text_field( $_POST['shortlink_target'] );
 
-            //create the redirection recod
-			global $wpdb;
+    	//check for missing data
+        if ( empty( $_POST['shortlink_label'] ) || empty( $_POST['shortlink_target'] )) {
 
-			// Insert the new row
-			$result = $wpdb->insert(
-			    "{$wpdb->prefix}redirection_items",
-			    [
-			        'url' => $shortlink_label,
-			        'match_url' => $shortlink_label,
-			        'position' => gmuw_sl_redirection_next_redirect_position(),
-			        'group_id' => gmuw_sl_redirection_get_user_redirection_group_id(),
-			        'action_type' => 'url',
-			        'action_code' => '301',
-			        'action_data' => $shortlink_target,
-			        'match_type' => 'url',
-			    ],
-			    [ '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%s' ]
-			);
+			// admin notice
+			add_action( 'admin_notices', function() {
+			    echo '<div class="notice notice-error"><p>Missing input data. Nothing done.</p></div>';
+			});
 
-			//build output
-			$output_text='Created shortlink: ' . esc_html( $shortlink_label ) .' -> '.esc_html( $shortlink_target );
+			return;
 
-			// log to simple history
-			apply_filters(
-				'simple_history_log',
-				$output_text
-			);
-
-			//send email
-			//are we set to send an email on shortlink creation?
-			if (get_option('gmuw_sl_options')['gmuw_sl_email_notification_shortlink_create']==1) {
-
-				//send notification email
-				wp_mail(
-					gmuw_sl_get_notification_email_address_array(),
-					'Shortlink created',
-					$output_text,
-				);
-
-			}			
-
-            // admin notice
-            add_action( 'admin_notices', function() use ( $shortlink_label, $shortlink_target, $output_text ) {
-                echo '<div class="notice notice-success"><p>' . $output_text . '</p></div>';
-            });
         }
+
+        //sanitize inputs
+        $shortlink_label = '/'.sanitize_text_field( $_POST['shortlink_label'] );
+        $shortlink_target = sanitize_text_field( $_POST['shortlink_target'] );
+
+        //ensure the label is valid
+        if (!preg_match("/^\/[a-z0-9_-]+$/", $shortlink_label)) {
+
+			// admin notice
+			add_action( 'admin_notices', function() {
+			    echo '<div class="notice notice-error"><p>Shortlink label may only contain lowercase letters, numbers, underscores, and hyphens. Nothing done.</p></div>';
+			});
+
+			return;
+
+        }
+
+        //ensure the target is a valid URL
+        if (filter_var($shortlink_target, FILTER_VALIDATE_URL)==false) {
+
+			// admin notice
+			add_action( 'admin_notices', function() {
+			    echo '<div class="notice notice-error"><p>Please enter a valid URL for the target. Nothing done.</p></div>';
+			});
+
+			return;
+
+        }
+
+        //ensure that the target uses an approved domain
+        if (!in_array(wp_parse_url($shortlink_target)['host'],APPROVED_DOMAINS)) {
+
+			// admin notice
+			add_action( 'admin_notices', function() {
+			    echo '<div class="notice notice-error"><p>You have specified an unapproved domain. Nothing done.</p></div>';
+			});
+
+			return;
+
+        }
+
+        //create the redirection recod
+		global $wpdb;
+
+		// Insert the new row
+		$result = $wpdb->insert(
+		    "{$wpdb->prefix}redirection_items",
+		    [
+		        'url' => $shortlink_label,
+		        'match_url' => $shortlink_label,
+		        'position' => gmuw_sl_redirection_next_redirect_position(),
+		        'group_id' => gmuw_sl_redirection_get_user_redirection_group_id(),
+		        'action_type' => 'url',
+		        'action_code' => '301',
+		        'action_data' => $shortlink_target,
+		        'match_type' => 'url',
+		    ],
+		    [ '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%s' ]
+		);
+
+		//build output
+		$output_text='Created shortlink: ' . esc_html( $shortlink_label ) .' -> '.esc_html( $shortlink_target );
+
+		// log to simple history
+		apply_filters(
+			'simple_history_log',
+			$output_text
+		);
+
+		//send email
+		//are we set to send an email on shortlink creation?
+		if (get_option('gmuw_sl_options')['gmuw_sl_email_notification_shortlink_create']==1) {
+
+			//send notification email
+			wp_mail(
+				gmuw_sl_get_notification_email_address_array(),
+				'Shortlink created',
+				$output_text,
+			);
+
+		}
+
+        // admin notice
+        add_action( 'admin_notices', function() use ( $shortlink_label, $shortlink_target, $output_text ) {
+            echo '<div class="notice notice-success"><p>' . $output_text . '</p></div>';
+        });
+
     }
 }
 
