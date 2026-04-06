@@ -34,3 +34,17 @@ add_filter( 'manage_users_custom_column', function( $output, $column_name, $user
     return $output;
 
 }, 10, 3 );
+
+/**
+ * function to get user name
+ */
+function gmuw_sl_get_username($user_id) {
+
+    //do we have a user id?
+    if ($user_id>0) {
+        return get_user_by('id', $user_id)->user_login;
+    } else {
+        return '-';
+    }
+
+}

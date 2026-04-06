@@ -109,7 +109,7 @@ function gmuw_sl_shortlink_management_page(){
 
     echo '<p>';
     echo 'Redirect ID: '.$redirect_id.'<br />';
-    echo 'User: '.get_user_by('id', gmuw_sl_redirect_user_id_by_redirect_id($redirect_id))->user_login.'<br />';
+    echo 'User: ' . gmuw_sl_get_username(gmuw_sl_redirect_user_id_by_redirect_id($redirect_id)) . '<br />';
     echo 'Shortlink URL: '.$shortlink_url.'<br />';
     echo 'Target URL: '.$target_url.'<br />';
     echo '</p>';
