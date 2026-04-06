@@ -170,7 +170,7 @@ function gmuw_sl_custom_dashboard_meta_box_redirects() {
 	$redirects = gmuw_sl_get_redirects();
 
 	//put into table
-	echo gmuw_sl_dashboard_widget_redirects_table($redirects);
+	echo gmuw_sl_dashboard_widget_redirects_table($redirects,true);
 
 }
 
@@ -182,12 +182,12 @@ function gmuw_sl_custom_dashboard_meta_box_redirects_current_user() {
 	$redirects = gmuw_sl_get_redirects_current_user();
 
 	//put into table
-	echo gmuw_sl_dashboard_widget_redirects_table($redirects);
+	echo gmuw_sl_dashboard_widget_redirects_table($redirects,true);
 
 }
 
 //function to display dashboard meta box datatables redirects table
-function gmuw_sl_dashboard_widget_redirects_table($redirects){
+function gmuw_sl_dashboard_widget_redirects_table($redirects,$compact=false){
 
 	//initialize return variable
 	$return_value='';
@@ -210,13 +210,13 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects){
 			//label
 			$return_value.='<td>';
 			$return_value.='<a title="'.home_url().$redirect->url.'" href="'.home_url().$redirect->url.'" target="_blank">';
-			$return_value.=mb_strimwidth($redirect->url,0,25,'...');
+			$return_value.= $compact ? mb_strimwidth($redirect->url,0,25,'...') : $redirect->url;
 			$return_value.='</a>';
 			$return_value.='</td>';
 			//target
 			$return_value.='<td>';
 			$return_value.='<a title="'.$redirect->action_data.'" href="'.$redirect->action_data.'" target="_blank">';
-			$return_value.=mb_strimwidth($redirect->action_data,0,25,'...');
+			$return_value.= $compact ? mb_strimwidth($redirect->action_data,0,25,'...') : $redirect->action_data;
 			$return_value.='</a>';
 			$return_value.='</td>';
 			//user
