@@ -84,6 +84,16 @@ function gmuw_sl_shortlink_management_page(){
         }
     }    
 
+    //is this just a general listing? is no shortlink id specified?
+    if (!isset($_GET['redirect_id']) || !$_GET['redirect_id']) {
+
+        //return redirect table
+        echo gmuw_sl_dashboard_widget_redirects_table(gmuw_sl_get_redirects());
+
+        return;
+
+    }
+
     // is this an edit?
     $is_edit=false;
     if (isset($_GET['mode']) && $_GET['mode']=='edit') $is_edit=true;
