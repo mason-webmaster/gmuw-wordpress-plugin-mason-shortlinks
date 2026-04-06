@@ -194,59 +194,101 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects,$compact=false){
 
 	if ($redirects) {
 		$return_value.='<table class="data_table dashboardwidget">';
-		$return_value.='<thead>';
-		$return_value.='<tr>';
-		$return_value.='<td>Label</td>';
-		$return_value.='<td>Target</td>';
-		$return_value.='<td>User</td>';
-		$return_value.='<td>Hits</td>';
-		$return_value.='<td></td>';
-		//$return_value.='<td>QR Code</td>';	
-		$return_value.='</tr>';
-		$return_value.='</thead>';
+
+		//table header based on view type
+		if (!$compact) {
+
+			$return_value.='<thead>';
+			$return_value.='<tr>';
+			$return_value.='<td>Label</td>';
+			$return_value.='<td>Target</td>';
+			$return_value.='<td>User</td>';
+			$return_value.='<td>Hits</td>';
+			$return_value.='<td></td>';
+			$return_value.='</tr>';
+			$return_value.='</thead>';
+
+		} else {
+
+			$return_value.='<thead>';
+			$return_value.='<tr>';
+			$return_value.='<td>Shortlinks</td>';
+			$return_value.='</tr>';
+			$return_value.='</thead>';
+
+		}
+
+
 		$return_value.='<tbody>';
 		foreach ($redirects as $redirect) {
+
+			//get data
+			$shortlink_url = home_url().$redirect->url;
+			$shortlink_url_display = $compact ? mb_strimwidth($redirect->url,0,25,'...') : $redirect->url;
+			$target_url = $redirect->action_data;
+			$target_url_display = $compact ? mb_strimwidth($redirect->action_data,0,25,'...') : $redirect->action_data;
+			$redirect_user = gmuw_sl_get_username(gmuw_sl_redirect_user_id_by_redirect_id($redirect->id));
+			$redirect_hits = $redirect->last_count;
+			$view_url = '/wp-admin/admin.php?page=gmuw_sl_shortlink_management&redirect_id='.$redirect->id;
+			$view_link = '<a class="admin-icon admin-view" title="edit" href="'.$view_url.'" target="_blank"></a> ';
+			$edit_url = $view_url.'&mode=edit';
+			$edit_link = '<a class="admin-icon admin-edit" title="edit" href="'.$edit_url.'" target="_blank"></a>';
+
+			//start row
 			$return_value.='<tr>';
-			//label
-			$return_value.='<td>';
-			$return_value.='<a title="'.home_url().$redirect->url.'" href="'.home_url().$redirect->url.'" target="_blank">';
-			$return_value.= $compact ? mb_strimwidth($redirect->url,0,25,'...') : $redirect->url;
-			$return_value.='</a>';
-			$return_value.='</td>';
-			//target
-			$return_value.='<td style="max-width:40em;">';
-			$return_value.='<a title="'.$redirect->action_data.'" href="'.$redirect->action_data.'" target="_blank">';
-			$return_value.= $compact ? mb_strimwidth($redirect->action_data,0,25,'...') : $redirect->action_data;
-			$return_value.='</a>';
-			$return_value.='</td>';
-			//user
-			$return_value.='<td>';
-			//if we have a user, show their login name
-			$return_value.=gmuw_sl_get_username(gmuw_sl_redirect_user_id_by_redirect_id($redirect->id));
-			$return_value.='</td>';
-			//hits
-			$return_value.='<td>';
-				$return_value.=$redirect->last_count;
-			$return_value.='</td>';
-			//admin links
-			$return_value.='<td>';
-			//view link
-			$return_value.='<a class="admin-icon admin-view" title="edit" href="/wp-admin/admin.php?page=gmuw_sl_shortlink_management&redirect_id='.$redirect->id.'" target="_blank"></a> ';
-			//edit link, if the user can edit this redirect
-			if (gmuw_sl_user_owns_redirect($redirect->id) || current_user_can('manage_options') ) {
-				$return_value.='<a class="admin-icon admin-edit" title="edit" href="/wp-admin/admin.php?page=gmuw_sl_shortlink_management&redirect_id='.$redirect->id.'&mode=edit" target="_blank"></a>';
+
+			//set display
+			if (!$compact) {
+
+				//label
+				$return_value.='<td>'.'<a title="'.$shortlink_url.'" href="'.$shortlink_url.'" target="_blank">'.$shortlink_url_display.'</a>'.'</td>';
+				//target
+				$return_value.='<td style="max-width:40em;">'.'<a title="'.$target_url.'" href="'.$target_url.'" target="_blank">'.$target_url_display.'</a>'.'</td>';
+				//user
+				$return_value.='<td>'.$redirect_user.'</td>';
+				//hits
+				$return_value.='<td>'.$redirect_hits.'</td>';
+				//admin links
+				$return_value.='<td>';
+				//view link
+				$return_value.=$view_link;
+				//edit link, if the user can edit this redirect
+				if (gmuw_sl_user_owns_redirect($redirect->id) || current_user_can('manage_options') ) {
+					$return_value.=$edit_link;
+				}
+				$return_value.='</td>';
+
+			} else {
+
+				$return_value.='<td>';
+
+				$return_value.='<div style="display:flex; justify-content:space-between;">';
+
+				$return_value.='<a title="'.$shortlink_url.'" href="'.$shortlink_url.'" target="_blank">'.$shortlink_url_display.'</a>';
+				$return_value.=' -> ';
+				$return_value.='<a title="'.$target_url.'" href="'.$target_url.'" target="_blank">'.$target_url_display.'</a>';
+
+				$return_value.='</div>';
+
+				$return_value.='<div style="display:flex; justify-content:flex-end;">';
+
+				$return_value.='<span>'.$redirect_user . '&nbsp;</span>';
+				$return_value.='<span>'.$redirect_hits . '</span>';
+
+				$return_value.='</div>';
+
+				$return_value.='<div style="display:flex; justify-content:flex-end;">';
+
+				$return_value.=$view_link;
+				$return_value.=$edit_link;
+
+				$return_value.='</div>';
+
+				$return_value.='</td>';
+
 			}
-			$return_value.='</td>';
-			/*
-			//qr code
-			$return_value.='<td>';
-            $return_value.='<div class="gmuw-sl-admin-list-qr-code">';
-            $return_value.='<input class="gmuw-sl-qr-code-value" type="hidden" value="'.$redirect->action_data.'" />';
-            $return_value.='<div class="gmuw-sl-qr-code-output" style="width:100px; height:100px;"></div>';
-            $return_value.='<a class="gmuw-sl-qr-code-download" href="#" download="qrcode.png">Download</a>';
-            $return_value.='</div>';
-            $return_value.='</td>';
-            */
+
+            //end row
 			$return_value.='</tr>';
 		}
 		$return_value.='</tbody>';
