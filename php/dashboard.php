@@ -214,7 +214,7 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects,$compact=false){
 			$return_value.='</a>';
 			$return_value.='</td>';
 			//target
-			$return_value.='<td>';
+			$return_value.='<td style="max-width:40em;">';
 			$return_value.='<a title="'.$redirect->action_data.'" href="'.$redirect->action_data.'" target="_blank">';
 			$return_value.= $compact ? mb_strimwidth($redirect->action_data,0,25,'...') : $redirect->action_data;
 			$return_value.='</a>';
