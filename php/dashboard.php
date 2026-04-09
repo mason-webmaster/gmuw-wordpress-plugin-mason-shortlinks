@@ -142,6 +142,18 @@ function gmuw_sl_handle_dashboard_form() {
 
         }
 
+        //ensure that the label is not already in use
+        if (gmuw_sl_get_redirect_record_by_label($shortlink_label)) {
+
+			// admin notice
+			add_action( 'admin_notices', function() {
+			    echo '<div class="notice notice-error"><p>Shortlink label is already in use. Nothing done.</p></div>';
+			});
+
+			return;
+
+        }
+
         //ensure the target is a valid URL
         if (filter_var($shortlink_target, FILTER_VALIDATE_URL)==false) {
 

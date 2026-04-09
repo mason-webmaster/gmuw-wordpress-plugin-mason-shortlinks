@@ -250,3 +250,23 @@ function gmuw_sl_redirect_user_id_by_redirect_id($redirect_id){
     return $user_id;
 
 }
+
+/**
+ * function to return redirect record by shortlink label
+ */
+function gmuw_sl_get_redirect_record_by_label( $shortlink_label ) {
+    global $wpdb;
+
+    $shortlink_label = sanitize_text_field($shortlink_label);
+    $table   = "{$wpdb->prefix}redirection_items";
+
+    //fetch the record
+    $row = $wpdb->get_row(
+        $wpdb->prepare(
+            "SELECT id FROM $table WHERE url = %s",
+            $shortlink_label
+        )
+    );
+
+    return $row;
+}
