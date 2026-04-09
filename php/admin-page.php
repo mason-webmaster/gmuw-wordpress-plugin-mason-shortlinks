@@ -41,49 +41,6 @@ function gmuw_sl_shortlink_management_page(){
     // Page title
     echo "<h1>" . esc_html(get_admin_page_title()) . "</h1>";
 
-    //handle form submission, if any
-    if (
-        isset( $_POST['gmuw_sl_shortlink_edit_nonce'] ) &&
-        wp_verify_nonce( $_POST['gmuw_sl_shortlink_edit_nonce'], 'gmuw_sl_shortlink_edit' )
-    ) {
-        if ( ! empty( $_POST['shortlink_label'] ) && ! empty( $_POST['shortlink_target'] )) {
-            $shortlink_label = '/'.sanitize_text_field( $_POST['shortlink_label'] );
-            $shortlink_target = sanitize_text_field( $_POST['shortlink_target'] );
-
-            //edit the redirection recod
-            global $wpdb;
-
-            ////
-
-            //build output
-            $output_text='Edit shortlink: ' . esc_html( $shortlink_label ) .' -> '.esc_html( $shortlink_target );
-
-            // log to simple history
-            apply_filters(
-                'simple_history_log',
-                $output_text
-            );
-
-            //send email
-            //are we set to send an email on shortlink creation?
-            if (get_option('gmuw_sl_options')['gmuw_sl_email_notification_shortlink_create']==1) {
-
-                //send notification email
-                wp_mail(
-                    gmuw_sl_get_notification_email_address_array(),
-                    'Shortlink edited',
-                    $output_text,
-                );
-
-            }           
-
-            // admin notice
-            add_action( 'admin_notices', function() use ( $shortlink_label, $shortlink_target, $output_text ) {
-                echo '<div class="notice notice-success"><p>' . $output_text . '</p></div>';
-            });
-        }
-    }    
-
     //is this just a general listing? is no shortlink id specified?
     if (!isset($_GET['redirect_id']) || !$_GET['redirect_id']) {
 

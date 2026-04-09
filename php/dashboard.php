@@ -108,11 +108,10 @@ function gmuw_sl_custom_dashboard_meta_box_redirects_add() {
 }
 
 /**
- * Handle form submission.
+ * Handle shortlink add form submission.
  */
-add_action( 'admin_init', 'gmuw_sl_handle_dashboard_form' );
-
-function gmuw_sl_handle_dashboard_form() {
+add_action( 'admin_init', 'gmuw_sl_handle_form_shortlink_add' );
+function gmuw_sl_handle_form_shortlink_add() {
     if (
         isset( $_POST['gmuw_sl_shortlink_add_nonce'] ) &&
         wp_verify_nonce( $_POST['gmuw_sl_shortlink_add_nonce'], 'gmuw_sl_shortlink_add' )
@@ -163,6 +162,60 @@ function gmuw_sl_handle_dashboard_form() {
 			wp_mail(
 				gmuw_sl_get_notification_email_address_array(),
 				'Shortlink created',
+				$output_text,
+			);
+
+		}
+
+        // admin notice
+        add_action( 'admin_notices', function() use ( $shortlink_label, $shortlink_target, $output_text ) {
+            echo '<div class="notice notice-success"><p>' . $output_text . '</p></div>';
+        });
+
+    }
+}
+
+/**
+ * Handle shortlink edit form submission.
+ */
+add_action( 'admin_init', 'gmuw_sl_handle_form_shortlink_edit' );
+function gmuw_sl_handle_form_shortlink_edit() {
+    if (
+        isset( $_POST['gmuw_sl_shortlink_edit_nonce'] ) &&
+        wp_verify_nonce( $_POST['gmuw_sl_shortlink_edit_nonce'], 'gmuw_sl_shortlink_edit' )
+    ) {
+
+		//is submitted shortlink data valid?
+		if (!gmuw_sl_shortlink_data_is_valid($_POST['shortlink_label'],$_POST['shortlink_target'])) {
+			return;
+		}
+
+        //sanitize inputs
+        $shortlink_label = '/'.sanitize_text_field( $_POST['shortlink_label'] );
+        $shortlink_target = sanitize_text_field( $_POST['shortlink_target'] );
+
+        //edit the redirection recod
+		global $wpdb;
+
+////
+
+		//build output
+		$output_text='Edited shortlink: ' . esc_html( $shortlink_label ) .' -> '.esc_html( $shortlink_target );
+
+		// log to simple history
+		apply_filters(
+			'simple_history_log',
+			$output_text
+		);
+
+		//send email
+		//are we set to send an email on shortlink creation?
+		if (get_option('gmuw_sl_options')['gmuw_sl_email_notification_shortlink_edit']==1) {
+
+			//send notification email
+			wp_mail(
+				gmuw_sl_get_notification_email_address_array(),
+				'Shortlink edited',
 				$output_text,
 			);
 
