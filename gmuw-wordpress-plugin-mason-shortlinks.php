@@ -33,7 +33,6 @@ define('TICKET_URL','https://gmu.teamdynamix.com/TDClient/33/Portal/Requests/Ser
 
 //approved shortlink target domains
 define('APPROVED_DOMAINS', array(
-	'www.gmu.edu',
 	'gmu.edu',
 	'mason.my.salesforce-sites.com',
 	'gmuedu-my.sharepoint.com',
