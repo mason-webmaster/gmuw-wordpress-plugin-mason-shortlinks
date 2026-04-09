@@ -28,6 +28,9 @@ __FILE__,
 
 //define constants
 
+//ticket url
+define('TICKET_URL','https://gmu.teamdynamix.com/TDClient/33/Portal/Requests/ServiceOfferingDet?ID=97');
+
 //approved shortlink target domains
 define('APPROVED_DOMAINS', array(
 	'www.gmu.edu',
