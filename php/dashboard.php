@@ -118,90 +118,14 @@ function gmuw_sl_handle_dashboard_form() {
         wp_verify_nonce( $_POST['gmuw_sl_shortlink_add_nonce'], 'gmuw_sl_shortlink_add' )
     ) {
 
-    	//check for missing data
-        if ( empty( $_POST['shortlink_label'] ) || empty( $_POST['shortlink_target'] )) {
-
-			// admin notice
-			add_action( 'admin_notices', function() {
-			    echo '<div class="notice notice-error"><p>Missing input data. Nothing done.</p></div>';
-			});
-
+		//is submitted shortlink data valid?
+		if (!gmuw_sl_shortlink_data_is_valid($_POST['shortlink_label'],$_POST['shortlink_target'])) {
 			return;
-
-        }
+		}
 
         //sanitize inputs
         $shortlink_label = '/'.sanitize_text_field( $_POST['shortlink_label'] );
         $shortlink_target = sanitize_text_field( $_POST['shortlink_target'] );
-
-        //ensure the label is valid
-        if (!preg_match("/^\/[a-z0-9_-]+$/", $shortlink_label)) {
-
-			// admin notice
-			add_action( 'admin_notices', function() {
-			    echo '<div class="notice notice-error"><p>Shortlink label may only contain lowercase letters, numbers, underscores, and hyphens. Nothing done.</p></div>';
-			});
-
-			return;
-
-        }
-
-        //ensure that the label is not already in use
-        if (gmuw_sl_get_redirect_record_by_label($shortlink_label)) {
-
-			// admin notice
-			add_action( 'admin_notices', function() {
-			    echo '<div class="notice notice-error"><p>Shortlink label is already in use. Nothing done.</p></div>';
-			});
-
-			return;
-
-        }
-
-        //ensure the target is a valid URL
-        if (filter_var($shortlink_target, FILTER_VALIDATE_URL)==false) {
-
-			// admin notice
-			add_action( 'admin_notices', function() {
-			    echo '<div class="notice notice-error"><p>Please enter a valid URL for the target. Nothing done.</p></div>';
-			});
-
-			return;
-
-        }
-
-        //ensure that the target uses an approved domain
-
-		//get requested domain
-		$requested_domain=wp_parse_url($shortlink_target)['host'];
-
-		//assume false
-		$requested_domain_is_approved=false;
-
-		//loop through all approved domains and check each one for a match
-		foreach(APPROVED_DOMAINS as $approved_domain){
-
-			//set pattern. there could be sub-domains
-			$pattern = "/([a-z0-9-]+\.)*".$approved_domain."/i";
-
-			//does the requested domain match the current approved domain from the list?
-			if (preg_match($pattern, $requested_domain)){
-				$requested_domain_is_approved=true;
-			}
-
-        }
-
-        //if the requested domain is not approved...
-        if (!$requested_domain_is_approved) {
-
-			// admin notice
-			add_action( 'admin_notices', function() {
-			    echo '<div class="notice notice-error"><p>You have specified an unapproved domain. Nothing done.</p></div>';
-			});
-
-			return;
-
-        }
 
         //create the redirection recod
 		global $wpdb;
