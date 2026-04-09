@@ -72,6 +72,16 @@ function gmuw_sl_register_settings() {
 		['id' => 'gmuw_sl_email_notification_shortlink_create', 'label' => '']
 	);
 
+	// Add field: turn on notification emails for shortlink editing
+	add_settings_field(
+		'gmuw_sl_email_notification_shortlink_edit',
+		'Send email notification on shortlink edit?',
+		'gmuw_sl_callback_field_yesno',
+		'gmuw_sl',
+		'gmuw_sl_section_settings_email',
+		['id' => 'gmuw_sl_email_notification_shortlink_edit', 'label' => '']
+	);
+
 	// Add field: turn on notification emails for shortlink deletion
 	add_settings_field(
 		'gmuw_sl_email_notification_shortlink_delete',
