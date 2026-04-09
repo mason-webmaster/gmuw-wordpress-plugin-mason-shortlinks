@@ -171,7 +171,28 @@ function gmuw_sl_handle_dashboard_form() {
         }
 
         //ensure that the target uses an approved domain
-        if (!in_array(wp_parse_url($shortlink_target)['host'],APPROVED_DOMAINS)) {
+
+		//get requested domain
+		$requested_domain=wp_parse_url($shortlink_target)['host'];
+
+		//assume false
+		$requested_domain_is_approved=false;
+
+		//loop through all approved domains and check each one for a match
+		foreach(APPROVED_DOMAINS as $approved_domain){
+
+			//set pattern. there could be sub-domains
+			$pattern = "/([a-z0-9-]+\.)*".$approved_domain."/i";
+
+			//does the requested domain match the current approved domain from the list?
+			if (preg_match($pattern, $requested_domain)){
+				$requested_domain_is_approved=true;
+			}
+
+        }
+
+        //if the requested domain is not approved...
+        if (!$requested_domain_is_approved) {
 
 			// admin notice
 			add_action( 'admin_notices', function() {
