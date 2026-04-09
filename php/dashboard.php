@@ -15,7 +15,7 @@ function gmuw_sl_custom_dashboard_meta_boxes() {
   global $wp_meta_boxes;
 
   /* Add general meta box */
-  add_meta_box("gmuw_sl_custom_dashboard_meta_box_index", "Redirection!", "gmuw_sl_custom_dashboard_meta_box_general", "dashboard","normal");
+  add_meta_box("gmuw_sl_custom_dashboard_meta_box_index", "General Information", "gmuw_sl_custom_dashboard_meta_box_general", "dashboard","normal");
 
   /* Add 'add new' meta box */
   add_meta_box("gmuw_sl_custom_dashboard_meta_box_redirects_add", "Add Redirect", "gmuw_sl_custom_dashboard_meta_box_redirects_add", "dashboard","normal");
@@ -28,18 +28,22 @@ function gmuw_sl_custom_dashboard_meta_boxes() {
 
 }
 
-
-
-
 /**
  * Provides content for the dashboard general meta box
  */
 function gmuw_sl_custom_dashboard_meta_box_general() {
 
-  //Output content
-  echo '<p><a href="/wp-admin/tools.php?page=redirection.php">Redirects</a></p>';
-  echo '<p><a href="/wp-admin/tools.php?page=redirection.php&sub=groups">Redirection Groups</a></p>';
-  echo '<div id="qrcode-container"></div>';
+	//Output content
+	echo '<h3>Approved Affiliated Domains</h3>';
+	?>
+	<p>Using a Mason‑branded shortlink signals an official connection to the university. To protect the George Mason brand and ensure appropriate representation, self‑service creation of shortlinks is limited to a set of approved affiliated domains.</p>
+	<p>Approved affiliated domains include external services that George Mason regularly uses for university business (such as all gmu.edu domains, Salesforce, Qualtrics, Zoom, and others).</p> 
+	<p>If you need a short link for a domain that isn't pre-approved for self‑service creation, you can <a href="<?php echo TICKET_URL; ?>" target="_blank">submit a request ticket for review</a>.</p> 
+	<p>Shortlinks can be created immediately for the following approved domains:</p>
+	<?php
+	foreach (APPROVED_DOMAINS as $approved_domain) {
+		echo $approved_domain . '<br />';
+	}
 
 }
 
