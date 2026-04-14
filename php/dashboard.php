@@ -17,8 +17,8 @@ function gmuw_sl_custom_dashboard_meta_boxes() {
   /* Add general meta box */
   add_meta_box("gmuw_sl_custom_dashboard_meta_box_index", "General Information", "gmuw_sl_custom_dashboard_meta_box_general", "dashboard","normal");
 
-  /* Add 'add new' meta box */
-  add_meta_box("gmuw_sl_custom_dashboard_meta_box_redirects_add", "Add Redirect", "gmuw_sl_custom_dashboard_meta_box_redirects_add", "dashboard","normal");
+  /* Add 'add shortlink' meta box */
+  add_meta_box("gmuw_sl_custom_dashboard_meta_box_shortlink_add", "Add Shortlink", "gmuw_sl_custom_dashboard_meta_box_shortlink_add", "dashboard","normal");
 
    /* all shortlinks */
   add_meta_box("gmuw_sl_custom_dashboard_meta_box_redirects", "All Shortlinks", "gmuw_sl_custom_dashboard_meta_box_redirects", "dashboard","normal");
@@ -48,12 +48,15 @@ function gmuw_sl_custom_dashboard_meta_box_general() {
 }
 
 /**
- * Provides content for the dashboard 'add new' redirect meta box
+ * Provides content for the dashboard add new shortlink meta box
  */
-function gmuw_sl_custom_dashboard_meta_box_redirects_add() {
+function gmuw_sl_custom_dashboard_meta_box_shortlink_add() {
 
 	//Output content
 	?>
+
+	<p>Add a new shortlink:</p>
+
 	<script>
 		function gmuw_sl_validate_shortlink_add_form() {
 
@@ -93,9 +96,11 @@ function gmuw_sl_custom_dashboard_meta_box_redirects_add() {
 		<?php wp_nonce_field( 'gmuw_sl_shortlink_add', 'gmuw_sl_shortlink_add_nonce' ); ?>
 
 		<p>
-			<label for="shortlink_label">Shortlink label:</label><br>
+			<label for="shortlink_label"><strong>Shortlink/Label</strong></label><br>
 			<input type="text" name="shortlink_label" id="shortlink_label" style="width:100%;">
-			<label for="shortlink_target">Target:</label><br>
+		</p>
+		<p>
+			<label for="shortlink_target"><strong>Target URL</strong></label><br>
 			<input type="text" name="shortlink_target" id="shortlink_target" style="width:100%;">
 		</p>
 
