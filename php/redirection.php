@@ -16,7 +16,7 @@ function gmuw_sl_create_redirection_group_for_user( $user_id ) {
     $wpdb->insert(
         "{$wpdb->prefix}redirection_groups",
         [
-            'name'     => 'user_' . $user_id,
+            'name'     => 'user_' . gmuw_sl_get_username($user_id),
             'tracking'     => 1,
             'module_id'     => 1,
             'status'     => 'enabled',
@@ -41,7 +41,7 @@ function gmuw_sl_redirection_get_user_redirection_group_id($user_id = '') {
 
     if (empty($user_id)) { $user_id = get_current_user_id(); }
 
-    $group_name = 'user_' . (int)$user_id;
+    $group_name = 'user_' . gmuw_sl_get_username($user_id);
 
     $table = "{$wpdb->prefix}redirection_groups";
 
@@ -240,8 +240,10 @@ function gmuw_sl_redirect_user_id_by_redirect_id($redirect_id){
     if ($redirect_group_id>0) {
         //get group name
         $redirect_group_name=gmuw_sl_redirects_get_group_name_by_id($redirect_group_id);
-        //get related user id from group name
-        $user_id=explode('_',$redirect_group_name)[1];
+        //get related user name from group name
+        $user_name=explode('_',$redirect_group_name)[1];
+        //get user ID from user name
+        $user_id=get_user_by('login', $user_name)->ID;
     } else {
         $user_id=0;
     }
