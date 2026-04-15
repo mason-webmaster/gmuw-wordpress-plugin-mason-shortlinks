@@ -314,7 +314,7 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects,$compact=false){
 
 			//get data
 			$shortlink_url = home_url().$redirect->url;
-			$shortlink_url_display = $compact ? mb_strimwidth($redirect->url,0,35,'...') : $redirect->url;
+			$shortlink_url_display = $compact ? mb_strimwidth(ltrim($redirect->url, '/'),0,35,'...') : ltrim($redirect->url, '/');
 			$target_url = $redirect->action_data;
 			$target_url_display = $compact ? mb_strimwidth($redirect->action_data,0,35,'...') : $redirect->action_data;
 			$redirect_user = gmuw_sl_get_username(gmuw_sl_redirect_user_id_by_redirect_id($redirect->id));
@@ -332,7 +332,7 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects,$compact=false){
 			if (!$compact) {
 
 				//label
-				$return_value.='<td>'.'<a title="'.$shortlink_url.'" href="'.$shortlink_url.'" target="_blank">'.$shortlink_url_display.'</a> '.$copy_link.'</td>';
+				$return_value.='<td>'.'<a style="font-weight:bold;" class="admin-tooltip-only" title="'.$shortlink_url.'" href="#">'.$shortlink_url_display.'</a> '.$copy_link.'</td>';
 				//target
 				$return_value.='<td style="max-width:40em;">'.'<a title="'.$target_url.'" href="'.$target_url.'" target="_blank">'.$target_url_display.'</a>'.'</td>';
 				//user
@@ -355,7 +355,7 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects,$compact=false){
 
 				$return_value.='<div style="display:flex; justify-content:space-between;">';
 
-				$return_value.='<div><a title="'.$shortlink_url.'" href="'.$shortlink_url.'" target="_blank">'.$shortlink_url_display.'</a> '.$copy_link.'</div>';
+				$return_value.='<div><a style="font-weight:bold;" class="admin-tooltip-only" title="'.$shortlink_url.'" href="#">'.$shortlink_url_display.'</a> '.$copy_link.'</div>';
 				$return_value.=' -> ';
 				$return_value.='<a title="'.$target_url.'" href="'.$target_url.'" target="_blank">'.$target_url_display.'</a>';
 

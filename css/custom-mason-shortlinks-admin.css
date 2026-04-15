@@ -1,6 +1,12 @@
 /* custom admin styles for site */
 
 
+/* tooltip only links */
+a.admin-tooltip-only {
+    color:unset;
+    text-decoration:none;
+}
+
 /* dashicons as admin icons */
 .admin-icon {
     font-size: 1.25rem;
