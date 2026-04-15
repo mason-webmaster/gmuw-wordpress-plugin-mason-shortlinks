@@ -123,7 +123,7 @@ function gmuw_sl_handle_form_shortlink_add() {
     ) {
 
 		//is submitted shortlink data valid?
-		if (!gmuw_sl_shortlink_data_is_valid($_POST['shortlink_label'],$_POST['shortlink_target'])) {
+		if (!gmuw_sl_shortlink_data_is_valid($_POST['shortlink_label'],$_POST['shortlink_target'],'add')) {
 			return;
 		}
 
@@ -190,19 +190,33 @@ function gmuw_sl_handle_form_shortlink_edit() {
         wp_verify_nonce( $_POST['gmuw_sl_shortlink_edit_nonce'], 'gmuw_sl_shortlink_edit' )
     ) {
 
+        //sanitize inputs
+		$redirect_id=(int)$_REQUEST['redirect_id'];
+        $shortlink_label = sanitize_text_field( $_POST['shortlink_label'] );
+        $shortlink_target = sanitize_text_field( $_POST['shortlink_target'] );
+
 		//is submitted shortlink data valid?
-		if (!gmuw_sl_shortlink_data_is_valid($_POST['shortlink_label'],$_POST['shortlink_target'])) {
+		if (!gmuw_sl_shortlink_data_is_valid($shortlink_label,$shortlink_target,'edit',$redirect_id)) {
 			return;
 		}
 
-        //sanitize inputs
-        $shortlink_label = '/'.sanitize_text_field( $_POST['shortlink_label'] );
-        $shortlink_target = sanitize_text_field( $_POST['shortlink_target'] );
+		//is the user not allowed to edit this short link?
+		if (!gmuw_sl_redirect_user_id_by_redirect_id($redirect_id)==get_current_user_id()) {
+
+            // admin notice
+            add_action( 'admin_notices', function() {
+                echo '<div class="notice notice-error"><p>This shortlink does not below to you. Nothing done.</p></div>';
+            });
+
+            return false;
+
+		}
 
         //edit the redirection recod
 		global $wpdb;
 
-////
+		////
+
 
 		//build output
 		$output_text='Edited shortlink: ' . esc_html( $shortlink_label ) .' -> '.esc_html( $shortlink_target );

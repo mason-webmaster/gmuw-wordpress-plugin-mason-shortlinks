@@ -274,8 +274,21 @@ function gmuw_sl_get_redirect_record_by_label( $shortlink_label ) {
 }
 
 //function to return whether shortlink data is valid
-function gmuw_sl_shortlink_data_is_valid($label,$target){
+function gmuw_sl_shortlink_data_is_valid($label,$target,$write_type,$redirection_id=null){
 
+    //check for missing data for updates
+    if ($write_type=='edit') {
+        if ( empty($redirection_id)) {
+
+            // admin notice
+            add_action( 'admin_notices', function() {
+                echo '<div class="notice notice-error"><p>Missing redirection ID. Nothing done.</p></div>';
+            });
+
+            return false;
+
+        }
+    }
 
     //check for missing data
     if ( empty($label) || empty($target)) {

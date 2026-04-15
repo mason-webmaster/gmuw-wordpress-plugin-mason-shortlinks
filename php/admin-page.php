@@ -141,7 +141,7 @@ function gmuw_sl_shortlink_management_page(){
                     return false;
                 }
 
-                return confirm('Do you want to add this shortlink?');
+                return confirm('Do you want to edit this shortlink?');
             }
         </script>
 
