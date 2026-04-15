@@ -12,12 +12,14 @@ jQuery(document).ready(function(){
 	jQuery('.wp-admin.index-php table.data_table').DataTable({
 		paging: false,
 		dom: 'fti',
+		order: [],
 	});
 
 	//datatables on non-dashboard WP admin pages
 	jQuery('.wp-admin:not(.index-php) table.data_table').DataTable({
 		paging: false,
 		dom: 'Bfritip',
+		order: [],
 		buttons: [
 		  'copy', 'excel', 'csv', 'print'
 		]
