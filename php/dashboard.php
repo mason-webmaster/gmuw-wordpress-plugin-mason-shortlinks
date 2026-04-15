@@ -23,6 +23,9 @@ function gmuw_sl_custom_dashboard_meta_boxes() {
    /* all shortlinks */
   add_meta_box("gmuw_sl_custom_dashboard_meta_box_redirects", "All Shortlinks", "gmuw_sl_custom_dashboard_meta_box_redirects", "dashboard","normal");
 
+   /* top shortlinks */
+  add_meta_box("gmuw_sl_custom_dashboard_meta_box_redirects_top", "Top Shortlinks", "gmuw_sl_custom_dashboard_meta_box_redirects_top", "dashboard","normal");
+
    /* your shortlinks */
   add_meta_box("gmuw_sl_custom_dashboard_meta_box_redirects_current_user", "Your Shortlinks", "gmuw_sl_custom_dashboard_meta_box_redirects_current_user", "dashboard","normal",);
 
@@ -256,6 +259,17 @@ function gmuw_sl_custom_dashboard_meta_box_redirects() {
 
 	//get redirects
 	$redirects = gmuw_sl_get_redirects();
+
+	//put into table
+	echo gmuw_sl_dashboard_widget_redirects_table($redirects,true);
+
+}
+
+//display custom dashboard meta box with a table of top shortlinks by count
+function gmuw_sl_custom_dashboard_meta_box_redirects_top() {
+
+	//get redirects
+	$redirects = gmuw_sl_get_redirects_top();
 
 	//put into table
 	echo gmuw_sl_dashboard_widget_redirects_table($redirects,true);

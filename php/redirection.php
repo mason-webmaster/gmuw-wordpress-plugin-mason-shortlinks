@@ -126,6 +126,24 @@ function gmuw_sl_get_redirects() {
 }
 
 /**
+ * function to return top redirects by count
+ */
+function gmuw_sl_get_redirects_top() {
+    global $wpdb;
+
+    $table = "{$wpdb->prefix}redirection_items";
+
+    // Fetch all rows for this group
+    $results = $wpdb->get_results(
+        $wpdb->prepare(
+            "SELECT * FROM $table ORDER BY last_count DESC LIMIT 10;"
+        )
+    );
+
+    return $results; // returns an array of objects
+}
+
+/**
  * function to return current user's redirects
  */
 function gmuw_sl_get_redirects_current_user() {
