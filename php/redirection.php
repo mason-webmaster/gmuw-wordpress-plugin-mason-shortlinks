@@ -209,25 +209,6 @@ function gmuw_sl_get_redirect_fields_by_id( $id ) {
     return $row; // returns ['url' => '...', 'action_data' => '...'] or null
 }
 
-
-
-/**
- * function to see if given user owns a particular redirect
- */
-function gmuw_sl_user_owns_redirect($redirect_id){
-
-    //get redirect's group id
-    $redirect_group_id=gmuw_sl_get_redirect_fields_by_id($redirect_id)['group_id'];
-    //get group name
-    $redirect_group_name=gmuw_sl_redirects_get_group_name_by_id($redirect_group_id);
-    //get current user group name
-    $user_group_name='user_'.get_current_user_id();
-
-    //is the user group name the same as the redirect group name?
-    return ($redirect_group_name==$user_group_name);
-
-}
-
 /**
  * function to get related user ID for a redirect by redirect id
  */
@@ -373,5 +354,13 @@ function gmuw_sl_shortlink_data_is_valid($label,$target,$write_type,$redirection
 
     //otherwise, we're good
     return true;
+
+}
+
+//function to return whether a user can edit a particular shortlink
+function gmuw_sl_current_user_can_edit_shortlink($redirect_id){
+
+    //return whether the user id for this redirect matches the current user id, or the user is an admin
+    return (gmuw_sl_redirect_user_id_by_redirect_id($redirect_id)==get_current_user_id()) || current_user_can('manage_options');
 
 }

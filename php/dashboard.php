@@ -201,7 +201,7 @@ function gmuw_sl_handle_form_shortlink_edit() {
 		}
 
 		//is the user not allowed to edit this short link?
-		if (!gmuw_sl_redirect_user_id_by_redirect_id($redirect_id)==get_current_user_id()) {
+		if (!gmuw_sl_current_user_can_edit_shortlink($redirect_id)) {
 
             // admin notice
             add_action( 'admin_notices', function() {
@@ -344,7 +344,7 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects,$compact=false){
 				//view link
 				$return_value.=$view_link;
 				//edit link, if the user can edit this redirect
-				if (gmuw_sl_user_owns_redirect($redirect->id) || current_user_can('manage_options') ) {
+				if (gmuw_sl_current_user_can_edit_shortlink($redirect->id)) {
 					$return_value.=$edit_link;
 				}
 				$return_value.='</td>';
@@ -370,8 +370,12 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects,$compact=false){
 
 				$return_value.='<div style="display:flex; justify-content:flex-end;">';
 
+				//view link
 				$return_value.=$view_link;
-				$return_value.=$edit_link;
+				//edit link, if the user can edit this redirect
+				if (gmuw_sl_current_user_can_edit_shortlink($redirect->id)) {
+					$return_value.=$edit_link;
+				}
 
 				$return_value.='</div>';
 
