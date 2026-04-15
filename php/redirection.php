@@ -228,6 +228,27 @@ function gmuw_sl_get_redirect_fields_by_id( $id ) {
 }
 
 /**
+ * function to get related user ID for a given redirect group id
+ */
+function gmuw_sl_redirect_user_id_by_group_id($redirect_group_id){
+
+    //if group_id is not 0
+    if ($redirect_group_id>0) {
+        //get group name
+        $redirect_group_name=gmuw_sl_redirects_get_group_name_by_id($redirect_group_id);
+        //get related user name from group name
+        $user_name=explode('_',$redirect_group_name)[1];
+        //get user ID from user name
+        $user_id=get_user_by('login', $user_name)->ID;
+    } else {
+        $user_id=0;
+    }
+
+    return $user_id;
+
+}
+
+/**
  * function to get related user ID for a redirect by redirect id
  */
 function gmuw_sl_redirect_user_id_by_redirect_id($redirect_id){
@@ -313,8 +334,8 @@ function gmuw_sl_shortlink_data_is_valid($label,$target,$write_type,$redirection
 
     }
 
-    //ensure that the label is not already in use
-    if (gmuw_sl_get_redirect_record_by_label($label)) {
+    //ensure that the label is not already in use, and not by this exact redirect
+    if (gmuw_sl_get_redirect_record_by_label($label) && gmuw_sl_get_redirect_record_by_label($label)->id != $redirection_id) {
 
         // admin notice
         add_action( 'admin_notices', function() {
@@ -380,5 +401,58 @@ function gmuw_sl_current_user_can_edit_shortlink($redirect_id){
 
     //return whether the user id for this redirect matches the current user id, or the user is an admin
     return (gmuw_sl_redirect_user_id_by_redirect_id($redirect_id)==get_current_user_id()) || current_user_can('manage_options');
+
+}
+
+/**
+ * Fetch redirection groups from the database.
+ * * @return array Array of group objects containing id and name.
+ */
+function gmuw_sl_get_redirection_groups() {
+
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . 'redirection_groups';
+
+    //get results
+    $results = $wpdb->get_results("SELECT id, name FROM $table_name WHERE name LIKE 'user_%' ORDER BY name ASC");
+
+    return $results ? $results : array();
+
+}
+
+/**
+ * Generate HTML options for the redirection groups.
+ * * @param array $groups The array from gmuw_sl_get_redirection_groups.
+ * @return string HTML option tags.
+ */
+function gmuw_render_group_options($current_group_id) {
+
+    $groups=gmuw_sl_get_redirection_groups();
+
+    if (empty($groups)) {
+        return '<option value="">No users found</option>';
+    }
+
+    $output = '<option value="">Select a User...</option>';
+
+    foreach ($groups as $group) {
+
+        //is this the current group?
+        $selected='';
+        if ($group->id==$current_group_id) { $selected="selected"; }
+
+        // Strip 'user_' from the start of the string
+        $clean_name = str_replace('user_', '', $group->name);
+
+        $output .= sprintf(
+            '<option %s value="%s">%s</option>',
+            $selected,
+            esc_attr($group->id),
+            esc_html($clean_name)
+        );
+    }
+
+    return $output;
 
 }

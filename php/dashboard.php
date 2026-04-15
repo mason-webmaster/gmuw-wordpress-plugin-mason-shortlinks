@@ -195,11 +195,12 @@ function gmuw_sl_handle_form_shortlink_edit() {
 
         //sanitize inputs
 		$redirect_id=(int)$_REQUEST['redirect_id'];
-        $shortlink_label = sanitize_text_field( $_POST['shortlink_label'] );
-        $shortlink_target = sanitize_text_field( $_POST['shortlink_target'] );
+        $redirect_group_id = sanitize_text_field( $_POST['redirect_group_id'] );
+        $redirect_label = sanitize_text_field( $_POST['redirect_label'] );
+        $redirect_target = sanitize_text_field( $_POST['redirect_target'] );
 
 		//is submitted shortlink data valid?
-		if (!gmuw_sl_shortlink_data_is_valid($shortlink_label,$shortlink_target,'edit',$redirect_id)) {
+		if (!gmuw_sl_shortlink_data_is_valid($redirect_label,$redirect_target,'edit',$redirect_id)) {
 			return;
 		}
 
@@ -215,14 +216,26 @@ function gmuw_sl_handle_form_shortlink_edit() {
 
 		}
 
-        //edit the redirection recod
+		//is the redirect not being assigned to the current user, and is the current user not an admin?
+		if ( !(gmuw_sl_redirect_user_id_by_group_id($redirect_group_id)==get_current_user_id()) && !current_user_can('manage_options') ) {
+
+            // admin notice
+            add_action( 'admin_notices', function() {
+                echo '<div class="notice notice-error"><p>You cannot assign a shortlink to this user. Nothing done.</p></div>';
+            });
+
+            return false;
+
+		}
+
+        //edit the redirection record
 		global $wpdb;
 
 		////
 
 
 		//build output
-		$output_text='Edited shortlink: ' . esc_html( $shortlink_label ) .' -> '.esc_html( $shortlink_target );
+		$output_text='Edited shortlink: ' . esc_html( $redirect_label ) .' -> '.esc_html( $redirect_target ) . ' ('.get_user_by('id', gmuw_sl_redirect_user_id_by_group_id($redirect_group_id))->user_login.')';
 
 		// log to simple history
 		apply_filters(
@@ -244,7 +257,7 @@ function gmuw_sl_handle_form_shortlink_edit() {
 		}
 
         // admin notice
-        add_action( 'admin_notices', function() use ( $shortlink_label, $shortlink_target, $output_text ) {
+        add_action( 'admin_notices', function() use ( $redirect_label, $redirect_target, $output_text ) {
             echo '<div class="notice notice-success"><p>' . $output_text . '</p></div>';
         });
 
