@@ -314,9 +314,9 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects,$compact=false){
 
 			//get data
 			$shortlink_url = home_url().$redirect->url;
-			$shortlink_url_display = $compact ? mb_strimwidth($redirect->url,0,25,'...') : $redirect->url;
+			$shortlink_url_display = $compact ? mb_strimwidth($redirect->url,0,35,'...') : $redirect->url;
 			$target_url = $redirect->action_data;
-			$target_url_display = $compact ? mb_strimwidth($redirect->action_data,0,25,'...') : $redirect->action_data;
+			$target_url_display = $compact ? mb_strimwidth($redirect->action_data,0,35,'...') : $redirect->action_data;
 			$redirect_user = gmuw_sl_get_username(gmuw_sl_redirect_user_id_by_redirect_id($redirect->id));
 			$redirect_hits = $redirect->last_count;
 			$view_url = '/wp-admin/admin.php?page=gmuw_sl_shortlink_management&redirect_id='.$redirect->id;
