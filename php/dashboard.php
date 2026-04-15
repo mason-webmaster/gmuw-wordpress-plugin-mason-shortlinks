@@ -316,7 +316,7 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects,$compact=false){
 			$shortlink_url = home_url().$redirect->url;
 			$shortlink_url_display = $compact ? mb_strimwidth(ltrim($redirect->url, '/'),0,35,'...') : ltrim($redirect->url, '/');
 			$target_url = $redirect->action_data;
-			$target_url_display = $compact ? mb_strimwidth($redirect->action_data,0,35,'...') : $redirect->action_data;
+			$target_url_display = $compact ? mb_strimwidth(preg_replace('/^https?:\/\//', '', $redirect->action_data),0,50,'...') : $redirect->action_data;
 			$redirect_user = gmuw_sl_get_username(gmuw_sl_redirect_user_id_by_redirect_id($redirect->id));
 			$redirect_hits = $redirect->last_count;
 			$view_url = '/wp-admin/admin.php?page=gmuw_sl_shortlink_management&redirect_id='.$redirect->id;
@@ -355,28 +355,23 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects,$compact=false){
 
 				$return_value.='<div style="display:flex; justify-content:space-between;">';
 
-				$return_value.='<div><a style="font-weight:bold;" class="admin-tooltip-only" title="'.$shortlink_url.'" href="#">'.$shortlink_url_display.'</a> '.$copy_link.'</div>';
-				$return_value.='<a title="'.$target_url.'" href="'.$target_url.'" target="_blank">'.$target_url_display.'</a>';
-
+				$return_value.='<div>';
+				$return_value.='<a style="font-weight:bold;" title="'.$shortlink_url.'" href="'.$view_url.'">'.$shortlink_url_display.'</a>';
+				$return_value.=' ';
+				//copy link
+				$return_value.=$copy_link;
+				//edit link, if the user can edit this redirect
+				if (gmuw_sl_current_user_can_edit_shortlink($redirect->id)) $return_value.=$edit_link;
 				$return_value.='</div>';
 
-				$return_value.='<div style="display:flex; justify-content:flex-end;">';
-
+				$return_value.='<div>';
 				$return_value.='<span>'.$redirect_user . '&nbsp;</span>';
 				$return_value.='<span class="highlight-metric">'.number_format($redirect_hits) . '</span>';
+				$return_value.='</div>';
 
 				$return_value.='</div>';
 
-				$return_value.='<div style="display:flex; justify-content:flex-end;">';
-
-				//view link
-				$return_value.=$view_link;
-				//edit link, if the user can edit this redirect
-				if (gmuw_sl_current_user_can_edit_shortlink($redirect->id)) {
-					$return_value.=$edit_link;
-				}
-
-				$return_value.='</div>';
+				$return_value.='<a style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \'Liberation Mono\', \'Courier New\',  monospace; word-break:break-all;" title="'.$target_url.'" href="'.$target_url.'" target="_blank">'.$target_url_display.'</a>';
 
 				$return_value.='</td>';
 
