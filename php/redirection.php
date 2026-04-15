@@ -266,7 +266,7 @@ function gmuw_sl_get_redirect_record_by_label( $shortlink_label ) {
     $row = $wpdb->get_row(
         $wpdb->prepare(
             "SELECT id FROM $table WHERE url = %s",
-            $shortlink_label
+            '/'.$shortlink_label
         )
     );
 
