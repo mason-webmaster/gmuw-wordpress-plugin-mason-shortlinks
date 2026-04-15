@@ -332,7 +332,7 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects,$compact=false){
 			if (!$compact) {
 
 				//label
-				$return_value.='<td>'.'<a title="'.$shortlink_url.'" href="'.$shortlink_url.'" target="_blank">'.$shortlink_url_display.'</a>'.'</td>';
+				$return_value.='<td>'.'<a title="'.$shortlink_url.'" href="'.$shortlink_url.'" target="_blank">'.$shortlink_url_display.'</a> '.$copy_link.'</td>';
 				//target
 				$return_value.='<td style="max-width:40em;">'.'<a title="'.$target_url.'" href="'.$target_url.'" target="_blank">'.$target_url_display.'</a>'.'</td>';
 				//user
