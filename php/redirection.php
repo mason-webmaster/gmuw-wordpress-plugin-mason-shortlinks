@@ -118,7 +118,7 @@ function gmuw_sl_get_redirects() {
     // Fetch all rows for this group
     $results = $wpdb->get_results(
         $wpdb->prepare(
-            "SELECT * FROM $table ORDER BY position ASC"
+            "SELECT * FROM $table ORDER BY url ASC"
         )
     );
 
@@ -136,7 +136,7 @@ function gmuw_sl_get_redirects_current_user() {
     // Fetch all rows for this group
     $results = $wpdb->get_results(
         $wpdb->prepare(
-            "SELECT * FROM $table WHERE group_id=".gmuw_sl_redirection_get_user_redirection_group_id()." ORDER BY position ASC"
+            "SELECT * FROM $table WHERE group_id=".gmuw_sl_redirection_get_user_redirection_group_id()." ORDER BY url ASC"
         )
     );
 

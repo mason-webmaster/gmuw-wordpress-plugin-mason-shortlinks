@@ -7,22 +7,21 @@ jQuery(document).ready(function(){
 	//console.log('custom admin js file loaded');
 
 	//Implement datatables
-	//regular datatables
-	jQuery('table.data_table:not(.dashboardwidget)').DataTable({
+
+	//datatables on the WP dashboard page specifically (simpler)
+	jQuery('.wp-admin.index-php table.data_table').DataTable({
+		paging: false,
+		dom: 'fti',
+	});
+
+	//datatables on non-dashboard WP admin pages
+	jQuery('.wp-admin:not(.index-php) table.data_table').DataTable({
 		paging: false,
 		dom: 'Bfritip',
 		buttons: [
 		  'copy', 'excel', 'csv', 'print'
 		]
 	});
-
-	//simple datatables
-	jQuery('table.data_table.dashboardwidget').DataTable({
-		paging: false,
-		dom: 'fti',
-		order: [] //no initial sort
-	});
-
 
 	//shortlink copy to clipboard
 	jQuery(document).on('click', '.admin-copy', function(e) {

@@ -283,7 +283,7 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects,$compact=false){
 	$return_value='';
 
 	if ($redirects) {
-		$return_value.='<table class="data_table dashboardwidget">';
+		$return_value.='<table class="data_table">';
 
 		//table header based on view type
 		if (!$compact) {
