@@ -323,6 +323,7 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects,$compact=false){
 			$view_link = '<a class="admin-icon admin-view" title="edit" href="'.$view_url.'" target="_blank"></a> ';
 			$edit_url = $view_url.'&mode=edit';
 			$edit_link = '<a class="admin-icon admin-edit" title="edit" href="'.$edit_url.'" target="_blank"></a>';
+			$copy_link = '<a class="admin-icon admin-copy" title="Copy Link" data-url="'. esc_url($shortlink_url) .'" href="javascript:void(0);"></a>';
 
 			//start row
 			$return_value.='<tr>';
@@ -354,7 +355,7 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects,$compact=false){
 
 				$return_value.='<div style="display:flex; justify-content:space-between;">';
 
-				$return_value.='<a title="'.$shortlink_url.'" href="'.$shortlink_url.'" target="_blank">'.$shortlink_url_display.'</a>';
+				$return_value.='<div><a title="'.$shortlink_url.'" href="'.$shortlink_url.'" target="_blank">'.$shortlink_url_display.'</a> '.$copy_link.'</div>';
 				$return_value.=' -> ';
 				$return_value.='<a title="'.$target_url.'" href="'.$target_url.'" target="_blank">'.$target_url_display.'</a>';
 

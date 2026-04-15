@@ -6,6 +6,13 @@
     font-size: 1.25rem;
     text-decoration:none;
     vertical-align: middle;
+    position: relative; /* required for tooltip positioning */
+}
+
+/* removes outline for mouse click, keeps it for tab navigation */
+.admin-icon:focus:not(:focus-visible) {
+    outline: none;
+    box-shadow: none;
 }
 
 .admin-icon:before {
@@ -20,6 +27,37 @@
 .admin-edit:before {
     font-family: "dashicons";
     content: "\f464";
+}
+
+.admin-copy:before {
+    font-family: "dashicons";
+    content: "\f105";
+}
+
+/* copy icon success */
+
+/* change color when successful */
+.admin-icon.copy-success:before {
+    color: #46b450; /* WP success green */
+}
+
+/* custom tooltip */
+.admin-icon.copy-success:after {
+    content: 'Copied!';
+    position: absolute;
+    bottom: 125%; /* Position above the icon */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2c3338; /* Matches WP dark sidebar/button color */
+    color: #fff;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    border-radius: 3px;
+    white-space: nowrap;
+    pointer-events: none; /* User can't accidentally click the tooltip */
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 /* shortlink display */

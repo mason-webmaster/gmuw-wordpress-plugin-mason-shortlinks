@@ -24,4 +24,29 @@ jQuery(document).ready(function(){
 	});
 
 
+	//shortlink copy to clipboard
+	jQuery(document).on('click', '.admin-copy', function(e) {
+		e.preventDefault();
+
+		const $btn = jQuery(this);
+		const urlToCopy = $btn.data('url');
+
+		if (!urlToCopy) return;
+
+		// Use the Clipboard API
+		navigator.clipboard.writeText(urlToCopy).then(() => {
+
+			// Add the class to trigger CSS animation and tooltip
+			$btn.addClass('copy-success');
+
+			// Remove it after 1 second
+			setTimeout(() => {
+				$btn.removeClass('copy-success');
+			}, 1000);
+
+		}).catch(err => {
+			console.error('Could not copy text: ', err);
+		});
+	});
+
 });
