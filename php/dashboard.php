@@ -379,7 +379,7 @@ function gmuw_sl_dashboard_widget_redirects_table($redirects,$compact=false){
 				$return_value.='</div>';
 
 				$return_value.='<div>';
-				$return_value.='<span>'.$redirect_user . '&nbsp;</span>';
+				$return_value.='<span class="shortlink_user_display">'.$redirect_user . '&nbsp;</span>';
 				$return_value.='<span class="highlight-metric">'.number_format($redirect_hits) . '</span>';
 				$return_value.='</div>';
 

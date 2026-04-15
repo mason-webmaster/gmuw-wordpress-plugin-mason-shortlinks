@@ -99,6 +99,11 @@ a.admin-tooltip-only {
     text-align:center;
 }
 
+/* hide user on the current user shortlinks meta box, as it is unnecessary */
+#gmuw_sl_custom_dashboard_meta_box_redirects_current_user .shortlink_user_display {
+    display:none;
+}
+
 /* qrcode display */
 .gmuw-sl-admin-list-qr-code {
     text-align:center;
