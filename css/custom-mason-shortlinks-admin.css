@@ -1,6 +1,33 @@
 /* custom admin styles for site */
 
 
+/* highlighted metrics */
+.highlight-metric {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    /* The Pill Shape */
+    min-width: 24px; /* Adjust based on your font size */
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 50px; /* High value ensures rounded ends regardless of width */
+
+    /* Typography */
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+
+    /* Colors (Neutral Professional) */
+    background-color: #dcefff; /* Light WP Gray */
+    color: #004567; /* Dark WP Gray */
+
+    /* Layout */
+    vertical-align: middle;
+    margin-left: 6px;
+}
+
 /* tooltip only links */
 a.admin-tooltip-only {
     color:unset;
