@@ -110,8 +110,8 @@ function gmuw_sl_shortlink_management_page(){
 
     }
 
-    //editing
-    if ($is_edit) {
+    //editing and user can edit
+    if ($is_edit && gmuw_sl_current_user_can_edit_shortlink($redirect_id)) {
 
         ?>
         <script>
