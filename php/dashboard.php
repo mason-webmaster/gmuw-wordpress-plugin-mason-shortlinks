@@ -47,7 +47,7 @@ function gmuw_sl_custom_dashboard_meta_box_general() {
 	<p>Using a Mason‑branded shortlink signals an official connection to the university. To protect the George Mason brand and ensure appropriate representation, self‑service creation of shortlinks is limited to a set of approved affiliated domains.</p>
 	<p>Approved affiliated domains include external services that George Mason regularly uses for university business (such as all gmu.edu domains, Salesforce, Qualtrics, Zoom, and others).</p> 
 	<p>If you need a short link for a domain that isn't pre-approved for self‑service creation, you can <a href="<?php echo TICKET_URL; ?>" target="_blank">submit a request ticket for review</a>.</p> 
-	<p>Shortlinks can be created immediately for the following approved domains:</p>
+	<p>Shortlinks can be created without additional approval for the following pre-approved domains:</p>
 	<p>
 	<?php
 	foreach (APPROVED_DOMAINS as $approved_domain) {
@@ -58,7 +58,9 @@ function gmuw_sl_custom_dashboard_meta_box_general() {
 
 	<h3>Reserved Labels</h3>
 
-	<p>Some shortlink labels are reserved and cannot be used:</p>
+	<p>Some shortlink labels are reserved and cannot be used without additional approval.</p>
+	<p>If you would like to inquire about creating a shortlink using a reserved label, you can <a href="<?php echo TICKET_URL; ?>" target="_blank">submit a request ticket for review</a>.</p>
+	<p>The following shortlink labels are reserved:</p>
 
 	<p>
 	<?php
