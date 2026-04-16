@@ -117,3 +117,8 @@ a.admin-tooltip-only {
     font-size:2em;
     padding:0.5em;
 }
+
+/* general information dashboard meta box */
+#gmuw_sl_custom_dashboard_meta_box_general h3 {
+    font-weight:bold;
+}
