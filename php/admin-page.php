@@ -68,7 +68,7 @@ function gmuw_sl_shortlink_management_page(){
         }
 
         //return redirect table
-        echo gmuw_sl_dashboard_widget_redirects_table($my_redirects);
+        echo gmuw_sl_shortlinks_table($my_redirects);
 
         return;
 

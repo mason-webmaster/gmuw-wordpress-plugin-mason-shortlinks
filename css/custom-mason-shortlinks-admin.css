@@ -100,7 +100,7 @@ a.admin-tooltip-only {
 }
 
 /* hide user on the current user shortlinks meta box, as it is unnecessary */
-#gmuw_sl_custom_dashboard_meta_box_redirects_current_user .shortlink_user_display {
+#gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user .shortlink_user_display {
     display:none;
 }
 

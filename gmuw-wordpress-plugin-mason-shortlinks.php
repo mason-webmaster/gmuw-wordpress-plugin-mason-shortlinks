@@ -71,6 +71,9 @@ require('php/shortcodes.php');
 // dashboard
 require('php/dashboard.php');
 
+// shortlinks
+require('php/shortlinks.php');
+
 // redirection
 require('php/redirection.php');
 
