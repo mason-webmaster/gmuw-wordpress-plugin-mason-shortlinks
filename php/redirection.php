@@ -144,6 +144,24 @@ function gmuw_sl_get_redirects_top() {
 }
 
 /**
+ * function to return top redirects by newest
+ */
+function gmuw_sl_get_redirects_new() {
+    global $wpdb;
+
+    $table = "{$wpdb->prefix}redirection_items";
+
+    // Fetch all rows for this group
+    $results = $wpdb->get_results(
+        $wpdb->prepare(
+            "SELECT * FROM $table ORDER BY id DESC LIMIT 25;"
+        )
+    );
+
+    return $results; // returns an array of objects
+}
+
+/**
  * function to return current user's redirects
  */
 function gmuw_sl_get_redirects_current_user() {
