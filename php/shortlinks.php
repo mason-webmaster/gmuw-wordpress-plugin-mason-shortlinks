@@ -296,6 +296,14 @@ function gmuw_sl_handle_form_shortlink_edit() {
 
 		}
 
+		//looks good; we will proceed
+
+		//store the old data for reporting
+		$old_redirect_data=gmuw_sl_get_redirect_fields_by_id($redirect_id);
+		$old_redirect_group_id=$old_redirect_data['group_id'];
+		$old_redirect_label=ltrim($old_redirect_data['url'],'/');
+		$old_redirect_target=$old_redirect_data['action_data'];
+
         //edit the redirection record
 		global $wpdb;
 
@@ -334,7 +342,9 @@ function gmuw_sl_handle_form_shortlink_edit() {
 		}
 
 		//build output
-		$output_text='Edited shortlink: ' . esc_html( $redirect_label ) .' -> '.esc_html( $redirect_target ) . ' ('.get_user_by('id', gmuw_sl_redirect_user_id_by_group_id($redirect_group_id))->user_login.')';
+		$output_text="Edited shortlink:\n";
+		$output_text.="From: ".esc_html( $old_redirect_label ) ." -> ".esc_html( $old_redirect_target ) . " (".get_user_by('id', gmuw_sl_redirect_user_id_by_group_id($old_redirect_group_id))->user_login.")\n";
+		$output_text.="To: ".esc_html( $redirect_label ) ." -> ".esc_html( $redirect_target ) . " (".get_user_by('id', gmuw_sl_redirect_user_id_by_group_id($redirect_group_id))->user_login.")";
 
 		// log to simple history
 		apply_filters(
@@ -357,7 +367,7 @@ function gmuw_sl_handle_form_shortlink_edit() {
 
         // admin notice
         add_action( 'admin_notices', function() use ( $redirect_label, $redirect_target, $output_text ) {
-            echo '<div class="notice notice-success"><p>' . $output_text . '</p></div>';
+            echo '<div class="notice notice-success"><p>' . nl2br($output_text) . '</p></div>';
         });
 
     }
