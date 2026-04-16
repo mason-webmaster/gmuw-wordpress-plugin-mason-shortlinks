@@ -60,6 +60,19 @@ function gmuw_sl_custom_dashboard_meta_box_shortlink_add() {
 
 	<p>Add a new shortlink:</p>
 
+	<?php
+	echo gmuw_sl_shortlink_add_form();
+
+}
+
+/**
+ * Provides the add new shortlink form
+ */
+function gmuw_sl_shortlink_add_form() {
+
+	//Output content
+	?>
+
 	<script>
 		function gmuw_sl_validate_shortlink_add_form() {
 
