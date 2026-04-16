@@ -299,8 +299,39 @@ function gmuw_sl_handle_form_shortlink_edit() {
         //edit the redirection record
 		global $wpdb;
 
-		////
+		// Prepare the data for the Redirection table structure
+		// Ensure the label has a leading slash
+		$formatted_label = '/' . ltrim($redirect_label, '/');
 
+		$table_items = $wpdb->prefix . 'redirection_items';
+
+		$update_data = array(
+			'url'         => $formatted_label,
+			'match_url'   => $formatted_label,
+			'action_data' => $redirect_target,
+			'group_id'    => (int) $redirect_group_id,
+		);
+
+		$update_where = array(
+			'id' => $redirect_id
+		);
+
+		// Perform the update
+		$updated = $wpdb->update(
+			$table_items,
+			$update_data,
+			$update_where,
+			array('%s', '%s', '%s', '%d'), // Data formats
+			array('%d')                    // Where format
+		);
+
+		//check if the database query actually succeeded
+		if ( false === $updated ) {
+			add_action( 'admin_notices', function() {
+				echo '<div class="notice notice-error"><p>Database error: Could not update the shortlink.</p></div>';
+			});
+			return;
+		}
 
 		//build output
 		$output_text='Edited shortlink: ' . esc_html( $redirect_label ) .' -> '.esc_html( $redirect_target ) . ' ('.get_user_by('id', gmuw_sl_redirect_user_id_by_group_id($redirect_group_id))->user_login.')';
