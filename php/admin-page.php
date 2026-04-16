@@ -52,7 +52,7 @@ function gmuw_sl_shortlink_management_page(){
         if (isset($_GET['displaymode']) && $_GET['displaymode']=='user'){
 
             //display link back to shorlink list in other mode
-            echo '<p>You are viewing only your shortlinks.<br /><a href="'.$admin_page_link_base.'&displaymode=all">View all shortlinks</a></p>';
+            echo '<p>You are viewing only your shortlinks. <a href="'.$admin_page_link_base.'&displaymode=all">View all shortlinks</a><br />&nbsp;</p>';
 
             //get redirects
             $my_redirects=gmuw_sl_get_redirects_current_user();
@@ -60,7 +60,7 @@ function gmuw_sl_shortlink_management_page(){
         } else {
 
             //display link back to shorlink list in other mode
-            echo '<p>You are viewing all shortlinks.<br /><a href="'.$admin_page_link_base.'&displaymode=user">View only your shortlinks</a></p>';
+            echo '<p>You are viewing all shortlinks. <a href="'.$admin_page_link_base.'&displaymode=user">View only your shortlinks</a><br />&nbsp;</p>';
 
             //get redirects
             $my_redirects=gmuw_sl_get_redirects();
