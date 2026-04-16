@@ -331,3 +331,114 @@ function gmuw_sl_handle_form_shortlink_edit() {
 
     }
 }
+
+//function to return whether shortlink data is valid
+function gmuw_sl_shortlink_data_is_valid($label,$target,$write_type,$redirection_id=null){
+
+    //check for missing data for updates
+    if ($write_type=='edit') {
+        if ( empty($redirection_id)) {
+
+            // admin notice
+            add_action( 'admin_notices', function() {
+                echo '<div class="notice notice-error"><p>Missing redirection ID. Nothing done.</p></div>';
+            });
+
+            return false;
+
+        }
+    }
+
+    //check for missing data
+    if ( empty($label) || empty($target)) {
+
+        // admin notice
+        add_action( 'admin_notices', function() {
+            echo '<div class="notice notice-error"><p>Missing input data. Nothing done.</p></div>';
+        });
+
+        return false;
+
+    }
+
+    //ensure the label is valid
+    if (!preg_match("/^[a-z0-9_-]+$/", $label)) {
+
+        // admin notice
+        add_action( 'admin_notices', function() {
+            echo '<div class="notice notice-error"><p>Shortlink label may only contain lowercase letters, numbers, underscores, and hyphens. Nothing done.</p></div>';
+        });
+
+        return false;
+
+    }
+
+    //ensure that the label is not already in use, and not by this exact redirect
+    if (gmuw_sl_get_redirect_record_by_label($label) && gmuw_sl_get_redirect_record_by_label($label)->id != $redirection_id) {
+
+        // admin notice
+        add_action( 'admin_notices', function() {
+            echo '<div class="notice notice-error"><p>Shortlink label is already in use. Nothing done.</p></div>';
+        });
+
+        return false;
+
+    }
+
+    //ensure the target is a valid URL
+    if (filter_var($target, FILTER_VALIDATE_URL)==false) {
+
+        // admin notice
+        add_action( 'admin_notices', function() {
+            echo '<div class="notice notice-error"><p>Please enter a valid URL for the target. Nothing done.</p></div>';
+        });
+
+        return false;
+
+    }
+
+    //ensure that the target uses an approved domain
+
+    //get requested domain
+    $requested_domain=wp_parse_url($target)['host'];
+
+    //assume false
+    $requested_domain_is_approved=false;
+
+    //loop through all approved domains and check each one for a match
+    foreach(APPROVED_DOMAINS as $approved_domain){
+
+        //set pattern. there could be sub-domains
+        $pattern = "/([a-z0-9-]+\.)*".$approved_domain."/i";
+
+        //does the requested domain match the current approved domain from the list?
+        if (preg_match($pattern, $requested_domain)){
+            $requested_domain_is_approved=true;
+        }
+
+    }
+
+    //if the requested domain is not approved...
+    if (!$requested_domain_is_approved) {
+
+        // admin notice
+        add_action( 'admin_notices', function() {
+            echo '<div class="notice notice-error"><p>You have specified an unapproved domain. Nothing done.</p></div>';
+        });
+
+        return false;
+
+    }
+
+    //otherwise, we're good
+    return true;
+
+}
+
+//function to return whether a user can edit a particular shortlink
+function gmuw_sl_current_user_can_edit_shortlink($redirect_id){
+
+    //return whether the user id for this redirect matches the current user id, or the user is an admin
+    return (gmuw_sl_redirect_user_id_by_redirect_id($redirect_id)==get_current_user_id()) || current_user_can('manage_options');
+
+}
