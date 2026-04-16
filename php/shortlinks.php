@@ -265,7 +265,7 @@ function gmuw_sl_handle_form_shortlink_edit() {
 		$redirect_id=(int)$_REQUEST['redirect_id'];
         $redirect_group_id = sanitize_text_field( $_POST['redirect_group_id'] );
         $redirect_label = sanitize_text_field( $_POST['redirect_label'] );
-        $redirect_target = sanitize_text_field( $_POST['redirect_target'] );
+        $redirect_target = esc_url_raw( $_POST['redirect_target'] );
 
 		//is submitted shortlink data valid?
 		if (!gmuw_sl_shortlink_data_is_valid($redirect_label,$redirect_target,'edit',$redirect_id)) {
