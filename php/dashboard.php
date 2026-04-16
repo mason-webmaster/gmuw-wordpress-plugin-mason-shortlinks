@@ -37,9 +37,14 @@ function gmuw_sl_custom_dashboard_meta_boxes() {
 function gmuw_sl_custom_dashboard_meta_box_general() {
 
 	?>
+	<h3>About go.gmu.edu</h3>
+	<p>go.gmu.edu is George Mason University's shortlink service.</p>
+
 	<h3>About Shortlinks</h3>
-	<p>Mason shortlinks provide a way to create a (typically shorter/nicer/more-convenient) Mason-branded link pointing to another (typically non-Mason-branded and/or longer/less-convenient) URL. All shortlinks have a <strong>shortlink label</strong> and a <strong>target URL</strong>.</p>
-	<p>For example, if you had a shortlink <code>go.gmu.edu/example</code> which pointed to <code>www.gmu.edu/example-page</code>, the <strong>shortlink label</strong> would be <code>example</code> and the <strong>target URL</strong> would be <code>www.gmu.edu/example-page</code>.</p>
+	<p>Shortlinks allow you to create a (typically shorter, more convenient) Mason-branded custom link to be used as a substitue for another link which may be long, inconvenient, and/or non-Mason-branded.</p>
+	<p>All shortlinks have a <strong>label</strong> and a <strong>target URL</strong>.</p>
+	<p>For example, for the shortlink <code>go.gmu.edu/example</code>, which points to <code>https://www.gmu.edu/</code>:</p>
+	<p>The <strong>label</strong> is <code>example</code> and the <strong>target URL</strong> is <code>https://www.gmu.edu/</code>.</p>
 
 
 	<h3>Approved Affiliated Domains</h3>
