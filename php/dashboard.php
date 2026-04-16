@@ -15,7 +15,7 @@ function gmuw_sl_custom_dashboard_meta_boxes() {
   global $wp_meta_boxes;
 
   /* Add general meta box */
-  add_meta_box("gmuw_sl_custom_dashboard_meta_box_index", "General Information", "gmuw_sl_custom_dashboard_meta_box_general", "dashboard","normal");
+  add_meta_box("gmuw_sl_custom_dashboard_meta_box_general", "General Information", "gmuw_sl_custom_dashboard_meta_box_general", "dashboard","normal");
 
   /* Add 'add shortlink' meta box */
   add_meta_box("gmuw_sl_custom_dashboard_meta_box_shortlink_add", "Add Shortlink", "gmuw_sl_custom_dashboard_meta_box_shortlink_add", "dashboard","normal");
