@@ -51,6 +51,12 @@ define('APPROVED_DOMAINS', array(
 	'gmu.campus.eab.com',
 ));
 
+//reserved shortlink labels
+define('RESERVED_LABELS', array(
+	'graduation',
+	'ai',
+));
+
 // Load custom code modules. Comment lines here to turn on or off individual features
 
 // styles

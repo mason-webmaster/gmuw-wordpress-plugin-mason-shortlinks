@@ -430,6 +430,18 @@ function gmuw_sl_shortlink_data_is_valid($label,$target,$write_type,$redirection
 
     }
 
+    //ensure that the label is not a reserved label. check against reserved labels constant
+    if (in_array($label, RESERVED_LABELS)) {
+
+        // admin notice
+        add_action( 'admin_notices', function() {
+            echo '<div class="notice notice-error"><p>You have specified a reserved shortlink label. Nothing done.</p></div>';
+        });
+
+        return false;
+
+    }
+
     //otherwise, we're good
     return true;
 
