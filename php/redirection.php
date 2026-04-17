@@ -236,7 +236,7 @@ function gmuw_sl_get_redirect_fields_by_id( $id ) {
     // Fetch only the fields you need
     $row = $wpdb->get_row(
         $wpdb->prepare(
-            "SELECT url, action_data, group_id FROM $table WHERE id = %d LIMIT 1",
+            "SELECT url, action_data, group_id, last_count FROM $table WHERE id = %d LIMIT 1",
             $id
         ),
         ARRAY_A // return as associative array
