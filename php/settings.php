@@ -44,6 +44,34 @@ function gmuw_sl_register_settings() {
 		'gmuw_sl_callback_validate_options'
 	);
 
+	// Add section: content settings
+	add_settings_section(
+		'gmuw_sl_section_settings_content',
+		'Content Settings',
+		'gmuw_sl_callback_section_settings_content',
+		'gmuw_sl'
+	);
+
+	// Add field: approved domains
+	add_settings_field(
+		'gmuw_sl_approved_domains',
+		'Approved Domains',
+		'gmuw_sl_callback_field_textarea',
+		'gmuw_sl',
+		'gmuw_sl_section_settings_content',
+		['id' => 'gmuw_sl_approved_domains', 'label' => 'one per line, please']
+	);
+
+	// Add field: reserved labels
+	add_settings_field(
+		'gmuw_sl_reserved_labels',
+		'Reserved Labels',
+		'gmuw_sl_callback_field_textarea',
+		'gmuw_sl',
+		'gmuw_sl_section_settings_content',
+		['id' => 'gmuw_sl_reserved_labels', 'label' => 'one per line, please']
+	);
+
 	// Add section: email settings
 	add_settings_section(
 		'gmuw_sl_section_settings_email',
@@ -128,6 +156,15 @@ function gmuw_sl_plugin_settings_form() {
 function gmuw_sl_callback_section_settings_email() {
 
     //echo '<p>Email settings.</p>';
+
+}
+
+/**
+ * Generates content for content section
+ */
+function gmuw_sl_callback_section_settings_content() {
+
+    //echo '<p>Content settings.</p>';
 
 }
 
