@@ -131,7 +131,7 @@ function gmuw_sl_plugin_settings_form() {
     if (!current_user_can('manage_options')) return;
 
     // heading
-    echo "<h2>Plugin Settings</h2>";
+    //echo "<h2>Plugin Settings</h2>";
 
     // Begin form
     echo "<form action='options.php' method='post'>";
