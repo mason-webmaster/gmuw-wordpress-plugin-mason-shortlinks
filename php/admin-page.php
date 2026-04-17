@@ -87,12 +87,18 @@ function gmuw_sl_shortlink_management_page(){
     $shortlink_url=home_url().gmuw_sl_get_redirect_fields_by_id($redirect_id)['url'];
     $target_url=gmuw_sl_get_redirect_fields_by_id($redirect_id)['action_data'];
 
+    //display shortlink data
     echo '<p>';
     echo 'Redirect ID: '.$redirect_id.'<br />';
     echo 'User: ' . gmuw_sl_get_username(gmuw_sl_redirect_user_id_by_redirect_id($redirect_id)) . '<br />';
     echo 'Shortlink URL: '.$shortlink_url.'<br />';
     echo 'Target URL: '.$target_url.'<br />';
     echo '</p>';
+
+    //display action links
+    if (!$is_edit) {
+        echo '<a href="'. esc_url( add_query_arg( 'mode', 'edit' ) ) .'" class="button button-primary">Edit Shortlink</a>';
+    }
 
     //viewing
     if (!$is_edit) {
@@ -176,6 +182,8 @@ function gmuw_sl_shortlink_management_page(){
 
             <p>
                 <button type="submit" class="button button-primary">Submit</button>
+                <?php echo '<a href="'. esc_url( remove_query_arg( 'mode' ) ) .'" class="button">Cancel</a>'; ?>
+
             </p>
         </form>
         <?php
