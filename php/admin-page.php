@@ -186,7 +186,7 @@ function gmuw_sl_shortlink_management_page(){
 
             <p>
                 <button type="submit" class="button button-primary">Submit</button>
-                <?php echo '<a href="'. esc_url( remove_query_arg( 'mode' ) ) .'" class="button">Cancel</a>'; ?>
+                <?php echo '<a href="'. esc_url( remove_query_arg( 'mode' ) ) .'" class="button" onclick="return confirm(\'Are you sure you want to cancel editing this shortlink?\');">Cancel</a>'; ?>
 
             </p>
         </form>
