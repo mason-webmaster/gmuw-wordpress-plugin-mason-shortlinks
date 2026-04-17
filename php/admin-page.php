@@ -74,26 +74,27 @@ function gmuw_sl_shortlink_management_page(){
 
     }
 
-    // is this an edit?
-    $is_edit=false;
-    if (isset($_GET['mode']) && $_GET['mode']=='edit') $is_edit=true;
-
-    // heading
-    if (!$is_edit) echo '<h2>View Shortlink</h2>'; 
-    if ($is_edit) echo '<h2>Edit Shortlink</h2>';
+    // store whether this is an edit request
+    $is_edit = (isset($_GET['mode']) && $_GET['mode']=='edit') ? true : false;
 
     // get basic shortlink info
     $redirect_id = (int) $_GET['redirect_id'];
-    $shortlink_url=home_url().gmuw_sl_get_redirect_fields_by_id($redirect_id)['url'];
-    $target_url=gmuw_sl_get_redirect_fields_by_id($redirect_id)['action_data'];
+    $shortlink_label=ltrim(gmuw_sl_get_redirect_fields_by_id($redirect_id)['url'],'/');
+    $shortlink_url=home_url().'/'.$shortlink_label;
+    $shortlink_target_url=gmuw_sl_get_redirect_fields_by_id($redirect_id)['action_data'];
+    $shortlink_hits=gmuw_sl_get_redirect_fields_by_id($redirect_id)['last_count'];
+
+    // heading
+    if (!$is_edit) echo '<h2>'. $shortlink_label .' ('.$redirect_id.')</h2>';
+    if ($is_edit) echo '<h2>Edit Shortlink</h2>';
 
     //display shortlink data
-    echo '<p>';
-    echo 'Redirect ID: '.$redirect_id.'<br />';
-    echo 'User: ' . gmuw_sl_get_username(gmuw_sl_redirect_user_id_by_redirect_id($redirect_id)) . '<br />';
-    echo 'Shortlink URL: '.$shortlink_url.'<br />';
-    echo 'Target URL: '.$target_url.'<br />';
-    echo '</p>';
+    echo '<table class="shortlink_data">';
+    echo '<tr><th>Shortlink Label</th><td>'.$shortlink_label.'<td></tr>';
+    echo '<tr><th>Target URL</th><td>'.$shortlink_target_url.'<td></tr>';
+    echo '<tr><th>Hit Count</th><td>'.number_format($shortlink_hits) . '<td></tr>';
+    echo '<tr><th>User</th><td>' . gmuw_sl_get_username(gmuw_sl_redirect_user_id_by_redirect_id($redirect_id)) . '<td></tr>';
+    echo '</table>';
 
     //display action links
     if (!$is_edit) {
@@ -104,7 +105,7 @@ function gmuw_sl_shortlink_management_page(){
     if (!$is_edit) {
         
         //shortlink display
-        echo '<p class="shortlink_display"><a href="'.$shortlink_url.'" target="_blank">'.gmuw_sl_get_redirect_fields_by_id($redirect_id)['url'].'</a> -> <a href="'.$target_url.'" target="_blank">'.gmuw_sl_get_redirect_fields_by_id($redirect_id)['action_data'].'</a></span></p>';
+        echo '<p class="shortlink_display"><a href="'.$shortlink_url.'" target="_blank">'.$shortlink_url.'</a> -> <a href="'.$shortlink_target_url.'" target="_blank">'.gmuw_sl_get_redirect_fields_by_id($redirect_id)['action_data'].'</a></span></p>';
 
         //qr code
         echo '<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.6.0/lib/qr-code-styling.js"></script>';

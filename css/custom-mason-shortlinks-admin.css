@@ -95,7 +95,7 @@ a.admin-tooltip-only {
 
 /* shortlink display */
 .shortlink_display {
-    font-size:3em;
+    font-size:2em;
     text-align:center;
 }
 
@@ -121,4 +121,13 @@ a.admin-tooltip-only {
 /* general information dashboard meta box */
 #gmuw_sl_custom_dashboard_meta_box_general h3 {
     font-weight:bold;
+}
+
+/* shortlink data table */
+table.shortlink_data {
+    margin:2em 0;
+}
+table.shortlink_data th {
+    text-align:left;
+    padding-right:2em;
 }
