@@ -58,7 +58,7 @@ function gmuw_sl_custom_dashboard_meta_box_general() {
 	<p>Shortlinks can be created without additional approval for the following pre-approved domains:</p>
 	<p>
 	<?php
-	foreach (APPROVED_DOMAINS as $approved_domain) {
+	foreach (gmuw_sl_approved_domains_array() as $approved_domain) {
 		echo '<code>'. $approved_domain . '</code><br />';
 	}
 	?>
@@ -72,7 +72,7 @@ function gmuw_sl_custom_dashboard_meta_box_general() {
 
 	<p>
 	<?php
-	foreach (RESERVED_LABELS as $reserved_label) {
+	foreach (gmuw_sl_reserved_labels_array() as $reserved_label) {
 		echo '<code>'. $reserved_label . '</code><br />';
 	}
 	?>

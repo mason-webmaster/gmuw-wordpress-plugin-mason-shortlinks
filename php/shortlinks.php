@@ -447,7 +447,7 @@ function gmuw_sl_shortlink_data_is_valid($label,$target,$write_type,$redirection
     $requested_domain_is_approved=false;
 
     //loop through all approved domains and check each one for a match
-    foreach(APPROVED_DOMAINS as $approved_domain){
+    foreach(gmuw_sl_approved_domains_array() as $approved_domain){
 
         //set pattern. there could be sub-domains
         $pattern = "/([a-z0-9-]+\.)*".$approved_domain."/i";
@@ -472,7 +472,7 @@ function gmuw_sl_shortlink_data_is_valid($label,$target,$write_type,$redirection
     }
 
     //ensure that the label is not a reserved label. check against reserved labels constant
-    if (in_array($label, RESERVED_LABELS)) {
+    if (in_array($label, gmuw_sl_reserved_labels_array())) {
 
         // admin notice
         add_action( 'admin_notices', function() {
@@ -493,5 +493,60 @@ function gmuw_sl_current_user_can_edit_shortlink($redirect_id){
 
     //return whether the user id for this redirect matches the current user id, or the user is an admin
     return (gmuw_sl_redirect_user_id_by_redirect_id($redirect_id)==get_current_user_id()) || current_user_can('manage_options');
+
+}
+
+/**
+ * Return an array of approved domains from plugin settings
+ */
+function gmuw_sl_approved_domains_array() {
+
+	// Get the full options array
+	$options = get_option('gmuw_sl_options');
+
+	// Return empty array if the key doesn't exist or is empty
+	if ( empty($options['gmuw_sl_approved_domains']) ) {
+		return array();
+	}
+
+	// Split by newline and filter out empty lines/whitespace
+	return gmuw_sl_split_newline_string( $options['gmuw_sl_approved_domains'] );
+
+}
+
+/**
+ * Return an array of reserved labels from plugin settings
+ */
+function gmuw_sl_reserved_labels_array() {
+
+	// Get the full options array
+	$options = get_option('gmuw_sl_options');
+
+	// Return empty array if the key doesn't exist or is empty
+	if ( empty($options['gmuw_sl_reserved_labels']) ) {
+		return array();
+	}
+
+	// Split by newline and filter out empty lines/whitespace
+	return gmuw_sl_split_newline_string( $options['gmuw_sl_reserved_labels'] );
+
+}
+
+/**
+ * Helper to split a string by newline, trim whitespace, and remove empty values.
+ */
+function gmuw_sl_split_newline_string( $string ) {
+
+    //Standardize line endings to \n
+    $string = str_replace( array("\r\n", "\r"), "\n", $string );
+
+    //Explode into an array
+    $array = explode( "\n", $string );
+
+    //Trim whitespace from each entry
+    $array = array_map( 'trim', $array );
+
+    //Remove any empty entries (e.g. accidental double newlines)
+    return array_filter( $array );
 
 }

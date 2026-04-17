@@ -31,32 +31,6 @@ __FILE__,
 //ticket url
 define('TICKET_URL','https://gmu.teamdynamix.com/TDClient/33/Portal/Requests/ServiceOfferingDet?ID=97');
 
-//approved shortlink target domains
-define('APPROVED_DOMAINS', array(
-	'gmu.edu',
-	'mason.my.salesforce-sites.com',
-	'gmuedu-my.sharepoint.com',
-	'masongrad.my.salesforce-sites.com',
-	'gmu.secure.force.com',
-	'gmu.az1.qualtrics.com',
-	'hyltoncenter.org',
-	'gmu.teamdynamix.com',
-	'gmu.joinhandshake.com',
-	'mason360.gmu.edu',
-	'gmu.bynder.com',
-	'gomason.com',
-	'gmu.bncollege.com',
-	'gmu.giftplans.org',
-	'gmu.campusesp.com',
-	'gmu.campus.eab.com',
-));
-
-//reserved shortlink labels
-define('RESERVED_LABELS', array(
-	'graduation',
-	'ai',
-));
-
 // Load custom code modules. Comment lines here to turn on or off individual features
 
 // styles
