@@ -41,6 +41,11 @@ function gmuw_sl_shortlink_management_page(){
     // Page title
     echo "<h1>" . esc_html(get_admin_page_title()) . "</h1>";
 
+    //shortlink deleted admin notice
+    if ( isset( $_GET['deleted'] ) && $_GET['deleted'] == 1 ) {
+        echo '<div class="notice notice-success is-dismissible"><p>Shortlink successfully deleted.</p></div>';
+    }
+
     //is this just a general listing? is no shortlink id specified?
     if (!isset($_GET['redirect_id']) || !$_GET['redirect_id']) {
 
@@ -186,6 +191,13 @@ function gmuw_sl_shortlink_management_page(){
             </p>
         </form>
         <?php
+
+        //display delete link
+        //set up delete link
+        $delete_url = wp_nonce_url(add_query_arg( 'action', 'delete' ), 'gmuw_sl_delete_shortlink_' . $redirect_id );
+
+        //display delete link
+        echo '<a style="margin-top:4em;" href="' . esc_url( $delete_url ) . '" class="button button-link-delete" onclick="return confirm(\'Are you sure you want to permanently delete this shortlink?\');">Delete Shortlink</a>';
 
     }
 

@@ -373,6 +373,72 @@ function gmuw_sl_handle_form_shortlink_edit() {
     }
 }
 
+/**
+ * Handle shortlink deletion.
+ */
+add_action( 'admin_init', 'gmuw_sl_handle_delete_shortlink' );
+function gmuw_sl_handle_delete_shortlink() {
+
+    // Check if we are actually trying to delete
+    if ( ! isset( $_GET['action'] ) || $_GET['action'] !== 'delete' || ! isset( $_GET['redirect_id'] ) ) {
+        return;
+    }
+
+    $redirect_id = (int) $_GET['redirect_id'];
+
+    //verify nonce
+    if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'gmuw_sl_delete_shortlink_' . $redirect_id ) ) {
+        wp_die( 'Security check failed.' );
+    }
+
+    //permission check
+    if ( ! gmuw_sl_current_user_can_edit_shortlink( $redirect_id ) ) {
+        add_action( 'admin_notices', function() {
+            echo '<div class="notice notice-error"><p>You do not have permission to delete this shortlink.</p></div>';
+        });
+        return;
+    }
+
+    //get info for logging before we delete it
+    $redirect_data = gmuw_sl_get_redirect_fields_by_id( $redirect_id );
+	$redirect_group_id=$redirect_data['group_id'];
+	$redirect_label=ltrim($redirect_data['url'],'/');
+	$redirect_target=$redirect_data['action_data'];
+
+    //perform deletion
+    global $wpdb;
+    $table_items = $wpdb->prefix . 'redirection_items';
+    $deleted = $wpdb->delete( $table_items, array( 'id' => $redirect_id ), array( '%d' ) );
+
+    if ( $deleted ) {
+
+		//build output
+		$output_text="Deleted shortlink:\n";
+		$output_text.=esc_html( $redirect_label ) ." -> ".esc_html( $redirect_target ) . " (".get_user_by('id', gmuw_sl_redirect_user_id_by_group_id($redirect_group_id))->user_login.")";
+
+        // Log to Simple History
+        apply_filters( 'simple_history_log', $output_text );
+
+		//send email
+		//are we set to send an email on shortlink creation?
+		if (get_option('gmuw_sl_options')['gmuw_sl_email_notification_shortlink_delete']==1) {
+
+			//send notification email
+			wp_mail(
+				gmuw_sl_get_notification_email_address_array(),
+				'Shortlink deleted',
+				$output_text,
+			);
+
+		}
+
+        // Redirect back to the main list with a success message
+        // We redirect because the current page (viewing the ID) no longer exists
+        wp_safe_redirect( admin_url( 'admin.php?page=gmuw_sl_shortlink_management&displaymode=user&deleted=1' ) );
+        exit;
+    }
+}
+
 //function to return whether shortlink data is valid
 function gmuw_sl_shortlink_data_is_valid($label,$target,$write_type,$redirection_id=null){
 
