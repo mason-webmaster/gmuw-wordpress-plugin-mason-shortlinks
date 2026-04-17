@@ -154,6 +154,28 @@ function gmuw_sl_callback_field_text($args) {
 }
 
 /**
+ * Generates textarea field for plugin settings option
+ */
+function gmuw_sl_callback_field_textarea($args) {
+
+    //Get array of options. If the specified option does not exist, get default options from a function
+    $options = get_option('gmuw_sl_options', gmuw_sl_options_default());
+
+    //Extract field id and label from arguments array
+    $id    = isset($args['id'])    ? $args['id']    : '';
+    $label = isset($args['label']) ? $args['label'] : '';
+
+    //Get setting value
+    $value = isset($options[$id]) ? sanitize_textarea_field($options[$id]) : '';
+
+    //Output field markup
+    echo '<textarea id="gmuw_sl_options_'. $id .'" name="gmuw_sl_options['. $id .']" type="text" style="width:60em; height:10em;">'. $value .'</textarea>';
+    echo "<br />";
+    echo '<label for="gmuw_sl_options_'. $id .'">'. $label .'</label>';
+
+}
+
+/**
  * Generates yes/no field for plugin settings options
  */
 function gmuw_sl_callback_field_yesno($args) {
