@@ -96,13 +96,11 @@ function gmuw_sl_shortlink_management_page(){
     echo '<tr><th>User</th><td>' . gmuw_sl_get_username(gmuw_sl_redirect_user_id_by_redirect_id($redirect_id)) . '<td></tr>';
     echo '</table>';
 
-    //display action links
-    if (!$is_edit) {
-        echo '<a href="'. esc_url( add_query_arg( 'mode', 'edit' ) ) .'" class="button button-primary">Edit Shortlink</a>';
-    }
-
     //viewing
     if (!$is_edit) {
+
+        //display edit link
+        echo '<a href="'. esc_url( add_query_arg( 'mode', 'edit' ) ) .'" class="button button-primary">Edit Shortlink</a>';
         
         //shortlink display
         echo '<p class="shortlink_display"><a href="'.$shortlink_url.'" target="_blank">'.$shortlink_url.'</a> -> <a href="'.$shortlink_target_url.'" target="_blank">'.gmuw_sl_get_redirect_fields_by_id($redirect_id)['action_data'].'</a></span></p>';
