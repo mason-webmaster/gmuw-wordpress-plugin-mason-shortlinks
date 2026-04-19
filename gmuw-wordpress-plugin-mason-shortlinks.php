@@ -26,11 +26,6 @@ __FILE__,
 'gmuw-wordpress-plugin-mason-shortlinks'
 );
 
-//define constants
-
-//ticket url
-define('TICKET_URL','https://gmu.teamdynamix.com/TDClient/33/Portal/Requests/ServiceOfferingDet?ID=97');
-
 // Load custom code modules. Comment lines here to turn on or off individual features
 
 // styles

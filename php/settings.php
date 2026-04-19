@@ -72,6 +72,16 @@ function gmuw_sl_register_settings() {
 		['id' => 'gmuw_sl_reserved_labels', 'label' => 'one per line, please']
 	);
 
+	// Add field: associated service ticket url
+	add_settings_field(
+		'gmuw_sl_ticket_url',
+		'Associated Service Ticket URL',
+		'gmuw_sl_callback_field_text',
+		'gmuw_sl',
+		'gmuw_sl_section_settings_content',
+		['id' => 'gmuw_sl_ticket_url', 'label' => 'URL for associated service ticket page']
+	);
+
 	// Add section: email settings
 	add_settings_section(
 		'gmuw_sl_section_settings_email',
@@ -257,6 +267,19 @@ function gmuw_sl_options_default() {
  * Validate plugin options
  */
 function gmuw_sl_callback_validate_options($input) {
+
+    // gmuw_sl_ticket_url
+    if (isset($input['gmuw_sl_ticket_url'])) {
+
+	    //ensure the target is a valid URL
+	    if (filter_var($input['gmuw_sl_ticket_url'], FILTER_VALIDATE_URL)==false) {
+
+			//throw it out
+			$input['gmuw_sl_ticket_url']='';
+
+	    }
+
+    }
 
     // gmuw_sl_email_notification_shortlink_create
     if (isset($input['gmuw_sl_email_notification_shortlink_create'])) {
