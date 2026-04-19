@@ -78,6 +78,9 @@ require('php/email.php');
 //users
 require('php/users.php');
 
+//database
+require('php/database.php');
+
 //register activation hook
 register_activation_hook(__FILE__, 'gmuw_sl_plugin_activate');
 

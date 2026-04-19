@@ -12,6 +12,9 @@ function gmuw_sl_plugin_activate(){
 
 	//setup permissions
     gmuw_sl_roles_and_caps_setup();
+
+    //setup custom tables
+    gmuw_sl_create_redirect_meta_table();
 	
 }
 
