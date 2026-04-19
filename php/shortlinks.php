@@ -175,9 +175,19 @@ function gmuw_sl_shortlink_add_form() {
 			<input type="text" name="shortlink_target" id="shortlink_target" style="width:100%;">
 		</p>
 
+        <?php if (current_user_can('manage_options')) : ?>
+            <p>
+                <label for="redirect_group_id"><strong>User</strong></label><br>
+                <select name="redirect_group_id" id="redirect_group_id">
+                    <?php echo gmuw_render_group_options(gmuw_sl_redirection_get_user_redirection_group_id(get_current_user_id())); ?>
+                </select>
+            </p>
+        <?php endif; ?>
+
 		<p>
 			<button type="submit" class="button button-primary">Submit</button>
 		</p>
+
 	</form>
 	<?php
 
@@ -199,6 +209,8 @@ function gmuw_sl_handle_form_shortlink_add() {
 		}
 
         //sanitize inputs
+        //if we're an admin, get specified group, otherwise use the current users group
+        $redirect_group_id = current_user_can('manage_options') ? sanitize_text_field($_POST['redirect_group_id']) : gmuw_sl_redirection_get_user_redirection_group_id();
         $shortlink_label = '/'.sanitize_text_field( $_POST['shortlink_label'] );
         $shortlink_target = sanitize_text_field( $_POST['shortlink_target'] );
 
@@ -212,7 +224,7 @@ function gmuw_sl_handle_form_shortlink_add() {
 		        'url' => $shortlink_label,
 		        'match_url' => $shortlink_label,
 		        'position' => gmuw_sl_redirection_next_redirect_position(),
-		        'group_id' => gmuw_sl_redirection_get_user_redirection_group_id(),
+		        'group_id' => $redirect_group_id,
 		        'action_type' => 'url',
 		        'action_code' => '301',
 		        'action_data' => $shortlink_target,
@@ -220,9 +232,6 @@ function gmuw_sl_handle_form_shortlink_add() {
 		    ],
 		    [ '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%s' ]
 		);
-
-
-
 
 		//get the newly-created redirect ID
 		$new_redirect_id = $wpdb->insert_id;
@@ -238,7 +247,7 @@ function gmuw_sl_handle_form_shortlink_add() {
 		}
 
 		//build output
-		$output_text='Created shortlink: ' . esc_html( $shortlink_label ) .' -> '.esc_html( $shortlink_target );
+		$output_text='Created shortlink: ' . esc_html( $shortlink_label ) .' -> '.esc_html( $shortlink_target ) . ' ('.get_user_by('id', gmuw_sl_redirect_user_id_by_group_id($redirect_group_id))->user_login.')';
 
 		// log to simple history
 		apply_filters(
