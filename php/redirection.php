@@ -333,7 +333,7 @@ function gmuw_sl_get_redirection_groups() {
  * * @param array $groups The array from gmuw_sl_get_redirection_groups.
  * @return string HTML option tags.
  */
-function gmuw_render_group_options($current_group_id) {
+function gmuw_render_group_options($current_group_id='') {
 
     $groups=gmuw_sl_get_redirection_groups();
 
