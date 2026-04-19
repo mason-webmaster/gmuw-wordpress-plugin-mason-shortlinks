@@ -221,6 +221,22 @@ function gmuw_sl_handle_form_shortlink_add() {
 		    [ '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%s' ]
 		);
 
+
+
+
+		//get the newly-created redirect ID
+		$new_redirect_id = $wpdb->insert_id;
+
+		//add meta, if the insert was actually successful
+		if ( $result && $new_redirect_id ) {
+
+			update_redirect_meta( $new_redirect_id, 'when_created', current_time( 'mysql' ) );
+			update_redirect_meta( $new_redirect_id, 'user_created', get_current_user_id() );
+			update_redirect_meta( $new_redirect_id, 'when_last_edited', current_time( 'mysql' ) );
+			update_redirect_meta( $new_redirect_id, 'user_last_edited', get_current_user_id() );
+
+		}
+
 		//build output
 		$output_text='Created shortlink: ' . esc_html( $shortlink_label ) .' -> '.esc_html( $shortlink_target );
 
@@ -340,6 +356,10 @@ function gmuw_sl_handle_form_shortlink_edit() {
 			});
 			return;
 		}
+
+		//update redirect meta
+		update_redirect_meta( $redirect_id, 'when_last_edited', current_time( 'mysql' ) );
+		update_redirect_meta( $redirect_id, 'user_last_edited', get_current_user_id() );
 
 		//build output
 		$output_text="Edited shortlink:\n";
