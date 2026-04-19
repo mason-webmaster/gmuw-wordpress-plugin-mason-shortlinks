@@ -155,7 +155,7 @@ function gmuw_sl_shortlink_management_page(){
             }
         </script>
 
-        <form method="post" action="" onsubmit="return gmuw_sl_validate_shortlink_edit_form();">
+        <form method="post" action="<?php echo esc_url( remove_query_arg( 'mode' ) ) ;?>" onsubmit="return gmuw_sl_validate_shortlink_edit_form();">
             <?php wp_nonce_field( 'gmuw_sl_shortlink_edit', 'gmuw_sl_shortlink_edit_nonce' ); ?>
 
             <input type="hidden" name="action" value="edit" />
