@@ -179,7 +179,16 @@ function gmuw_sl_shortlink_add_form() {
             <p>
                 <label for="redirect_group_id"><strong>User</strong></label><br>
                 <select name="redirect_group_id" id="redirect_group_id">
-                    <?php echo gmuw_render_group_options(gmuw_sl_redirection_get_user_redirection_group_id(get_current_user_id())); ?>
+                    <?php echo gmuw_render_user_group_options(gmuw_sl_redirection_get_user_redirection_group_id(get_current_user_id())); ?>
+                </select>
+            </p>
+        <?php endif; ?>
+
+        <?php if (gmuw_sl_get_user_dept_groups_array()) : ?>
+            <p>
+                <label for="shortlink_group_slug"><strong>Dept./Group</strong></label><br>
+                <select name="shortlink_group_slug" id="shortlink_group_slug">
+                    <?php echo gmuw_render_dept_group_options(); ?>
                 </select>
             </p>
         <?php endif; ?>
@@ -213,6 +222,10 @@ function gmuw_sl_handle_form_shortlink_add() {
         $redirect_group_id = current_user_can('manage_options') ? sanitize_text_field($_POST['redirect_group_id']) : gmuw_sl_redirection_get_user_redirection_group_id();
         $shortlink_label = '/'.sanitize_text_field( $_POST['shortlink_label'] );
         $shortlink_target = sanitize_text_field( $_POST['shortlink_target'] );
+        $shortlink_group_slug = sanitize_text_field( $_POST['shortlink_group_slug'] );
+
+        //if user doesn't have permissions for this group, bail
+        if (!in_array($shortlink_group_slug,gmuw_sl_get_user_dept_groups_array())) return; 
 
         //create the redirection recod
 		global $wpdb;
@@ -243,11 +256,12 @@ function gmuw_sl_handle_form_shortlink_add() {
 			update_redirect_meta( $new_redirect_id, 'user_created', get_current_user_id() );
 			update_redirect_meta( $new_redirect_id, 'when_last_edited', current_time( 'mysql' ) );
 			update_redirect_meta( $new_redirect_id, 'user_last_edited', get_current_user_id() );
+			update_redirect_meta( $new_redirect_id, 'gmuw_sl_group', $shortlink_group_slug );
 
 		}
 
 		//build output
-		$output_text='Created shortlink: ' . esc_html( $shortlink_label ) .' -> '.esc_html( $shortlink_target ) . ' ('.get_user_by('id', gmuw_sl_redirect_user_id_by_group_id($redirect_group_id))->user_login.')';
+		$output_text='Created shortlink: ' . esc_html( $shortlink_label ) .' -> '.esc_html( $shortlink_target ) . ' ('.get_user_by('id', gmuw_sl_redirect_user_id_by_group_id($redirect_group_id))->user_login.' / '.$shortlink_group_slug.')';
 
 		// log to simple history
 		apply_filters(
@@ -291,6 +305,7 @@ function gmuw_sl_handle_form_shortlink_edit() {
         $redirect_group_id = sanitize_text_field( $_POST['redirect_group_id'] );
         $redirect_label = sanitize_text_field( $_POST['redirect_label'] );
         $redirect_target = esc_url_raw( $_POST['redirect_target'] );
+        $shortlink_group_slug = sanitize_text_field( $_POST['shortlink_group_slug'] );
 
 		//is submitted shortlink data valid?
 		if (!gmuw_sl_shortlink_data_is_valid($redirect_label,$redirect_target,'edit',$redirect_id)) {
@@ -309,8 +324,8 @@ function gmuw_sl_handle_form_shortlink_edit() {
 
 		}
 
-		//is the redirect not being assigned to the current user, and is the current user not an admin?
-		if ( !(gmuw_sl_redirect_user_id_by_group_id($redirect_group_id)==get_current_user_id()) && !current_user_can('manage_options') ) {
+		//is the redirect not being assigned to the current user, and is the current user not an admin, and does the user not have permissions for this group?
+		if ( !(gmuw_sl_redirect_user_id_by_group_id($redirect_group_id)==get_current_user_id()) && !current_user_can('manage_options') && !(in_array($shortlink_group_slug,gmuw_sl_get_user_dept_groups_array()))  ) {
 
             // admin notice
             add_action( 'admin_notices', function() {
@@ -321,6 +336,9 @@ function gmuw_sl_handle_form_shortlink_edit() {
 
 		}
 
+        //if the group is non-blank, and the user doesn't have permissions for this group, bail
+        if (!empty($shortlink_group_slug) && !in_array($shortlink_group_slug,gmuw_sl_get_user_dept_groups_array())) return; 
+
 		//looks good; we will proceed
 
 		//store the old data for reporting
@@ -328,6 +346,7 @@ function gmuw_sl_handle_form_shortlink_edit() {
 		$old_redirect_group_id=$old_redirect_data['group_id'];
 		$old_redirect_label=ltrim($old_redirect_data['url'],'/');
 		$old_redirect_target=$old_redirect_data['action_data'];
+		$old_shortlink_group_slug=get_redirect_meta($redirect_id,'gmuw_sl_group');
 
         //edit the redirection record
 		global $wpdb;
@@ -369,11 +388,12 @@ function gmuw_sl_handle_form_shortlink_edit() {
 		//update redirect meta
 		update_redirect_meta( $redirect_id, 'when_last_edited', current_time( 'mysql' ) );
 		update_redirect_meta( $redirect_id, 'user_last_edited', get_current_user_id() );
+		update_redirect_meta( $redirect_id, 'gmuw_sl_group', $shortlink_group_slug );
 
 		//build output
 		$output_text="Edited shortlink:\n";
-		$output_text.="From: ".esc_html( $old_redirect_label ) ." -> ".esc_html( $old_redirect_target ) . " (".get_user_by('id', gmuw_sl_redirect_user_id_by_group_id($old_redirect_group_id))->user_login.")\n";
-		$output_text.="To: ".esc_html( $redirect_label ) ." -> ".esc_html( $redirect_target ) . " (".get_user_by('id', gmuw_sl_redirect_user_id_by_group_id($redirect_group_id))->user_login.")";
+		$output_text.="From: ".esc_html( $old_redirect_label ) ." -> ".esc_html( $old_redirect_target ) . " (".get_user_by('id', gmuw_sl_redirect_user_id_by_group_id($old_redirect_group_id))->user_login.($old_shortlink_group_slug ? " / ". $old_shortlink_group_slug : '').")\n";
+		$output_text.="To: ".esc_html( $redirect_label ) ." -> ".esc_html( $redirect_target ) . " (".get_user_by('id', gmuw_sl_redirect_user_id_by_group_id($redirect_group_id))->user_login.($shortlink_group_slug ? " / ".$shortlink_group_slug : '').")";
 
 		// log to simple history
 		apply_filters(
@@ -586,8 +606,17 @@ function gmuw_sl_shortlink_data_is_valid($label,$target,$write_type,$redirection
 //function to return whether a user can edit a particular shortlink
 function gmuw_sl_current_user_can_edit_shortlink($redirect_id){
 
-    //return whether the user id for this redirect matches the current user id, or the user is an admin
-    return (gmuw_sl_redirect_user_id_by_redirect_id($redirect_id)==get_current_user_id()) || current_user_can('manage_options');
+    //return true is the user is an admin
+	if (current_user_can('manage_options')) return true;
+
+	//return true if the user id for this redirect matches the current user id
+	if (gmuw_sl_redirect_user_id_by_redirect_id($redirect_id)==get_current_user_id()) return true; 
+
+	//return true if the user has group permissions on the group this shortlink belongs to
+	if (in_array(get_redirect_meta($redirect_id,'gmuw_sl_group'),gmuw_sl_get_user_dept_groups_array())) return true;
+
+    //otherwise, return false
+    return false;
 
 }
 

@@ -330,10 +330,9 @@ function gmuw_sl_get_redirection_groups() {
 
 /**
  * Generate HTML options for the redirection groups.
- * * @param array $groups The array from gmuw_sl_get_redirection_groups.
  * @return string HTML option tags.
  */
-function gmuw_render_group_options($current_group_id='') {
+function gmuw_render_user_group_options($current_user_group_id='') {
 
     $groups=gmuw_sl_get_redirection_groups();
 
@@ -347,7 +346,7 @@ function gmuw_render_group_options($current_group_id='') {
 
         //is this the current group?
         $selected='';
-        if ($group->id==$current_group_id) { $selected="selected"; }
+        if ($group->id==$current_user_group_id) { $selected="selected"; }
 
         // Strip 'user_' from the start of the string
         $clean_name = str_replace('user_', '', $group->name);
@@ -357,6 +356,38 @@ function gmuw_render_group_options($current_group_id='') {
             $selected,
             esc_attr($group->id),
             esc_html($clean_name)
+        );
+    }
+
+    return $output;
+
+}
+
+/**
+ * Generate HTML options for the department groups.
+ * @return string HTML option tags.
+ */
+function gmuw_render_dept_group_options($current_dept_group_slug='') {
+
+    $my_dept_groups=gmuw_sl_get_user_dept_groups_array();
+
+    if (empty($my_dept_groups)) {
+        return '<option value="">No groups found</option>';
+    }
+
+    $output = '<option value="">Select a group...</option>';
+
+    foreach ($my_dept_groups as $dept_group) {
+
+        //is this the current group?
+        $selected='';
+        if ($dept_group==$current_dept_group_slug) { $selected="selected"; }
+
+        $output .= sprintf(
+            '<option %s value="%s">%s</option>',
+            $selected,
+            esc_attr($dept_group),
+            esc_html($dept_group)
         );
     }
 

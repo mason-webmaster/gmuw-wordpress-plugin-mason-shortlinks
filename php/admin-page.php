@@ -97,6 +97,7 @@ function gmuw_sl_shortlink_management_page(){
     echo '<table class="shortlink_data">';
     echo '<tr><th>Shortlink Label</th><td>'.$shortlink_label.'<td></tr>';
     echo '<tr><th>Target URL</th><td>'.$shortlink_target_url.'<td></tr>';
+    echo '<tr><th>Dept./Group</th><td>'.get_redirect_meta($redirect_id,'gmuw_sl_group').'<td></tr>';
     echo '<tr><th>Hit Count</th><td>'.number_format($shortlink_hits) . '<td></tr>';
     echo '<tr><th>User</th><td>' . gmuw_sl_get_username(gmuw_sl_redirect_user_id_by_redirect_id($redirect_id)) . '<td></tr>';
     echo '<tr><th>Created</th><td>'.get_redirect_meta($redirect_id, 'when_created').' ('.gmuw_sl_get_username(get_redirect_meta($redirect_id, 'user_created')).')<td></tr>';
@@ -168,7 +169,7 @@ function gmuw_sl_shortlink_management_page(){
                 <p>
                     <label for="redirect_group_id">User:</label><br>
                     <select name="redirect_group_id" id="redirect_group_id">
-                        <?php echo gmuw_render_group_options(gmuw_sl_get_redirect_fields_by_id($redirect_id)['group_id']); ?>
+                        <?php echo gmuw_render_user_group_options(gmuw_sl_get_redirect_fields_by_id($redirect_id)['group_id']); ?>
                     </select>
                 </p>
             <?php else: ?>
@@ -185,6 +186,15 @@ function gmuw_sl_shortlink_management_page(){
                 <label for="redirect_target">Target/URL:</label><br>
                 <input type="text" name="redirect_target" id="redirect_target" value="<?php echo gmuw_sl_get_redirect_fields_by_id($redirect_id)['action_data'] ?>">
             </p>
+
+            <?php if (gmuw_sl_get_user_dept_groups_array()) : ?>
+                <p>
+                    <label for="shortlink_group_slug"><strong>Dept./Group</strong></label><br>
+                    <select name="shortlink_group_slug" id="shortlink_group_slug">
+                        <?php echo gmuw_render_dept_group_options(get_redirect_meta($redirect_id,'gmuw_sl_group')); ?>
+                    </select>
+                </p>
+            <?php endif; ?>
 
             <p>
                 <button type="submit" class="button button-primary">Submit</button>
