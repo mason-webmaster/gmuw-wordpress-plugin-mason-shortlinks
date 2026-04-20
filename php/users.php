@@ -4,6 +4,23 @@
  * Summary: php file which implements the user-related customizations
  */
 
+//Redirect users to the dashboard after login, except for administrators and subscribers (which are handled separately).
+add_filter( 'login_redirect', 'gmuw_sl_custom_login_redirect', 12, 3 );
+function gmuw_sl_custom_login_redirect( $redirect_to, $request, $user ) {
+
+    if ( ! isset( $user->roles ) || ! is_array( $user->roles ) ) {
+        return $redirect_to;
+    }
+
+    // Exclude the roles handled by other logic
+    if ( in_array( 'administrator', $user->roles ) || in_array( 'subscriber', $user->roles ) ) {
+        return $redirect_to;
+    }
+
+    // Force everyone else to the main Dashboard (index.php)
+    return admin_url( 'index.php' );
+
+}
 
 /**
  * function to get user name
