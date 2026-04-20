@@ -1,6 +1,21 @@
 /* custom admin styles for site */
 
 
+/* customize admin area for mason_user role */
+body.role-mason_user {
+
+    /* hide admin sidebar */
+    #adminmenuback, #adminmenuwrap {
+        display:none;
+    }
+
+    /* make main content area full width */
+    #wpcontent, #wpfooter {
+        margin-left: unset !important;
+    }
+
+}
+
 /* highlighted metrics */
 .highlight-metric {
     display: inline-flex;

@@ -4,61 +4,6 @@
  * Summary: php file which implements the user-related customizations
  */
 
-//Redirect users to the dashboard after login, except for administrators and subscribers (which are handled separately).
-add_filter( 'login_redirect', 'gmuw_sl_custom_login_redirect', 12, 3 );
-function gmuw_sl_custom_login_redirect( $redirect_to, $request, $user ) {
-
-    if ( ! isset( $user->roles ) || ! is_array( $user->roles ) ) {
-        return $redirect_to;
-    }
-
-    // Exclude the roles handled by other logic
-    if ( in_array( 'administrator', $user->roles ) || in_array( 'subscriber', $user->roles ) ) {
-        return $redirect_to;
-    }
-
-    // Force everyone else to the main Dashboard (index.php)
-    return admin_url( 'index.php' );
-
-}
-
-//disable user/profile screens and hide them from the UI for non-admins
-add_action( 'admin_init', 'gmuw_sl_restrict_user_screens' );
-function gmuw_sl_restrict_user_screens() {
-
-    //if the user is an admin or we are doing an AJAX request, do nothing
-    if ( current_user_can( 'manage_options' ) || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-        return;
-    }
-
-    //block access to the actual pages (users.php, profile.php, user-edit.php)
-    global $pagenow;
-    $restricted_pages = array( 'users.php', 'profile.php', 'user-new.php', 'user-edit.php' );
-
-    if ( in_array( $pagenow, $restricted_pages ) ) {
-        wp_die('You do not have permission to access this page.');
-    }
-
-    //remove the menu items from the sidebar
-    remove_menu_page( 'users.php' );
-    remove_menu_page( 'profile.php' );
-}
-
-//remove the user profile link from the Admin Top Bar
-add_action( 'admin_bar_menu', 'gmuw_sl_remove_admin_bar_user_links', 999 );
-function gmuw_sl_remove_admin_bar_user_links( $wp_admin_bar ) {
-
-    if ( ! current_user_can( 'manage_options' ) ) {
-
-        //remove "Edit Profile" (the link to profile.php)
-        $wp_admin_bar->remove_node( 'edit-profile' );
-
-        //remove "User Info" (the top part of the dropdown with the avatar/name)
-        // Note: Often this is removed to prevent users from clicking their name to reach the profile.
-        $wp_admin_bar->remove_node( 'user-info' );
-
-    }
-}
 
 /**
  * function to get user name

@@ -73,6 +73,9 @@ require('php/email.php');
 //users
 require('php/users.php');
 
+//wordpress interface
+require('php/wordpress-interface.php');
+
 //database
 require('php/database.php');
 
