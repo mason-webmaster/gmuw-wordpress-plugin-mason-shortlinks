@@ -14,7 +14,7 @@ function gmuw_sl_get_username($user_id) {
     if ($user_id>0) {
         return get_user_by('id', $user_id)->user_login;
     } else {
-        return '-';
+        return '';
     }
 
 }
