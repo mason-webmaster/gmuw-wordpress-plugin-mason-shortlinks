@@ -165,36 +165,44 @@ function gmuw_sl_shortlink_management_page(){
 
             <input type="hidden" name="redirect_id" value="<?php echo $redirect_id ?>" />
 
+            <table class="shortlink_data">
+            <tr>
+                <th><label for="redirect_label">Shortlink Label</label></th>
+                <td>
+                    <input type="text" name="redirect_label" id="redirect_label" value="<?php echo ltrim(gmuw_sl_get_redirect_fields_by_id($redirect_id)['url'], '/') ?>">
+                <td>
+            </tr>
+            <tr>
+                <th><label for="redirect_target">Target URL</label></th>
+                <td>
+                    <input type="text" name="redirect_target" id="redirect_target" value="<?php echo gmuw_sl_get_redirect_fields_by_id($redirect_id)['action_data'] ?>">
+                <td>
+            </tr>
+            <tr>
+                <th><label for="shortlink_group_slug">Dept./Group</label></th>
+                <td>
+                    <?php if (gmuw_sl_get_user_dept_groups_array()) : ?>
+                        <select name="shortlink_group_slug" id="shortlink_group_slug">
+                            <?php echo gmuw_render_dept_group_options(get_redirect_meta($redirect_id,'gmuw_sl_group')); ?>
+                        </select>
+                    <?php endif; ?>
+                <td>
+            </tr>
+
             <?php if (current_user_can('manage_options')) : ?>
-                <p>
-                    <label for="redirect_group_id">User:</label><br>
-                    <select name="redirect_group_id" id="redirect_group_id">
-                        <?php echo gmuw_render_user_group_options(gmuw_sl_get_redirect_fields_by_id($redirect_id)['group_id']); ?>
-                    </select>
-                </p>
+            <tr>
+                <th><label for="redirect_group_id">User</label></th>
+                <td>
+                        <select name="redirect_group_id" id="redirect_group_id">
+                            <?php echo gmuw_render_user_group_options(gmuw_sl_get_redirect_fields_by_id($redirect_id)['group_id']); ?>
+                        </select>
+                <td>
+            </tr>
             <?php else: ?>
-
                 <input type="hidden" name="redirect_group_id" value="<?php echo gmuw_sl_get_redirect_fields_by_id($redirect_id)['group_id']; ?>" />
-
             <?php endif; ?>
 
-            <p>
-                <label for="redirect_label">Label:</label><br>
-                <input type="text" name="redirect_label" id="redirect_label" value="<?php echo ltrim(gmuw_sl_get_redirect_fields_by_id($redirect_id)['url'], '/') ?>">
-            </p>
-            <p>
-                <label for="redirect_target">Target/URL:</label><br>
-                <input type="text" name="redirect_target" id="redirect_target" value="<?php echo gmuw_sl_get_redirect_fields_by_id($redirect_id)['action_data'] ?>">
-            </p>
-
-            <?php if (gmuw_sl_get_user_dept_groups_array()) : ?>
-                <p>
-                    <label for="shortlink_group_slug"><strong>Dept./Group</strong></label><br>
-                    <select name="shortlink_group_slug" id="shortlink_group_slug">
-                        <?php echo gmuw_render_dept_group_options(get_redirect_meta($redirect_id,'gmuw_sl_group')); ?>
-                    </select>
-                </p>
-            <?php endif; ?>
+            </table>
 
             <p>
                 <button type="submit" class="button button-primary">Submit</button>
