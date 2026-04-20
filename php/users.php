@@ -32,9 +32,6 @@ add_filter( 'manage_users_columns', function( $columns ) {
 
     //add columns for our custom usermeta
 
-    //links to users redirects
-    $columns['redirect_group_link'] = 'User Redirects';
-
     //group permissions
     $columns['gmuw_sl_user_groups'] = 'Group Permissions';
 
@@ -48,12 +45,6 @@ add_filter( 'manage_users_columns', function( $columns ) {
  * content for custom user columns
  */
 add_filter( 'manage_users_custom_column', function( $output, $column_name, $user_id ) {
-
-	//links to users redirects
-    if ( $column_name === 'redirect_group_link' ) {
-        $url = admin_url('tools.php?page=redirection.php&filterby%5Bgroup%5D='.gmuw_sl_redirection_get_user_redirection_group_id($user_id));
-        return '<a href="' . esc_url( $url ) . '">View User Redirects</a>';
-    }
 
     //groups
     if ( $column_name === 'gmuw_sl_user_groups' ) {

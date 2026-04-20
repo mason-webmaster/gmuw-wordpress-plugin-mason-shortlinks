@@ -46,7 +46,7 @@ function gmuw_sl_shortlinks_table($redirects,$compact=false){
 			$shortlink_url_display = $compact ? mb_strimwidth(ltrim($redirect->url, '/'),0,35,'...') : ltrim($redirect->url, '/');
 			$target_url = $redirect->action_data;
 			$target_url_display = $compact ? mb_strimwidth(preg_replace('/^https?:\/\//', '', $redirect->action_data),0,50,'...') : $redirect->action_data;
-			$redirect_user = gmuw_sl_get_username(gmuw_sl_redirect_user_id_by_redirect_id($redirect->id));
+			$redirect_user = gmuw_sl_get_username(get_redirect_meta($redirect->id,'gmuw_sl_shortlink_user_id'));
 			$redirect_hits = $redirect->last_count;
 			$view_url = '/wp-admin/admin.php?page=gmuw_sl_shortlink_management&redirect_id='.$redirect->id;
 			$view_link = '<a class="admin-icon admin-view" title="edit" href="'.$view_url.'" target="_blank"></a> ';
@@ -177,10 +177,8 @@ function gmuw_sl_shortlink_add_form() {
 
         <?php if (current_user_can('manage_options')) : ?>
             <p>
-                <label for="redirect_group_id"><strong>User</strong></label><br>
-                <select name="redirect_group_id" id="redirect_group_id">
-                    <?php echo gmuw_render_user_group_options(gmuw_sl_redirection_get_user_redirection_group_id(get_current_user_id())); ?>
-                </select>
+                <label for="shortlink_user_id"><strong>User</strong></label><br>
+                <?php echo gmuw_sl_render_shortlink_user_id_select(get_current_user_id()); ?>
             </p>
         <?php endif; ?>
 
@@ -219,7 +217,7 @@ function gmuw_sl_handle_form_shortlink_add() {
 
         //sanitize inputs
         //if we're an admin, get specified group, otherwise use the current users group
-        $redirect_group_id = current_user_can('manage_options') ? sanitize_text_field($_POST['redirect_group_id']) : gmuw_sl_redirection_get_user_redirection_group_id();
+        $shortlink_user_id = current_user_can('manage_options') ? sanitize_text_field($_POST['shortlink_user_id']) : get_current_user_id();
         $shortlink_label = '/'.sanitize_text_field( $_POST['shortlink_label'] );
         $shortlink_target = sanitize_text_field( $_POST['shortlink_target'] );
         $shortlink_group_slug = sanitize_text_field( $_POST['shortlink_group_slug'] );
@@ -237,13 +235,12 @@ function gmuw_sl_handle_form_shortlink_add() {
 		        'url' => $shortlink_label,
 		        'match_url' => $shortlink_label,
 		        'position' => gmuw_sl_redirection_next_redirect_position(),
-		        'group_id' => $redirect_group_id,
 		        'action_type' => 'url',
 		        'action_code' => '301',
 		        'action_data' => $shortlink_target,
 		        'match_type' => 'url',
 		    ],
-		    [ '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%s' ]
+		    [ '%s', '%s', '%d', '%s', '%s', '%s', '%s' ]
 		);
 
 		//get the newly-created redirect ID
@@ -252,6 +249,7 @@ function gmuw_sl_handle_form_shortlink_add() {
 		//add meta, if the insert was actually successful
 		if ( $result && $new_redirect_id ) {
 
+			update_redirect_meta( $new_redirect_id, 'gmuw_sl_shortlink_user_id', $shortlink_user_id );
 			update_redirect_meta( $new_redirect_id, 'when_created', current_time( 'mysql' ) );
 			update_redirect_meta( $new_redirect_id, 'user_created', get_current_user_id() );
 			update_redirect_meta( $new_redirect_id, 'when_last_edited', current_time( 'mysql' ) );
@@ -261,7 +259,7 @@ function gmuw_sl_handle_form_shortlink_add() {
 		}
 
 		//build output
-		$output_text='Created shortlink: ' . esc_html( $shortlink_label ) .' -> '.esc_html( $shortlink_target ) . ' ('.get_user_by('id', gmuw_sl_redirect_user_id_by_group_id($redirect_group_id))->user_login.' / '.$shortlink_group_slug.')';
+		$output_text='Created shortlink: ' . esc_html( $shortlink_label ) .' -> '.esc_html( $shortlink_target ) . ' ('.gmuw_sl_get_username($shortlink_user_id).' / '.$shortlink_group_slug.')';
 
 		// log to simple history
 		apply_filters(
@@ -302,7 +300,7 @@ function gmuw_sl_handle_form_shortlink_edit() {
 
         //sanitize inputs
 		$redirect_id=(int)$_REQUEST['redirect_id'];
-        $redirect_group_id = sanitize_text_field( $_POST['redirect_group_id'] );
+        $shortlink_user_id = sanitize_text_field( $_POST['shortlink_user_id'] );
         $redirect_label = sanitize_text_field( $_POST['redirect_label'] );
         $redirect_target = esc_url_raw( $_POST['redirect_target'] );
         $shortlink_group_slug = sanitize_text_field( $_POST['shortlink_group_slug'] );
@@ -325,7 +323,7 @@ function gmuw_sl_handle_form_shortlink_edit() {
 		}
 
 		//is the redirect not being assigned to the current user, and is the current user not an admin, and does the user not have permissions for this group?
-		if ( !(gmuw_sl_redirect_user_id_by_group_id($redirect_group_id)==get_current_user_id()) && !current_user_can('manage_options') && !(in_array($shortlink_group_slug,gmuw_sl_get_user_dept_groups_array()))  ) {
+		if ( !($shortlink_user_id==get_current_user_id()) && !current_user_can('manage_options') && !(in_array($shortlink_group_slug,gmuw_sl_get_user_dept_groups_array()))  ) {
 
             // admin notice
             add_action( 'admin_notices', function() {
@@ -343,7 +341,7 @@ function gmuw_sl_handle_form_shortlink_edit() {
 
 		//store the old data for reporting
 		$old_redirect_data=gmuw_sl_get_redirect_fields_by_id($redirect_id);
-		$old_redirect_group_id=$old_redirect_data['group_id'];
+		$old_shortlink_user_id=get_redirect_meta($redirect_id,'gmuw_sl_shortlink_user_id');
 		$old_redirect_label=ltrim($old_redirect_data['url'],'/');
 		$old_redirect_target=$old_redirect_data['action_data'];
 		$old_shortlink_group_slug=get_redirect_meta($redirect_id,'gmuw_sl_group');
@@ -361,7 +359,6 @@ function gmuw_sl_handle_form_shortlink_edit() {
 			'url'         => $formatted_label,
 			'match_url'   => $formatted_label,
 			'action_data' => $redirect_target,
-			'group_id'    => (int) $redirect_group_id,
 		);
 
 		$update_where = array(
@@ -386,14 +383,15 @@ function gmuw_sl_handle_form_shortlink_edit() {
 		}
 
 		//update redirect meta
+		update_redirect_meta( $redirect_id, 'gmuw_sl_shortlink_user_id', $shortlink_user_id );
 		update_redirect_meta( $redirect_id, 'when_last_edited', current_time( 'mysql' ) );
 		update_redirect_meta( $redirect_id, 'user_last_edited', get_current_user_id() );
 		update_redirect_meta( $redirect_id, 'gmuw_sl_group', $shortlink_group_slug );
 
 		//build output
 		$output_text="Edited shortlink:\n";
-		$output_text.="From: ".esc_html( $old_redirect_label ) ." -> ".esc_html( $old_redirect_target ) . " (".get_user_by('id', gmuw_sl_redirect_user_id_by_group_id($old_redirect_group_id))->user_login.($old_shortlink_group_slug ? " / ". $old_shortlink_group_slug : '').")\n";
-		$output_text.="To: ".esc_html( $redirect_label ) ." -> ".esc_html( $redirect_target ) . " (".get_user_by('id', gmuw_sl_redirect_user_id_by_group_id($redirect_group_id))->user_login.($shortlink_group_slug ? " / ".$shortlink_group_slug : '').")";
+		$output_text.="From: ".esc_html( $old_redirect_label ) ." -> ".esc_html( $old_redirect_target ) . " (".gmuw_sl_get_username($old_shortlink_user_id).($old_shortlink_group_slug ? " / ". $old_shortlink_group_slug : '').")\n";
+		$output_text.="To: ".esc_html( $redirect_label ) ." -> ".esc_html( $redirect_target ) . " (".gmuw_sl_get_username($shortlink_user_id).($shortlink_group_slug ? " / ".$shortlink_group_slug : '').")";
 
 		// log to simple history
 		apply_filters(
@@ -450,9 +448,10 @@ function gmuw_sl_handle_delete_shortlink() {
 
     //get info for logging before we delete it
     $redirect_data = gmuw_sl_get_redirect_fields_by_id( $redirect_id );
-	$redirect_group_id=$redirect_data['group_id'];
+	$shortlink_user_id=get_redirect_meta($redirect_id,'gmuw_sl_shortlink_user_id');
 	$redirect_label=ltrim($redirect_data['url'],'/');
 	$redirect_target=$redirect_data['action_data'];
+    $shortlink_group_slug=get_redirect_meta($redirect_id,'gmuw_sl_group');
 
     //perform deletion
     global $wpdb;
@@ -463,7 +462,7 @@ function gmuw_sl_handle_delete_shortlink() {
 
 		//build output
 		$output_text="Deleted shortlink:\n";
-		$output_text.=esc_html( $redirect_label ) ." -> ".esc_html( $redirect_target ) . " (".get_user_by('id', gmuw_sl_redirect_user_id_by_group_id($redirect_group_id))->user_login.")";
+		$output_text.=esc_html( $redirect_label )." -> ".esc_html( $redirect_target ) . " (".gmuw_sl_get_username($shortlink_user_id).($shortlink_group_slug ? " / ". $shortlink_group_slug : '').")";
 
         // Log to Simple History
         apply_filters( 'simple_history_log', $output_text );
@@ -610,7 +609,7 @@ function gmuw_sl_current_user_can_edit_shortlink($redirect_id){
 	if (current_user_can('manage_options')) return true;
 
 	//return true if the user id for this redirect matches the current user id
-	if (gmuw_sl_redirect_user_id_by_redirect_id($redirect_id)==get_current_user_id()) return true; 
+	if (get_redirect_meta($redirect_id,'gmuw_sl_shortlink_user_id')==get_current_user_id()) return true; 
 
 	//return true if the user has group permissions on the group this shortlink belongs to
 	if (in_array(get_redirect_meta($redirect_id,'gmuw_sl_group'),gmuw_sl_get_user_dept_groups_array())) return true;
