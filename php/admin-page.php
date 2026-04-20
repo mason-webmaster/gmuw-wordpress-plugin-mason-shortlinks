@@ -93,19 +93,19 @@ function gmuw_sl_shortlink_management_page(){
     if (!$is_edit) echo '<h2>'. $shortlink_label .' ('.$redirect_id.')</h2>';
     if ($is_edit) echo '<h2>Edit Shortlink</h2>';
 
-    //display shortlink data
-    echo '<table class="shortlink_data">';
-    echo '<tr><th>Shortlink Label</th><td>'.$shortlink_label.'<td></tr>';
-    echo '<tr><th>Target URL</th><td>'.$shortlink_target_url.'<td></tr>';
-    echo '<tr><th>Dept./Group</th><td>'.get_redirect_meta($redirect_id,'gmuw_sl_group').'<td></tr>';
-    echo '<tr><th>Hit Count</th><td>'.number_format($shortlink_hits) . '<td></tr>';
-    echo '<tr><th>User</th><td>' . gmuw_sl_get_username(gmuw_sl_redirect_user_id_by_redirect_id($redirect_id)) . '<td></tr>';
-    echo '<tr><th>Created</th><td>'.get_redirect_meta($redirect_id, 'when_created').' ('.gmuw_sl_get_username(get_redirect_meta($redirect_id, 'user_created')).')<td></tr>';
-    echo '<tr><th>Last Edited</th><td>'.get_redirect_meta($redirect_id, 'when_last_edited').' ('.gmuw_sl_get_username(get_redirect_meta($redirect_id, 'user_last_edited')).')<td></tr>';
-    echo '</table>';
-
     //viewing
     if (!$is_edit) {
+
+        //display shortlink data
+        echo '<table class="shortlink_data">';
+        echo '<tr><th>Shortlink Label</th><td>'.$shortlink_label.'<td></tr>';
+        echo '<tr><th>Target URL</th><td>'.$shortlink_target_url.'<td></tr>';
+        echo '<tr><th>Dept./Group</th><td>'.get_redirect_meta($redirect_id,'gmuw_sl_group').'<td></tr>';
+        echo '<tr><th>Hit Count</th><td>'.number_format($shortlink_hits) . '<td></tr>';
+        echo '<tr><th>User</th><td>' . gmuw_sl_get_username(gmuw_sl_redirect_user_id_by_redirect_id($redirect_id)) . '<td></tr>';
+        echo '<tr><th>Created</th><td>'.get_redirect_meta($redirect_id, 'when_created').' ('.gmuw_sl_get_username(get_redirect_meta($redirect_id, 'user_created')).')<td></tr>';
+        echo '<tr><th>Last Edited</th><td>'.get_redirect_meta($redirect_id, 'when_last_edited').' ('.gmuw_sl_get_username(get_redirect_meta($redirect_id, 'user_last_edited')).')<td></tr>';
+        echo '</table>';
 
         //display edit link
         echo '<a href="'. esc_url( add_query_arg( 'mode', 'edit' ) ) .'" class="button button-primary">Edit Shortlink</a>';
