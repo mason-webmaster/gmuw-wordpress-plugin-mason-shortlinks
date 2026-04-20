@@ -22,6 +22,7 @@ function gmuw_sl_shortlinks_table($redirects,$compact=false){
 			$return_value.='<td>Label</td>';
 			$return_value.='<td>Target</td>';
 			$return_value.='<td>User</td>';
+			$return_value.='<td>Group</td>';
 			$return_value.='<td>Hits</td>';
 			$return_value.='<td></td>';
 			$return_value.='</tr>';
@@ -67,6 +68,8 @@ function gmuw_sl_shortlinks_table($redirects,$compact=false){
 				$return_value.='<td style="max-width:40em;">'.'<a title="'.$target_url.'" href="'.$target_url.'" target="_blank">'.$target_url_display.'</a>'.'</td>';
 				//user
 				$return_value.='<td>'.$redirect_user.'</td>';
+				//group
+				$return_value.='<td>'.$shortlink_group_slug.'</td>';
 				//hits
 				$return_value.='<td>'.$redirect_hits.'</td>';
 				//admin links
