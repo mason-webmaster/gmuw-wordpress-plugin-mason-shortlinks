@@ -38,6 +38,16 @@ function gmuw_sl_shortlink_management_page(){
     // Begin HTML output
     echo "<div class='wrap'>";
 
+    //back to dashboard link
+    ?>
+    <p class="gmuw-sl-back-link">
+        <a href="<?php echo esc_url( admin_url( 'index.php' ) ); ?>">
+            <span class="dashicons dashicons-arrow-left-alt2" style="vertical-align: middle; font-size: 16px; text-decoration: none;"></span> 
+            <?php esc_html_e( 'Back to Dashboard', 'gmuw-sl' ); ?>
+        </a>
+    </p>
+    <?php
+
     // Page title
     echo "<h1>" . esc_html(get_admin_page_title()) . "</h1>";
 
