@@ -246,8 +246,8 @@ function gmuw_sl_get_user_dept_groups_array($user_id=''){
     //get user meta for group permissions
     $my_group_data=get_user_meta($user_id, 'gmuw_sl_user_groups',true);
 
-    //if we have no data
-    if (!$my_group_data) return false;
+    //if we have no data, return empty array
+    if (!$my_group_data) return array();
 
     //turn into array
     $return_value=explode(',',$my_group_data);
