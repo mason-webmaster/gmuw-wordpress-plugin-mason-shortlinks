@@ -47,6 +47,7 @@ function gmuw_sl_shortlinks_table($redirects,$compact=false){
 			$target_url = $redirect->action_data;
 			$target_url_display = $compact ? mb_strimwidth(preg_replace('/^https?:\/\//', '', $redirect->action_data),0,50,'...') : $redirect->action_data;
 			$redirect_user = gmuw_sl_get_username(get_redirect_meta($redirect->id,'gmuw_sl_shortlink_user_id'));
+			$shortlink_group_slug=get_redirect_meta($redirect->id,'gmuw_sl_group');
 			$redirect_hits = $redirect->last_count;
 			$view_url = '/wp-admin/admin.php?page=gmuw_sl_shortlink_management&redirect_id='.$redirect->id;
 			$view_link = '<a class="admin-icon admin-view" title="edit" href="'.$view_url.'" target="_blank"></a> ';
@@ -95,7 +96,7 @@ function gmuw_sl_shortlinks_table($redirects,$compact=false){
 
 				$return_value.='<div>';
 				//user
-				$return_value.='<span class="shortlink_user_display">'.$redirect_user . '&nbsp;</span>';
+				$return_value.='<span class="shortlink_user_display">'.$redirect_user . ($shortlink_group_slug ? ' / </span>'. $shortlink_group_slug : '</span>') . '&nbsp;';
 				//count
 				$return_value.='<span class="highlight-metric">'.number_format($redirect_hits) . '</span>';
 				$return_value.='</div>';
