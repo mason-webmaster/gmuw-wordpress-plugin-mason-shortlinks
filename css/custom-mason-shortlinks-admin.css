@@ -41,7 +41,7 @@ body.role-mason_user {
     /* The Pill Shape */
     min-width: 24px; /* Adjust based on your font size */
     height: 24px;
-    padding: 0;
+    padding: 0 8px;
     border-radius: 50px; /* High value ensures rounded ends regardless of width */
 
     /* Typography */
