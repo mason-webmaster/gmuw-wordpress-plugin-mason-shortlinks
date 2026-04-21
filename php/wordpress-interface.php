@@ -13,7 +13,7 @@ function gmuw_sl_custom_login_redirect( $redirect_to, $request, $user ) {
     }
 
     // Exclude the roles handled by other logic
-    if ( in_array( 'administrator', $user->roles ) || in_array( 'subscriber', $user->roles ) ) {
+    if ( in_array( 'subscriber', $user->roles ) ) {
         return $redirect_to;
     }
 
