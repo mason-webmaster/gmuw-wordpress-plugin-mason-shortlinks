@@ -96,18 +96,21 @@ function gmuw_sl_shortlink_management_page(){
     $shortlink_hits=gmuw_sl_get_redirect_fields_by_id($redirect_id)['last_count'];
 
     // heading
-    if (!$is_edit) echo '<h2>'. $shortlink_label .' ('.$redirect_id.')</h2>';
-    if ($is_edit) echo '<h2>Edit Shortlink</h2>';
+    if (!$is_edit) echo '<h2>Shortlink: '. $shortlink_label .' ('.$redirect_id.')</h2>';
+    if ($is_edit) echo '<h2>Edit Shortlink: '. $shortlink_label .' ('.$redirect_id.')</h2>';
 
     //viewing
     if (!$is_edit) {
+
+        //display shortlink summary
+        echo '<p class="shortlink_display"><a href="'.$shortlink_url.'" target="_blank">'.$shortlink_url.'</a> -> <a href="'.$shortlink_target_url.'" target="_blank">'.gmuw_sl_get_redirect_fields_by_id($redirect_id)['action_data'].'</a></span></p>';
 
         //display shortlink data
         echo '<table class="shortlink_data">';
         echo '<tr><th>Shortlink Label</th><td>'.$shortlink_label.'<td></tr>';
         echo '<tr><th>Target URL</th><td>'.$shortlink_target_url.'<td></tr>';
         echo '<tr><th>Group</th><td>'.get_redirect_meta($redirect_id,'gmuw_sl_group').'<td></tr>';
-        echo '<tr><th>Hit Count</th><td>'.number_format($shortlink_hits) . '<td></tr>';
+        echo '<tr><th>Hit Count</th><td><span class="highlight-metric">'.number_format($shortlink_hits) . '</span><td></tr>';
         echo '<tr><th>User</th><td>' . gmuw_sl_get_username(get_redirect_meta($redirect_id, 'gmuw_sl_shortlink_user_id')) . '<td></tr>';
         echo '<tr><th>Created</th><td>'.get_redirect_meta($redirect_id, 'when_created').' ('.gmuw_sl_get_username(get_redirect_meta($redirect_id, 'user_created')).')<td></tr>';
         echo '<tr><th>Last Edited</th><td>'.get_redirect_meta($redirect_id, 'when_last_edited').' ('.gmuw_sl_get_username(get_redirect_meta($redirect_id, 'user_last_edited')).')<td></tr>';
@@ -116,9 +119,6 @@ function gmuw_sl_shortlink_management_page(){
         //display edit link
         echo '<a href="'. esc_url( add_query_arg( 'mode', 'edit' ) ) .'" class="button button-primary">Edit Shortlink</a>';
         
-        //shortlink display
-        echo '<p class="shortlink_display"><a href="'.$shortlink_url.'" target="_blank">'.$shortlink_url.'</a> -> <a href="'.$shortlink_target_url.'" target="_blank">'.gmuw_sl_get_redirect_fields_by_id($redirect_id)['action_data'].'</a></span></p>';
-
         //qr code
         echo '<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.6.0/lib/qr-code-styling.js"></script>';
         echo '<div class="gmuw-sl-admin-list-qr-code">';
