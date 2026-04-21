@@ -59,23 +59,19 @@ function gmuw_sl_shortlink_management_page(){
     //is this just a general listing? is no shortlink id specified?
     if (!isset($_GET['redirect_id']) || !$_GET['redirect_id']) {
 
-
-        //display listing based on whether we are showing all shortlinks or just the current user's shortlinks
-        $admin_page_link_base='/wp-admin/admin.php?page=gmuw_sl_shortlink_management';
-
         //current user redirects or all redirects?
         if (isset($_GET['displaymode']) && $_GET['displaymode']=='user'){
 
-            //display link back to shorlink list in other mode
-            echo '<p>You are viewing only your shortlinks. <a href="'.$admin_page_link_base.'&displaymode=all">View all shortlinks</a><br />&nbsp;</p>';
+            //display link back to shorlink list in 'all' mode
+            echo '<p>You are viewing only your shortlinks. <a href="'.esc_url( add_query_arg( 'displaymode', 'all' ) ).'">View all shortlinks</a><br />&nbsp;</p>';
 
             //get redirects
             $my_redirects=gmuw_sl_get_redirects_current_user();
 
         } else {
 
-            //display link back to shorlink list in other mode
-            echo '<p>You are viewing all shortlinks. <a href="'.$admin_page_link_base.'&displaymode=user">View only your shortlinks</a><br />&nbsp;</p>';
+            //display link back to shorlink list in 'user' mode
+            echo '<p>You are viewing all shortlinks. <a href="'.esc_url( add_query_arg( 'displaymode', 'user' ) ).'">View only your shortlinks</a><br />&nbsp;</p>';
 
             //get redirects
             $my_redirects=gmuw_sl_get_redirects();
