@@ -110,7 +110,7 @@ function gmuw_sl_shortlink_management_page(){
         echo '<table class="shortlink_data">';
         echo '<tr><th>Shortlink Label</th><td>'.$shortlink_label.'<td></tr>';
         echo '<tr><th>Target URL</th><td>'.$shortlink_target_url.'<td></tr>';
-        echo '<tr><th>Dept./Group</th><td>'.get_redirect_meta($redirect_id,'gmuw_sl_group').'<td></tr>';
+        echo '<tr><th>Group</th><td>'.get_redirect_meta($redirect_id,'gmuw_sl_group').'<td></tr>';
         echo '<tr><th>Hit Count</th><td>'.number_format($shortlink_hits) . '<td></tr>';
         echo '<tr><th>User</th><td>' . gmuw_sl_get_username(get_redirect_meta($redirect_id, 'gmuw_sl_shortlink_user_id')) . '<td></tr>';
         echo '<tr><th>Created</th><td>'.get_redirect_meta($redirect_id, 'when_created').' ('.gmuw_sl_get_username(get_redirect_meta($redirect_id, 'user_created')).')<td></tr>';
@@ -189,11 +189,11 @@ function gmuw_sl_shortlink_management_page(){
                 <td>
             </tr>
             <tr>
-                <th><label for="shortlink_group_slug">Dept./Group</label></th>
+                <th><label for="shortlink_group_slug">Group</label></th>
                 <td>
-                    <?php if (gmuw_sl_get_user_dept_groups_array()) : ?>
+                    <?php if (gmuw_sl_get_user_groups_array()) : ?>
                         <select name="shortlink_group_slug" id="shortlink_group_slug">
-                            <?php echo gmuw_render_dept_group_options(get_redirect_meta($redirect_id,'gmuw_sl_group')); ?>
+                            <?php echo gmuw_render_user_group_options(get_redirect_meta($redirect_id,'gmuw_sl_group')); ?>
                         </select>
                     <?php endif; ?>
                 <td>

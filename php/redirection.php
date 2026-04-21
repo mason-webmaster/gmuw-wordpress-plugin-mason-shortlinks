@@ -192,27 +192,27 @@ function gmuw_sl_render_shortlink_user_id_select($selected=0) {
  * Generate HTML options for the department groups.
  * @return string HTML option tags.
  */
-function gmuw_render_dept_group_options($current_dept_group_slug='') {
+function gmuw_render_user_group_options($current_user_group_slug='') {
 
-    $my_dept_groups=gmuw_sl_get_user_dept_groups_array();
+    $my_user_groups=gmuw_sl_get_user_groups_array();
 
-    if (empty($my_dept_groups)) {
+    if (empty($my_user_groups)) {
         return '<option value="">No groups found</option>';
     }
 
     $output = '<option value="">Select a group...</option>';
 
-    foreach ($my_dept_groups as $dept_group) {
+    foreach ($my_user_groups as $user_group) {
 
         //is this the current group?
         $selected='';
-        if ($dept_group==$current_dept_group_slug) { $selected="selected"; }
+        if ($user_group==$current_user_group_slug) { $selected="selected"; }
 
         $output .= sprintf(
             '<option %s value="%s">%s</option>',
             $selected,
-            esc_attr($dept_group),
-            esc_html($dept_group)
+            esc_attr($user_group),
+            esc_html($user_group)
         );
     }
 

@@ -238,7 +238,7 @@ function gmuw_sl_save_extra_user_profile_field( $user_id, $field_name ) {
 }
 
 //function to get array of user groups from user meta
-function gmuw_sl_get_user_dept_groups_array($user_id=''){
+function gmuw_sl_get_user_groups_array($user_id=''){
 
     //if we don't have a specified user, use the current user
     if (empty($user_id)) $user_id = get_current_user_id();
