@@ -577,8 +577,8 @@ function gmuw_sl_shortlink_data_is_valid($label,$target,$write_type,$redirection
 
     }
 
-    //if the requested domain is not approved...
-    if (!$requested_domain_is_approved) {
+    //if the requested domain is not approved, and we are not an admin...
+    if (!$requested_domain_is_approved && !current_user_can('manage_options')) {
 
         // admin notice
         add_action( 'admin_notices', function() {
@@ -589,8 +589,8 @@ function gmuw_sl_shortlink_data_is_valid($label,$target,$write_type,$redirection
 
     }
 
-    //ensure that the label is not a reserved label. check against reserved labels constant
-    if (in_array($label, gmuw_sl_reserved_labels_array())) {
+    //if the label is a reserved label, and we are not an admin...
+    if (in_array($label, gmuw_sl_reserved_labels_array()) && !current_user_can('manage_options')) {
 
         // admin notice
         add_action( 'admin_notices', function() {
