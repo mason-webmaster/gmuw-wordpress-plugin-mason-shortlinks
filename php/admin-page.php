@@ -66,7 +66,7 @@ function gmuw_sl_shortlink_management_page(){
             echo '<p>You are viewing only your shortlinks. <a href="'.esc_url( add_query_arg( 'displaymode', 'all' ) ).'">View all shortlinks</a><br />&nbsp;</p>';
 
             //get redirects
-            $my_redirects=gmuw_sl_get_redirects_current_user();
+            $my_redirects=gmuw_sl_get_redirects('user');
 
         } else {
 

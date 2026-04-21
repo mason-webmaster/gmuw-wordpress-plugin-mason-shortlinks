@@ -33,73 +33,34 @@ function gmuw_sl_redirection_next_redirect_position(){
 /**
  * function to return all redirects
  */
-function gmuw_sl_get_redirects() {
+function gmuw_sl_get_redirects($mode='') {
     global $wpdb;
 
+    //set table
     $table = "{$wpdb->prefix}redirection_items";
 
-    // Fetch all rows for this group
+    //set SQL based on mode
+    switch($mode){
+        case 'top':
+            $my_sql="SELECT * FROM $table ORDER BY last_count DESC LIMIT 10;";
+            break;
+        case 'new':
+            $my_sql="SELECT * FROM $table ORDER BY id DESC LIMIT 25;";
+            break;
+        case 'user':
+            $my_sql="SELECT * FROM $table WHERE id IN (SELECT redirect_id FROM wp_gmuw_sl_redirectmeta WHERE meta_key='gmuw_sl_shortlink_user_id' AND meta_value='".get_current_user_id()."') ORDER BY url ASC;";
+            break;
+        default:
+            $my_sql="SELECT * FROM $table ORDER BY url ASC";
+            break;
+    }
+
+    //fetch rows
     $results = $wpdb->get_results(
-        $wpdb->prepare(
-            "SELECT * FROM $table ORDER BY url ASC"
-        )
+        $wpdb->prepare($my_sql)
     );
 
-    return $results; // returns an array of objects
-}
-
-/**
- * function to return top redirects by count
- */
-function gmuw_sl_get_redirects_top() {
-    global $wpdb;
-
-    $table = "{$wpdb->prefix}redirection_items";
-
-    // Fetch all rows for this group
-    $results = $wpdb->get_results(
-        $wpdb->prepare(
-            "SELECT * FROM $table ORDER BY last_count DESC LIMIT 10;"
-        )
-    );
-
-    return $results; // returns an array of objects
-}
-
-/**
- * function to return top redirects by newest
- */
-function gmuw_sl_get_redirects_new() {
-    global $wpdb;
-
-    $table = "{$wpdb->prefix}redirection_items";
-
-    // Fetch all rows for this group
-    $results = $wpdb->get_results(
-        $wpdb->prepare(
-            "SELECT * FROM $table ORDER BY id DESC LIMIT 25;"
-        )
-    );
-
-    return $results; // returns an array of objects
-}
-
-/**
- * function to return current user's redirects
- */
-function gmuw_sl_get_redirects_current_user() {
-    global $wpdb;
-
-    $table = "{$wpdb->prefix}redirection_items";
-
-    // Fetch all rows for this group
-    $results = $wpdb->get_results(
-        $wpdb->prepare(
-            "SELECT * FROM $table WHERE id IN (SELECT redirect_id FROM wp_gmuw_sl_redirectmeta WHERE meta_key='gmuw_sl_shortlink_user_id' AND meta_value='".get_current_user_id()."') ORDER BY url ASC"
-        )
-    );
-
-    return $results; // returns an array of objects
+    return $results;
 }
 
 /**
