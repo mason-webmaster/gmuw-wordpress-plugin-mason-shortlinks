@@ -199,7 +199,7 @@ function gmuw_sl_shortlink_management_page(){
             <tr>
                 <th><label for="shortlink_user_id">User</label></th>
                 <td>
-                    <?php echo gmuw_sl_render_shortlink_user_id_select(get_redirect_meta($redirect_id,'gmuw_sl_shortlink_user_id')); ?>
+                    <?php echo gmuw_sl_render_user_id_select('shortlink_user_id',get_redirect_meta($redirect_id,'gmuw_sl_shortlink_user_id')); ?>
                 <td>
             </tr>
             <?php else: ?>

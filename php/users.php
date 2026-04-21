@@ -20,6 +20,41 @@ function gmuw_sl_get_username($user_id) {
 }
 
 /**
+ * Generate a dropdown of WordPress users using Login Names
+ *
+ * @param string $name     The name/ID attribute for the select element.
+ * @param int    $selected The ID of the user that should be pre-selected.
+ */
+function gmuw_sl_render_user_id_select($field_name,$selected=0) {
+    //fetch users
+    $users = get_users( array(
+        'fields'  => array( 'ID', 'user_login' ),
+        'orderby' => 'user_login',
+        'order'   => 'ASC'
+    ) );
+
+    //start the HTML output
+    echo '<select name="shortlink_user_id" id="shortlink_user_id">';
+    echo '<option value="">Select User...</option>';
+
+    if ( ! empty( $users ) ) {
+        foreach ( $users as $user ) {
+            // Check if this user is the one currently selected
+            $is_selected = selected( $selected, $user->ID, false );
+
+            echo sprintf(
+                '<option value="%d" %s>%s</option>',
+                absint( $user->ID ),
+                $is_selected,
+                esc_html( $user->user_login )
+            );
+        }
+    }
+
+    echo '</select>';
+}
+
+/**
  * manage user columns
  */
 add_filter( 'manage_users_columns', function( $columns ) {

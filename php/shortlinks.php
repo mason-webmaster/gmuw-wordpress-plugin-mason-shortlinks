@@ -182,7 +182,7 @@ function gmuw_sl_shortlink_add_form() {
         <?php if (current_user_can('manage_options')) : ?>
             <p>
                 <label for="shortlink_user_id"><strong>User</strong></label><br>
-                <?php echo gmuw_sl_render_shortlink_user_id_select(get_current_user_id()); ?>
+                <?php echo gmuw_sl_render_user_id_select('shortlink_user_id',get_current_user_id()); ?>
             </p>
         <?php endif; ?>
 
