@@ -13,6 +13,8 @@ jQuery(document).ready(function(){
 		paging: false,
 		dom: 'fti',
 		order: [],
+		width: '100%',
+		autoWidth: false
 	});
 
 	//datatables on non-dashboard WP admin pages
@@ -23,6 +25,22 @@ jQuery(document).ready(function(){
 		buttons: [
 		  'copy', 'excel', 'csv', 'print'
 		]
+	});
+
+	//handle datatables in the dashboard meta boxes.
+	//listen for the WordPress 'postbox-toggled' event and resize the datatable appropriately
+	jQuery(document).on('postbox-toggled', function(event, postbox) {
+
+		//find if there is a DataTable inside the box that was just opened
+		var $table = jQuery(postbox).find('table.data_table');
+
+		//if there was, wait a bit and then recalculate the table size
+		if ($table.length > 0) {
+			setTimeout(function() {
+				$table.DataTable().columns.adjust().responsive.recalc();
+				$table.DataTable().draw();
+			}, 200);
+		}
 	});
 
 	//shortlink copy to clipboard
