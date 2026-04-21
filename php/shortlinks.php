@@ -73,7 +73,7 @@ function gmuw_sl_shortlinks_table($redirects,$compact=false){
 				//group
 				$return_value.='<td>'.$shortlink_group_slug.'</td>';
 				//hits
-				$return_value.='<td>'.$redirect_hits.'</td>';
+				$return_value.='<td><span class="highlight-metric">'.$redirect_hits.'</span></td>';
 				//created
 				$return_value.='<td>'.get_redirect_meta($redirect->id,'when_created').' ('.gmuw_sl_get_username(get_redirect_meta($redirect->id,'user_created')).')</td>';
 				//modified
