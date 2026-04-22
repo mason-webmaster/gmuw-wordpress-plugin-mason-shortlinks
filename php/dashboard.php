@@ -101,7 +101,7 @@ function gmuw_sl_custom_dashboard_meta_box_shortlink_add() {
 function gmuw_sl_custom_dashboard_meta_box_shortlinks_all() {
 
 	//link to full list
-	echo '<p><a href="/wp-admin/admin.php?page=gmuw_sl_shortlink_management">View Full List</a></p>';
+	echo '<p><a href="/wp-admin/admin.php?page=gmuw_sl_shortlink_management">View Full Details</a></p>';
 
 	//get redirects
 	$redirects = gmuw_sl_get_redirects();
@@ -141,7 +141,7 @@ function gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user() {
 
 	//link to full list
 	if ($redirects) {
-		echo '<p><a href="/wp-admin/admin.php?page=gmuw_sl_shortlink_management&displaymode=user">View Full List</a></p>';
+		echo '<p><a href="/wp-admin/admin.php?page=gmuw_sl_shortlink_management&displaymode=user">View Full Details</a></p>';
 	}
 
 	//put into table
