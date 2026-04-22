@@ -301,6 +301,99 @@ function gmuw_sl_handle_form_shortlink_add() {
 }
 
 /**
+ * Provides the shortlink edit form
+ */
+function gmuw_sl_shortlink_edit_form($redirect_id) {
+
+	//Output content
+
+        ?>
+        <script>
+            function gmuw_sl_validate_shortlink_edit_form() {
+
+                const form = this; // "this" refers to the form
+
+                const label  = form.shortlink_label.value.trim();
+                const target = form.shortlink_target.value.trim();
+
+                const labelPattern = /^[a-z0-9_-]+$/;
+
+                if (label === '') {
+                    alert('Shortlink label is required.');
+                    return false;
+                }
+
+                if (!labelPattern.test(label)) {
+                    alert('Shortlink label may only contain lowercase letters, numbers, underscores, and hyphens.');
+                    return false;
+                }
+
+                try {
+                    new URL(target);
+                } catch (e) {
+                    alert('Please enter a valid URL for the target.');
+                    return false;
+                }
+
+                return confirm('Do you want to edit this shortlink?');
+            }
+        </script>
+
+        <form method="post" action="<?php echo esc_url( remove_query_arg( 'mode' ) ) ;?>" onsubmit="return gmuw_sl_validate_shortlink_edit_form();">
+            <?php wp_nonce_field( 'gmuw_sl_shortlink_edit', 'gmuw_sl_shortlink_edit_nonce' ); ?>
+
+            <input type="hidden" name="action" value="edit" />
+
+            <input type="hidden" name="redirect_id" value="<?php echo $redirect_id ?>" />
+
+            <table class="shortlink_data">
+            <tr>
+                <th><label for="redirect_label">Shortlink Label</label></th>
+                <td>
+                    <input type="text" name="redirect_label" id="redirect_label" value="<?php echo ltrim(gmuw_sl_get_redirect_fields_by_id($redirect_id)['url'], '/') ?>">
+                <td>
+            </tr>
+            <tr>
+                <th><label for="redirect_target">Target URL</label></th>
+                <td>
+                    <input type="text" name="redirect_target" id="redirect_target" value="<?php echo gmuw_sl_get_redirect_fields_by_id($redirect_id)['action_data'] ?>">
+                <td>
+            </tr>
+            <tr>
+                <th><label for="shortlink_group_slug">Group</label></th>
+                <td>
+                    <?php if (gmuw_sl_get_user_groups_array()) : ?>
+                        <select name="shortlink_group_slug" id="shortlink_group_slug">
+                            <?php echo gmuw_render_user_group_options(get_redirect_meta($redirect_id,'gmuw_sl_group')); ?>
+                        </select>
+                    <?php endif; ?>
+                <td>
+            </tr>
+
+            <?php if (current_user_can('manage_options')) : ?>
+            <tr>
+                <th><label for="shortlink_user_id">User</label></th>
+                <td>
+                    <?php echo gmuw_sl_render_user_id_select('shortlink_user_id',get_redirect_meta($redirect_id,'gmuw_sl_shortlink_user_id')); ?>
+                <td>
+            </tr>
+            <?php else: ?>
+                <input type="hidden" name="shortlink_user_id" value="<?php echo get_redirect_meta($redirect_id,'gmuw_sl_shortlink_user_id'); ?>" />
+            <?php endif; ?>
+
+            </table>
+
+            <p>
+                <button type="submit" class="button button-primary">Submit</button>
+                <?php echo '<a href="'. esc_url( remove_query_arg( 'mode' ) ) .'" class="button">Cancel</a>'; ?>
+
+            </p>
+        </form>
+        <?php
+
+}
+
+/**
  * Handle shortlink edit form submission.
  */
 add_action( 'admin_init', 'gmuw_sl_handle_form_shortlink_edit' );
