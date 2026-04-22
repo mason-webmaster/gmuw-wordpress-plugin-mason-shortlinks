@@ -237,8 +237,8 @@ function gmuw_sl_handle_form_shortlink_add() {
         $shortlink_target = sanitize_text_field( $_POST['shortlink_target'] );
         $shortlink_group_slug = sanitize_text_field( $_POST['shortlink_group_slug'] );
 
-        //if user doesn't have permissions for this group, bail
-        if (!in_array($shortlink_group_slug,gmuw_sl_get_user_groups_array())) return; 
+        //if the group is not empty and if user doesn't have permissions for this group, bail
+        if (!empty($shortlink_group_slug) && !in_array($shortlink_group_slug,gmuw_sl_get_user_groups_array())) return; 
 
         //create the redirection recod
 		global $wpdb;
