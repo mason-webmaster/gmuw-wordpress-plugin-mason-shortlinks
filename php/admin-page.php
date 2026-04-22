@@ -60,18 +60,28 @@ function gmuw_sl_shortlink_management_page(){
     if (!isset($_GET['redirect_id']) || !$_GET['redirect_id']) {
 
         //current user redirects or all redirects?
-        if (isset($_GET['displaymode']) && $_GET['displaymode']=='user'){
+        if (isset($_GET['displaymode'])){
 
-            //display link back to shorlink list in 'all' mode
-            echo '<p>You are viewing only your shortlinks. <a href="'.esc_url( add_query_arg( 'displaymode', 'all' ) ).'">View all shortlinks</a><br />&nbsp;</p>';
+            switch ($_GET['displaymode']) {
 
-            //get redirects
-            $my_redirects=gmuw_sl_get_redirects('user');
+                case 'user':
+                    //display link back to shorlink list in 'all' mode
+                    echo '<p><strong>You are viewing only your shortlinks.</strong><br /><a href="'.esc_url( remove_query_arg( 'displaymode' ) ).'">View all shortlinks</a><br /><a href="'.esc_url( add_query_arg( 'displaymode', 'user_groups' ) ).'">View only shortlinks in your group(s)</a><br />&nbsp;</p>';
+                    //get redirects
+                    $my_redirects=gmuw_sl_get_redirects('user');
+                    break;
+                case 'user_groups':
+                    //display link back to shorlink list in 'all' mode
+                    echo '<p><strong>You are viewing shortlinks in your group(s).</strong><br /><a href="'.esc_url( remove_query_arg( 'displaymode' ) ).'">View all shortlinks</a><br /><a href="'.esc_url( add_query_arg( 'displaymode', 'user' ) ).'">View only your shortlinks</a><br />&nbsp;</p>';
+                    //get redirects
+                    $my_redirects=gmuw_sl_get_redirects('user_groups');
+                    break;
+            }
 
         } else {
 
             //display link back to shorlink list in 'user' mode
-            echo '<p>You are viewing all shortlinks. <a href="'.esc_url( add_query_arg( 'displaymode', 'user' ) ).'">View only your shortlinks</a><br />&nbsp;</p>';
+            echo '<p><strong>You are viewing all shortlinks.</strong><br /><a href="'.esc_url( add_query_arg( 'displaymode', 'user' ) ).'">View only your shortlinks</a><br /><a href="'.esc_url( add_query_arg( 'displaymode', 'user_groups' ) ).'">View only shortlinks in your group(s)</a><br />&nbsp;</p>';
 
             //get redirects
             $my_redirects=gmuw_sl_get_redirects();

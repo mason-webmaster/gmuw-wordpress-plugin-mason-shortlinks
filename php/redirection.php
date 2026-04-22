@@ -38,6 +38,7 @@ function gmuw_sl_get_redirects($mode='') {
 
     //set table
     $table = "{$wpdb->prefix}redirection_items";
+    $meta_table = "{$wpdb->prefix}gmuw_sl_redirectmeta";
 
     //set SQL based on mode
     switch($mode){
@@ -48,7 +49,39 @@ function gmuw_sl_get_redirects($mode='') {
             $my_sql="SELECT * FROM $table ORDER BY id DESC LIMIT 25;";
             break;
         case 'user':
-            $my_sql="SELECT * FROM $table WHERE id IN (SELECT redirect_id FROM wp_gmuw_sl_redirectmeta WHERE meta_key='gmuw_sl_shortlink_user_id' AND meta_value='".get_current_user_id()."') ORDER BY url ASC;";
+            //using a subquery
+            //$my_sql="SELECT * FROM $table WHERE id IN (SELECT redirect_id FROM $meta_table WHERE meta_key='gmuw_sl_shortlink_user_id' AND meta_value='".get_current_user_id()."') ORDER BY url ASC;";
+            //using a join is generally more performant than a subquery
+            $my_sql = $wpdb->prepare(
+                "SELECT * FROM $table 
+                 INNER JOIN $meta_table ON $table.id = $meta_table.redirect_id 
+                 WHERE $meta_table.meta_key = 'gmuw_sl_shortlink_user_id' 
+                 AND $meta_table.meta_value = %d 
+                 ORDER BY $table.url ASC;",
+                get_current_user_id()
+            );
+            break;
+        case 'user_groups':
+            //get user groups
+            $groups = gmuw_sl_get_user_groups_array();
+
+            //if user has no groups, return empty array
+            if (empty($groups)) {
+                return array();
+            }
+
+            //prepare the IN clause placeholders
+            //creates a string like "%s, %s, %s" based on the number of groups
+            $placeholders = implode(',', array_fill(0, count($groups), '%s'));
+
+            $my_sql = $wpdb->prepare(
+                "SELECT DISTINCT $table.* FROM $table
+                 INNER JOIN $meta_table ON $table.id = $meta_table.redirect_id
+                 WHERE $meta_table.meta_key = 'gmuw_sl_group'
+                 AND $meta_table.meta_value IN ($placeholders)
+                 ORDER BY $table.url ASC;",
+                $groups
+            );
             break;
         default:
             $my_sql="SELECT * FROM $table ORDER BY url ASC";
@@ -60,7 +93,9 @@ function gmuw_sl_get_redirects($mode='') {
         $wpdb->prepare($my_sql)
     );
 
+    //return
     return $results;
+
 }
 
 /**

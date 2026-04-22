@@ -32,6 +32,9 @@ function gmuw_sl_custom_dashboard_meta_boxes() {
    /* your shortlinks */
   add_meta_box("gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user", "Your Shortlinks", "gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user", "dashboard","normal",);
 
+   /* user groups shortlinks */
+  add_meta_box("gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user_groups", "Your Group(s)", "gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user_groups", "dashboard","normal",);
+
 }
 
 /**
@@ -142,6 +145,22 @@ function gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user() {
 	//link to full list
 	if ($redirects) {
 		echo '<p><a href="/wp-admin/admin.php?page=gmuw_sl_shortlink_management&displaymode=user">View Full Details</a></p>';
+	}
+
+	//put into table
+	echo gmuw_sl_shortlinks_table($redirects,true);
+
+}
+
+//display custom dashboard meta box with a table of current user's groups' shortlinks
+function gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user_groups() {
+
+	//get redirects
+	$redirects = gmuw_sl_get_redirects('user_groups');
+
+	//link to full list
+	if ($redirects) {
+		echo '<p><a href="/wp-admin/admin.php?page=gmuw_sl_shortlink_management&displaymode=user_groups">View Full Details</a></p>';
 	}
 
 	//put into table
