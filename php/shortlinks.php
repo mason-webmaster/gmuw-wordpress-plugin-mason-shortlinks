@@ -179,7 +179,7 @@ function gmuw_sl_shortlink_add_form() {
 		<?php wp_nonce_field( 'gmuw_sl_shortlink_add', 'gmuw_sl_shortlink_add_nonce' ); ?>
 
 		<p>
-			<label for="shortlink_label"><strong>Shortlink/Label</strong></label><br>
+			<label for="shortlink_label"><strong>Label</strong></label><br>
 			<input type="text" name="shortlink_label" id="shortlink_label" style="width:100%;">
 		</p>
 		<p>
@@ -203,8 +203,8 @@ function gmuw_sl_shortlink_add_form() {
             </p>
         <?php endif; ?>
 
-		<p>
-			<button type="submit" class="button button-primary">Submit</button>
+		<p style="margin-top:2em;">
+			<button type="submit" class="button button-primary">Add Shortlink</button>
 		</p>
 
 	</form>
