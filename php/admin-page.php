@@ -154,6 +154,13 @@ function gmuw_sl_shortlink_management_page(){
 
     }
 
+    //editing and user can't edit
+    if ($is_edit && !gmuw_sl_current_user_can_edit_shortlink($redirect_id)) {
+
+        echo '<div class="notice notice-error"><p>You are not allowed to edit this shortlink.</p></div>';
+
+    }
+
     // Finish HTML output
     echo "</div>";
 
