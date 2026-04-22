@@ -274,7 +274,7 @@ function gmuw_sl_handle_form_shortlink_add() {
 		}
 
 		//build output
-		$output_text='Created shortlink: ' . esc_html( $shortlink_label ) .' -> '.esc_html( $shortlink_target ) . ' ('.gmuw_sl_get_username($shortlink_user_id).' / '.$shortlink_group_slug.')';
+		$output_text=wp_get_current_user()->user_login.' created shortlink: ' . esc_html( $shortlink_label ) .' -> '.esc_html( $shortlink_target ) . ' ('.gmuw_sl_get_username($shortlink_user_id).' / '.$shortlink_group_slug.')';
 
 		// log to simple history
 		apply_filters(
@@ -497,7 +497,7 @@ function gmuw_sl_handle_form_shortlink_edit() {
 		update_redirect_meta( $redirect_id, 'gmuw_sl_group', $shortlink_group_slug );
 
 		//build output
-		$output_text="Edited shortlink:\n";
+		$output_text=wp_get_current_user()->user_login." edited shortlink:\n";
 		$output_text.="From: ".esc_html( $old_redirect_label ) ." -> ".esc_html( $old_redirect_target ) . " (".gmuw_sl_get_username($old_shortlink_user_id).($old_shortlink_group_slug ? " / ". $old_shortlink_group_slug : '').")\n";
 		$output_text.="To: ".esc_html( $redirect_label ) ." -> ".esc_html( $redirect_target ) . " (".gmuw_sl_get_username($shortlink_user_id).($shortlink_group_slug ? " / ".$shortlink_group_slug : '').")";
 
@@ -569,7 +569,7 @@ function gmuw_sl_handle_delete_shortlink() {
     if ( $deleted ) {
 
 		//build output
-		$output_text="Deleted shortlink:\n";
+		$output_text=wp_get_current_user()->user_login." deleted shortlink:\n";
 		$output_text.=esc_html( $redirect_label )." -> ".esc_html( $redirect_target ) . " (".gmuw_sl_get_username($shortlink_user_id).($shortlink_group_slug ? " / ". $shortlink_group_slug : '').")";
 
         // Log to Simple History
