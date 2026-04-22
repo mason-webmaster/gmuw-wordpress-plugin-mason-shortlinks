@@ -301,3 +301,14 @@ function gmuw_sl_get_user_groups_array($user_id=''){
     return $return_value;
 
 }
+
+//function to display array of user groups
+function gmuw_sl_display_user_groups($user_id=''){
+
+    //if we don't have a specified user, use the current user
+    if (empty($user_id)) $user_id = get_current_user_id();
+
+    //return formatted array
+    return rtrim(implode(', ',gmuw_sl_get_user_groups_array($user_id)),',');
+
+}

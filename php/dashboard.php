@@ -155,8 +155,17 @@ function gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user() {
 //display custom dashboard meta box with a table of current user's groups' shortlinks
 function gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user_groups() {
 
+	//does the user have any groups
+	if (!gmuw_sl_get_user_groups_array()) {
+		echo '<p>You do not belong to any groups.';
+		return;
+	}
+
 	//get redirects
 	$redirects = gmuw_sl_get_redirects('user_groups');
+
+	//users groups
+	echo '<p>You belong to the following groups: '.gmuw_sl_display_user_groups().'</p>';
 
 	//link to full list
 	if ($redirects) {
