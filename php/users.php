@@ -171,6 +171,16 @@ function gmuw_sl_user_profile_field_checkbox($user,$field_name, $field_title, $f
 // return user profile screen text field
 function gmuw_sl_user_profile_field_text($user,$field_name, $field_title, $field_desc) {
 
+    //get user id based on type
+    switch(gettype($user)){
+        case 'object':
+            $user_id=$user->ID;
+            break;
+        default:
+            $user_id='';
+            break;
+    }
+
     //initialize variables
     $return_value='';
 
@@ -184,7 +194,7 @@ function gmuw_sl_user_profile_field_text($user,$field_name, $field_title, $field
     
     $return_value.='<td>';
     //user-entered field
-    $return_value.='<input type="text" name="'.$field_name.'" id="'.$field_name.'" value="' . esc_attr( get_user_meta( $user->ID, $field_name, true ) ) . '" class="regular-text" /><br />';
+    $return_value.='<input type="text" name="'.$field_name.'" id="'.$field_name.'" value="' . esc_attr( get_user_meta( $user_id, $field_name, true ) ) . '" class="regular-text" /><br />';
     $return_value.='<p><span class="description">'.$field_desc.'</span></p>';
     $return_value.='</td>';
 
