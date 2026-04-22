@@ -123,6 +123,8 @@ function gmuw_sl_shortlinks_table($redirects,$compact=false){
 		}
 		$return_value.='</tbody>';
 		$return_value.='</table>';
+	} else {
+		$return_value.='<p>No shortlinks found.</p>';
 	}
 
 	//return value

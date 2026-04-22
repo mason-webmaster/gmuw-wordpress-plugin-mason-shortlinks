@@ -136,11 +136,13 @@ function gmuw_sl_custom_dashboard_meta_box_shortlinks_new() {
 //display custom dashboard meta box with a table of current user's shortlinks
 function gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user() {
 
-	//link to full list
-	echo '<p><a href="/wp-admin/admin.php?page=gmuw_sl_shortlink_management&displaymode=user">View Full List</a></p>';
-
 	//get redirects
 	$redirects = gmuw_sl_get_redirects('user');
+
+	//link to full list
+	if ($redirects) {
+		echo '<p><a href="/wp-admin/admin.php?page=gmuw_sl_shortlink_management&displaymode=user">View Full List</a></p>';
+	}
 
 	//put into table
 	echo gmuw_sl_shortlinks_table($redirects,true);
