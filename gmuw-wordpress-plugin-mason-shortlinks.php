@@ -79,6 +79,9 @@ require('php/wordpress-interface.php');
 //database
 require('php/database.php');
 
+//simple history
+require('php/simple-history.php');
+
 //register activation hook
 register_activation_hook(__FILE__, 'gmuw_sl_plugin_activate');
 
