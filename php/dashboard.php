@@ -165,7 +165,7 @@ function gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user_groups() {
 	$redirects = gmuw_sl_get_redirects('user_groups');
 
 	//users groups
-	echo '<p>You belong to the following groups: '.gmuw_sl_display_user_groups().'</p>';
+	echo '<p>You belong to the following group(s): '.gmuw_sl_display_user_groups().'</p>';
 
 	//link to full list
 	if ($redirects) {
