@@ -18,7 +18,7 @@ function gmuw_sl_custom_dashboard_meta_boxes() {
   add_meta_box("gmuw_sl_custom_dashboard_meta_box_general", "General Information", "gmuw_sl_custom_dashboard_meta_box_general", "dashboard","normal");
 
   /* Add 'add shortlink' meta box */
-  add_meta_box("gmuw_sl_custom_dashboard_meta_box_shortlink_add", "Add Shortlink", "gmuw_sl_custom_dashboard_meta_box_shortlink_add", "dashboard","normal");
+  add_meta_box("gmuw_sl_custom_dashboard_meta_box_shortlink_add", "Add New Shortlink:", "gmuw_sl_custom_dashboard_meta_box_shortlink_add", "dashboard","normal");
 
    /* all shortlinks */
   add_meta_box("gmuw_sl_custom_dashboard_meta_box_shortlinks_all", "All Shortlinks", "gmuw_sl_custom_dashboard_meta_box_shortlinks_all", "dashboard","normal");
@@ -33,7 +33,7 @@ function gmuw_sl_custom_dashboard_meta_boxes() {
   add_meta_box("gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user", "Your Shortlinks", "gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user", "dashboard","normal",);
 
    /* user groups shortlinks */
-  add_meta_box("gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user_groups", "Your Group(s)", "gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user_groups", "dashboard","normal",);
+  add_meta_box("gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user_groups", "Shortlinks in Your Group(s)", "gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user_groups", "dashboard","normal",);
 
 }
 
@@ -92,8 +92,6 @@ function gmuw_sl_custom_dashboard_meta_box_shortlink_add() {
 
 	//Output content
 	?>
-
-	<p>Add a new shortlink:</p>
 
 	<?php
 	echo gmuw_sl_shortlink_add_form();
