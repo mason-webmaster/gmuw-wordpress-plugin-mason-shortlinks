@@ -316,8 +316,8 @@ function gmuw_sl_shortlink_edit_form($redirect_id) {
 
                 const form = this; // "this" refers to the form
 
-                const label  = form.shortlink_label.value.trim();
-                const target = form.shortlink_target.value.trim();
+                const label  = form.redirect_label.value.trim();
+                const target = form.redirect_target.value.trim();
 
                 const labelPattern = /^[a-z0-9_-]+$/;
 
