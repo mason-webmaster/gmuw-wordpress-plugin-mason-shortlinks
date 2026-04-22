@@ -102,6 +102,37 @@ a.admin-tooltip-only {
     content: "\f105";
 }
 
+.admin-list:before {
+    font-family: "dashicons";
+    content: "\f163";
+}
+
+.admin-user:before {
+    font-family: "dashicons";
+    content: "\f110";
+}
+
+.admin-group:before {
+    font-family: "dashicons";
+    content: "\f307";
+}
+
+/* dashboard quick links */
+.index-php .quick-links {
+    display:flex;
+    justify-content:space-around;
+
+    .link-box {
+        flex: 1 1 0;
+        text-align: center;
+    }
+
+    .gmuw-big:before {
+        font-size: 2em;
+    }
+
+}
+
 /* copy icon success */
 
 /* change color when successful */

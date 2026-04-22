@@ -14,6 +14,9 @@ function gmuw_sl_custom_dashboard_meta_boxes() {
   // Declare global variables
   global $wp_meta_boxes;
 
+  /* Add links meta box */
+  add_meta_box("gmuw_sl_custom_dashboard_meta_box_links", "Quick Links", "gmuw_sl_custom_dashboard_meta_box_links", "dashboard","normal");
+
   /* Add general meta box */
   add_meta_box("gmuw_sl_custom_dashboard_meta_box_general", "General Information", "gmuw_sl_custom_dashboard_meta_box_general", "dashboard","normal");
 
@@ -34,6 +37,37 @@ function gmuw_sl_custom_dashboard_meta_boxes() {
 
    /* user groups shortlinks */
   add_meta_box("gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user_groups", "Shortlinks in Your Group(s)", "gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user_groups", "dashboard","normal",);
+
+}
+
+/**
+ * Provides content for the dashboard links meta box
+ */
+function gmuw_sl_custom_dashboard_meta_box_links() {
+
+	?>
+
+	<div class="quick-links">
+		<div class="link-box">
+			<a class="admin-icon admin-list gmuw-big" title="All Shortlinks" href="/wp-admin/admin.php?page=gmuw_sl_shortlink_management">
+				<br />All Shortlinks	
+			</a>
+		</div>
+		<div class="link-box">
+			<a class="admin-icon admin-user gmuw-big" title="Your Shortlinks" href="/wp-admin/admin.php?page=gmuw_sl_shortlink_management&displaymode=user">
+				<br />Your Shortlinks
+			</a>
+		</div>
+		<?php if (gmuw_sl_get_user_groups_array()) { ?>
+		<div class="link-box">
+			<a class="admin-icon admin-group gmuw-big" title="Shortlinks for Your Group(s)" href="/wp-admin/admin.php?page=gmuw_sl_shortlink_management&displaymode=user_groups">
+				<br />Shortlinks in Your Group(s)
+			</a>
+		</div>
+		<?php } ?>
+	</div>
+
+	<?php
 
 }
 
