@@ -204,7 +204,10 @@ function gmuw_sl_shortlink_add_form() {
         <?php endif; ?>
 
 		<p style="margin-top:2em;">
+			<div style="display: flex; justify-content: space-between;">
 			<button type="submit" class="button button-primary">Add Shortlink</button>
+			<a href="#" class="button" onclick="this.closest('form').reset(); return false;">Cancel</a>
+			</div>
 		</p>
 
 	</form>
