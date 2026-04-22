@@ -180,7 +180,7 @@ function gmuw_sl_shortlink_add_form() {
 
 		<p>
 			<label for="shortlink_label"><strong>Label</strong></label><br>
-			<input type="text" name="shortlink_label" id="shortlink_label" style="width:100%;">
+			<input type="text" name="shortlink_label" id="shortlink_label" style="width:50%;">
 		</p>
 		<p>
 			<label for="shortlink_target"><strong>Target URL</strong></label><br>
