@@ -24,10 +24,10 @@ function gmuw_sl_custom_dashboard_meta_boxes() {
   add_meta_box("gmuw_sl_custom_dashboard_meta_box_shortlinks_all", "All Shortlinks", "gmuw_sl_custom_dashboard_meta_box_shortlinks_all", "dashboard","normal");
 
    /* top shortlinks */
-  add_meta_box("gmuw_sl_custom_dashboard_meta_box_shortlinks_top", "Top Shortlinks", "gmuw_sl_custom_dashboard_meta_box_shortlinks_top", "dashboard","normal");
+  //add_meta_box("gmuw_sl_custom_dashboard_meta_box_shortlinks_top", "Top Shortlinks", "gmuw_sl_custom_dashboard_meta_box_shortlinks_top", "dashboard","normal");
 
    /* new shortlinks */
-  add_meta_box("gmuw_sl_custom_dashboard_meta_box_shortlinks_new", "Recently Added Shortlinks", "gmuw_sl_custom_dashboard_meta_box_shortlinks_new", "dashboard","normal");
+  //add_meta_box("gmuw_sl_custom_dashboard_meta_box_shortlinks_new", "Recently Added Shortlinks", "gmuw_sl_custom_dashboard_meta_box_shortlinks_new", "dashboard","normal");
 
    /* your shortlinks */
   add_meta_box("gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user", "Your Shortlinks", "gmuw_sl_custom_dashboard_meta_box_shortlinks_current_user", "dashboard","normal",);
