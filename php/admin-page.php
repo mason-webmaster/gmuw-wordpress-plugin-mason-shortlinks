@@ -132,9 +132,11 @@ function gmuw_sl_shortlink_management_page(){
         echo '<tr><th>Last Edited</th><td>'.get_redirect_meta($redirect_id, 'when_last_edited').' ('.gmuw_sl_get_username(get_redirect_meta($redirect_id, 'user_last_edited')).')<td></tr>';
         echo '</table>';
 
-        //display edit link
-        echo '<a href="'. esc_url( add_query_arg( 'mode', 'edit' ) ) .'" class="button button-primary">Edit Shortlink</a>';
-        
+        //display edit link, if user can edit
+        if (gmuw_sl_current_user_can_edit_shortlink($redirect_id)) {
+            echo '<a href="'. esc_url( add_query_arg( 'mode', 'edit' ) ) .'" class="button button-primary">Edit Shortlink</a>';
+        }
+
         //qr code
         $filename = sanitize_title('go-gmu-edu-'.$shortlink_label) . '-qr-code';
         echo '<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.6.0/lib/qr-code-styling.js"></script>';
