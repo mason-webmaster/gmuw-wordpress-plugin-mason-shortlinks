@@ -61,7 +61,7 @@ function gmuw_sl_custom_dashboard_meta_box_links() {
 		<?php if (gmuw_sl_get_user_groups_array()) { ?>
 		<div class="link-box">
 			<a class="admin-icon admin-group gmuw-big" title="Shortlinks for Your Group(s)" href="/wp-admin/admin.php?page=gmuw_sl_shortlink_management&displaymode=user_groups">
-				<br />Shortlinks in Your Group(s)
+				<br />Shortlinks for Your Group(s)
 			</a>
 		</div>
 		<?php } ?>
