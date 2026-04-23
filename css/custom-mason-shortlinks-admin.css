@@ -128,7 +128,11 @@ a.admin-tooltip-only {
     }
 
     .gmuw-big:before {
-        font-size: 2em;
+        font-size: 2rem;
+    }
+
+    .gmuw-big {
+        font-size: 0.8rem;
     }
 
 }
