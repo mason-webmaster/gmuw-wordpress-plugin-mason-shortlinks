@@ -14,7 +14,8 @@ jQuery(document).ready(function(){
 		// Get elements
 		const $container = jQuery(this).find('.gmuw-sl-qr-code-output')[0];
 		const qrValue = jQuery(this).find('.gmuw-sl-qr-code-value').val();
-		const $downloadBtn = jQuery(this).find('.gmuw-sl-qr-code-download');
+		const $downloadBtnSVG = jQuery(this).find('.gmuw-sl-qr-code-download-svg');
+		const $downloadBtnPNG = jQuery(this).find('.gmuw-sl-qr-code-download-png');
 
 		//get the custom filename from the data attribute
 		//fallback to 'qr-code' if the attribute is missing
@@ -46,10 +47,18 @@ jQuery(document).ready(function(){
 		qr.append($container);
 
 		// Download SVG handler
-		$downloadBtn.on("click", function () {
+		$downloadBtnSVG.on("click", function () {
 			qr.download({
 				name: qrCodeFilename,
 				extension: "svg"
+			});
+		});
+
+		// Download PNG handler
+		$downloadBtnPNG.on("click", function () {
+			qr.download({
+				name: qrCodeFilename,
+				extension: "png"
 			});
 		});
 

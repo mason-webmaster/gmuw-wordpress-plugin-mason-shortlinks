@@ -141,7 +141,8 @@ function gmuw_sl_shortlink_management_page(){
         echo '<div class="gmuw-sl-admin-list-qr-code" data-filename="'.$filename.'">';
         echo '<input class="gmuw-sl-qr-code-value" type="hidden" value="'.$shortlink_url.'" />';
         echo '<div class="gmuw-sl-qr-code-output"></div>';
-        echo '<button class="button button-primary gmuw-sl-qr-code-download">Download SVG</button>';
+        echo '<button class="button button-primary gmuw-sl-qr-code-download gmuw-sl-qr-code-download-svg">Download SVG</button>';
+        echo '<button class="button button-primary gmuw-sl-qr-code-download gmuw-sl-qr-code-download-png">Download PNG</button>';
         echo '</div>';        
 
     }
