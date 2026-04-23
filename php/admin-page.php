@@ -65,14 +65,18 @@ function gmuw_sl_shortlink_management_page(){
             switch ($_GET['displaymode']) {
 
                 case 'user':
-                    //display link back to shorlink list in 'all' mode
-                    echo '<p><strong>You are viewing only your shortlinks.</strong><br /><a href="'.esc_url( remove_query_arg( 'displaymode' ) ).'">View all shortlinks</a><br /><a href="'.esc_url( add_query_arg( 'displaymode', 'user_groups' ) ).'">View only shortlinks in your group(s)</a><br />&nbsp;</p>';
+                    //heading
+                    echo '<h2>Your Shortlinks</h2>';
+                    //display links to other modes
+                    echo '<p><a href="'.esc_url( remove_query_arg( 'displaymode' ) ).'">View all shortlinks</a><br /><a href="'.esc_url( add_query_arg( 'displaymode', 'user_groups' ) ).'">View only shortlinks in your group(s)</a><br />&nbsp;</p>';
                     //get redirects
                     $my_redirects=gmuw_sl_get_redirects('user');
                     break;
                 case 'user_groups':
-                    //display link back to shorlink list in 'all' mode
-                    echo '<p><strong>You are viewing shortlinks in your group(s).</strong><br /><a href="'.esc_url( remove_query_arg( 'displaymode' ) ).'">View all shortlinks</a><br /><a href="'.esc_url( add_query_arg( 'displaymode', 'user' ) ).'">View only your shortlinks</a><br />&nbsp;</p>';
+                    //heading
+                    echo '<h2>Shortlinks in Your Group(s)</h2>';
+                    //display links to other modes
+                    echo '<p><a href="'.esc_url( remove_query_arg( 'displaymode' ) ).'">View all shortlinks</a><br /><a href="'.esc_url( add_query_arg( 'displaymode', 'user' ) ).'">View only your shortlinks</a><br />&nbsp;</p>';
                     //get redirects
                     $my_redirects=gmuw_sl_get_redirects('user_groups');
                     break;
@@ -80,8 +84,10 @@ function gmuw_sl_shortlink_management_page(){
 
         } else {
 
-            //display link back to shorlink list in 'user' mode
-            echo '<p><strong>You are viewing all shortlinks.</strong><br /><a href="'.esc_url( add_query_arg( 'displaymode', 'user' ) ).'">View only your shortlinks</a><br /><a href="'.esc_url( add_query_arg( 'displaymode', 'user_groups' ) ).'">View only shortlinks in your group(s)</a><br />&nbsp;</p>';
+            //heading
+            echo '<h2>All Shortlinks</h2>';
+            //display links to other modes
+            echo '<p><a href="'.esc_url( add_query_arg( 'displaymode', 'user' ) ).'">View only your shortlinks</a><br /><a href="'.esc_url( add_query_arg( 'displaymode', 'user_groups' ) ).'">View only shortlinks in your group(s)</a><br />&nbsp;</p>';
 
             //get redirects
             $my_redirects=gmuw_sl_get_redirects();
