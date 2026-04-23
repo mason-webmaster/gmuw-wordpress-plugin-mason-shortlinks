@@ -65,6 +65,11 @@ function gmuw_sl_custom_dashboard_meta_box_links() {
 			</a>
 		</div>
 		<?php } ?>
+		<div class="link-box">
+			<a class="admin-icon admin-ticket gmuw-big" title="Submit a Ticket" href="<?php echo esc_url(get_option('gmuw_sl_options')['gmuw_sl_ticket_url']); ?>" target="_blank">
+				<br />Submit a Ticket
+			</a>
+		</div>
 	</div>
 
 	<?php

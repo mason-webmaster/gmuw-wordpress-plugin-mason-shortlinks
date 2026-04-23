@@ -117,6 +117,11 @@ a.admin-tooltip-only {
     content: "\f307";
 }
 
+.admin-ticket:before {
+    font-family: "dashicons";
+    content: "\f323";
+}
+
 /* dashboard quick links */
 .index-php .quick-links {
     display:flex;
