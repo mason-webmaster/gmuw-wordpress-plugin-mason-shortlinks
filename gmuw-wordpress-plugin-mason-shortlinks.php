@@ -87,3 +87,21 @@ register_activation_hook(__FILE__, 'gmuw_sl_plugin_activate');
 
 //register deactivation hook
 register_deactivation_hook(__FILE__, 'gmuw_sl_plugin_deactivate');
+
+
+/**
+ * Redirect all 404 errors to the Mason homepage
+ * A high priority (9999) will still allow the Redirection plugin 404 logging to work, whereas a lower priority (like the default priority) will supercede it.
+ */
+add_action( 'template_redirect', 'gmuw_sl_redirect_404s', 9999 );
+function gmuw_sl_redirect_404s() {
+
+    // Only proceed if this is a 404 error page
+    if ( is_404() ) {
+
+        wp_redirect( 'https://www.gmu.edu/', 301 );
+        exit;
+
+    }
+
+}
