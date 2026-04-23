@@ -351,7 +351,7 @@ function gmuw_sl_shortlink_edit_form($redirect_id) {
 
             <table class="shortlink_data">
             <tr>
-                <th><label for="redirect_label">Shortlink Label</label></th>
+                <th><label for="redirect_label">Label</label></th>
                 <td>
                     <input type="text" name="redirect_label" id="redirect_label" value="<?php echo ltrim(gmuw_sl_get_redirect_fields_by_id($redirect_id)['url'], '/') ?>">
                 <td>
@@ -359,7 +359,7 @@ function gmuw_sl_shortlink_edit_form($redirect_id) {
             <tr>
                 <th><label for="redirect_target">Target URL</label></th>
                 <td>
-                    <input type="text" name="redirect_target" id="redirect_target" value="<?php echo gmuw_sl_get_redirect_fields_by_id($redirect_id)['action_data'] ?>">
+                    <input type="text" name="redirect_target" id="redirect_target" value="<?php echo gmuw_sl_get_redirect_fields_by_id($redirect_id)['action_data'] ?>" style="width:50em;">
                 <td>
             </tr>
             <tr>
