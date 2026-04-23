@@ -136,8 +136,9 @@ function gmuw_sl_shortlink_management_page(){
         echo '<a href="'. esc_url( add_query_arg( 'mode', 'edit' ) ) .'" class="button button-primary">Edit Shortlink</a>';
         
         //qr code
+        $filename = sanitize_title('go-gmu-edu-'.$shortlink_label) . '-qr-code';
         echo '<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.6.0/lib/qr-code-styling.js"></script>';
-        echo '<div class="gmuw-sl-admin-list-qr-code">';
+        echo '<div class="gmuw-sl-admin-list-qr-code" data-filename="'.$filename.'">';
         echo '<input class="gmuw-sl-qr-code-value" type="hidden" value="'.$shortlink_url.'" />';
         echo '<div class="gmuw-sl-qr-code-output"></div>';
         echo '<button class="button button-primary gmuw-sl-qr-code-download">Download SVG</button>';

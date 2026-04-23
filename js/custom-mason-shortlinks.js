@@ -16,6 +16,10 @@ jQuery(document).ready(function(){
 		const qrValue = jQuery(this).find('.gmuw-sl-qr-code-value').val();
 		const $downloadBtn = jQuery(this).find('.gmuw-sl-qr-code-download');
 
+		//get the custom filename from the data attribute
+		//fallback to 'qr-code' if the attribute is missing
+		const qrCodeFilename = jQuery(this).data('filename') || 'go-gmu-edu-qr-code';
+
 		// Create QR code instance
 		const qr = new QRCodeStyling({
 			type: "svg",
@@ -44,7 +48,7 @@ jQuery(document).ready(function(){
 		// Download SVG handler
 		$downloadBtn.on("click", function () {
 			qr.download({
-				name: "qr-code",
+				name: qrCodeFilename,
 				extension: "svg"
 			});
 		});
