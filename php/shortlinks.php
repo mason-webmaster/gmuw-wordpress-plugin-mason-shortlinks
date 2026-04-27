@@ -274,7 +274,8 @@ function gmuw_sl_handle_form_shortlink_add() {
 		}
 
 		//build output
-		$output_text=wp_get_current_user()->user_login.' created shortlink: ' . esc_html( $shortlink_label ) .' -> '.esc_html( $shortlink_target ) . ' ('.gmuw_sl_get_username($shortlink_user_id).' / '.$shortlink_group_slug.')';
+		$output_text=wp_get_current_user()->user_login.' created shortlink: ' . esc_html( $shortlink_label ) .' -> '.esc_html( $shortlink_target ) . ' ('.gmuw_sl_get_username($shortlink_user_id).($shortlink_group_slug ? ' / '. $shortlink_group_slug : '').')';
+
 
 		// log to simple history
 		apply_filters(
