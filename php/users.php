@@ -96,7 +96,7 @@ function gmuw_sl_custom_fields_array() {
 
     //set up array
     $my_fields = array(
-        array('heading','', 'Shorlink Management Information', ''),
+        array('heading','', 'Shortlink Management Information', ''),
         array('text','gmuw_sl_user_groups', 'Group Permissions', 'Please enter a comma-separated list of all groups which this user can manage.'),
     );
 
