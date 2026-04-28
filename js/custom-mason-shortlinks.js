@@ -16,6 +16,7 @@ jQuery(document).ready(function(){
 		const qrValue = jQuery(this).find('.gmuw-sl-qr-code-value').val();
 		const $downloadBtnSVG = jQuery(this).find('.gmuw-sl-qr-code-download-svg');
 		const $downloadBtnPNG = jQuery(this).find('.gmuw-sl-qr-code-download-png');
+		const $transparentToggle = jQuery(this).find('.gmuw-sl-qr-code-transparent-toggle');
 
 		//get the custom filename from the data attribute
 		//fallback to 'qr-code' if the attribute is missing
@@ -23,7 +24,7 @@ jQuery(document).ready(function(){
 
 		// Create QR code instance
 		const qr = new QRCodeStyling({
-			type: "svg",
+			type: "canvas",
 			data: qrValue,
 			qrOptions: {
 				errorCorrectionLevel: "H"
@@ -46,8 +47,27 @@ jQuery(document).ready(function(){
 		// Render into the container
 		qr.append($container);
 
+		//update the qr code visual preview when the user clicks the checkbox
+		$transparentToggle.on("change", function() {
+		    const isTransparent = jQuery(this).is(':checked');
+
+		    qr.update({
+		        backgroundOptions: {
+		            color: isTransparent ? "transparent" : "#ffffff"
+		        }
+		    });
+
+		    //toggle a CSS class for that checkerboard preview
+		    if (isTransparent) {
+		        jQuery($container).addClass('qr-preview-transparent');
+		    } else {
+		        jQuery($container).removeClass('qr-preview-transparent');
+		    }
+		});
+
 		// Download SVG handler
 		$downloadBtnSVG.on("click", function () {
+
 			qr.download({
 				name: qrCodeFilename,
 				extension: "svg"
@@ -56,6 +76,7 @@ jQuery(document).ready(function(){
 
 		// Download PNG handler
 		$downloadBtnPNG.on("click", function () {
+
 			qr.download({
 				name: qrCodeFilename,
 				extension: "png"
