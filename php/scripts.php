@@ -41,3 +41,10 @@ require('scripts-public.php');
  * enqueue admin javascript
  */
 require('scripts-admin.php');
+
+//ensure that scripts are always loaded by setting the script version to the current unix time
+add_action('wp_default_scripts', function($scripts){
+
+  $scripts->default_version=time();
+
+});

@@ -12,3 +12,11 @@ require('styles-admin.php');
 
 // Load public styles
 require('styles-public.php');
+
+
+//ensure that stylesheets are always loaded by setting the stylesheet version to the current unix time
+add_action('wp_default_styles', function($styles){
+
+	$styles->default_version=time();
+
+});
