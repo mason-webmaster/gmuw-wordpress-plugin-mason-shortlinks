@@ -70,6 +70,13 @@ function gmuw_sl_custom_dashboard_meta_box_links() {
 				<br />Submit a Ticket
 			</a>
 		</div>
+		<?php if (current_user_can('manage_options')) { ?>
+		<div class="link-box">
+			<a class="admin-icon admin-export gmuw-big" title="Export Redirects" href="/wp-admin/admin.php?page=gmuw_sl_shortlink_management&displaymode=redirect_export">
+				<br />Export Redirects
+			</a>
+		</div>
+		<?php } ?>
 	</div>
 
 	<?php

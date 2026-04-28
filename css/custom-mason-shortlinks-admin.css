@@ -122,6 +122,11 @@ a.admin-tooltip-only {
     content: "\f323";
 }
 
+.admin-export:before {
+    font-family: "dashicons";
+    content: "\f310";
+}
+
 /* dashboard quick links */
 .index-php .quick-links {
     display:flex;

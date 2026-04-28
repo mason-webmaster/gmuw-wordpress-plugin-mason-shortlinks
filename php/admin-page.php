@@ -56,6 +56,25 @@ function gmuw_sl_shortlink_management_page(){
         echo '<div class="notice notice-success is-dismissible"><p>Shortlink successfully deleted.</p></div>';
     }
 
+    //is this an export
+    if (isset($_GET['displaymode']) && $_GET['displaymode']=='redirect_export'){
+
+        //check if user has permissions
+        if (!current_user_can('manage_options')) {
+            wp_die('You do not have permission to export this data.');
+        }
+
+        //heading
+        echo '<h2>Export Redirects/Rewrite Rules</h2>';
+        
+        //display content
+        echo gmuw_sl_redirects_export_content();
+        
+        //return
+        return;
+
+    }
+
     //is this just a general listing? is no shortlink id specified?
     if (!isset($_GET['redirect_id']) || !$_GET['redirect_id']) {
 
@@ -173,5 +192,34 @@ function gmuw_sl_shortlink_management_page(){
 
     // Finish HTML output
     echo "</div>";
+
+}
+
+//function to generate data for the redirect export
+function gmuw_sl_redirects_export_content() {
+
+    ?>
+
+    <p>Use the buttons below to download the full list of redirects in the appropriate format to either be <a href="https://wpengine.com/support/web-rules-engine/#Bulk_Import_Rewrite_Rules" target="_blank">bulk-imported into WPEngine's rewrite rules</a>, or to use as an Apache <code>.htaccess file</code>. </p>
+    
+    <p>Redirects are sorted in order of use, so redirects that have historically been used more frequently are at the top.</p>
+
+    <div class="export-options" style="display: flex; gap: 20px; margin-top: 20px;">
+
+        <div class="card" style="padding: 15px; border: 1px solid #ccd0d4; background: #fff; flex: 1;">
+            <h3>WPEngine Bulk Import Format</h3>
+            <p>Text file for <a href="https://wpengine.com/support/web-rules-engine/#Bulk_Import_Rewrite_Rules" target="_blank">bulk import of rewrite rules in the WPEngine User Portal</a>.</p>
+            <a href="<?php echo esc_url(add_query_arg('action', 'download_redirect_export_wpe')); ?>" class="button button-primary">Download WPEngine Format</a>
+        </div>
+
+        <div class="card" style="padding: 15px; border: 1px solid #ccd0d4; background: #fff; flex: 1;">
+            <h3>Apache .htaccess Format</h3>
+            <p>Standard <code>Redirect 301</code> syntax for Apache servers. Rename to <code>.htaccess</code></p>
+            <a href="<?php echo esc_url(add_query_arg('action', 'download_redirect_export_apache')); ?>" class="button button-primary">Download .htaccess Format</a>
+        </div>
+
+    </div>
+
+    <?php
 
 }

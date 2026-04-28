@@ -180,3 +180,69 @@ function gmuw_render_user_group_options($current_user_group_slug='') {
     return $output;
 
 }
+
+//function to handle the redirect export download
+add_action('admin_init', 'gmuw_sl_handle_redirect_export_download');
+function gmuw_sl_handle_redirect_export_download() {
+
+    // Check if our custom trigger is in the URL
+    if (isset($_GET['action']) && in_array($_GET['action'],array('download_redirect_export_wpe','download_redirect_export_apache'))) {
+
+        //check if user has permissions
+        if (!current_user_can('manage_options')) {
+            wp_die('You do not have permission to export this data.');
+        }
+
+        //set format and filename
+        $myformat='';
+        switch ($_GET['action']) {
+            case 'download_redirect_export_wpe':
+                $my_format='wpe';
+                $my_filename='go-gmu-edu-wpengine-rewrite-rules-' . date('Y-m-d') . '.txt"';
+                break;
+            case 'download_redirect_export_apache':
+                $my_format='apache';
+                $my_filename='go-gmu-edu-htaccess-redirects-' . date('Y-m-d') . '.txt"';
+                break;
+        }
+
+        global $wpdb;
+        $table = "{$wpdb->prefix}redirection_items";
+        $results = $wpdb->get_results("SELECT url, action_data FROM wp_redirection_items ORDER BY last_count DESC");
+
+        if ($results) {
+
+            //set headers to force download
+            header('Content-Type: text/plain; charset=utf-8');
+            header('Content-Disposition: attachment; filename="' . $my_filename . '"');
+            header('Pragma: no-cache');
+            header('Expires: 0');
+
+            //add comments to .htaccess version
+            if ($my_format=='apache') {
+                echo "# Apache Redirects Export - Generated " . date('Y-m-d H:i:s') . "\n\n";
+            }
+
+            //output the data directly to the output stream
+            foreach ($results as $result) {
+
+                //WPEngine format : Source [space] Destination
+                if ($my_format=='wpe') {
+                    echo trim($result->url) . ' ' . trim($result->action_data) . "\r\n";
+                }
+
+                //Apache format: Redirect 301 /source https://destination.com
+                if ($my_format=='apache') {
+                    echo "Redirect 301 " . trim($result->url) . " " . trim($result->action_data) . "\r\n";
+                }
+
+            }
+
+            //stop execution so no WordPress HTML is added to the file
+            exit;
+
+        }
+
+    }
+
+}
