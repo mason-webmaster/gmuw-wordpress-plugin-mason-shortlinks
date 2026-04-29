@@ -151,7 +151,7 @@ function gmuw_sl_shortlink_management_page(){
         echo '<tr><th>Created</th><td>'.get_redirect_meta($redirect_id, 'when_created').' ('.gmuw_sl_get_username(get_redirect_meta($redirect_id, 'user_created')).')<td></tr>';
         echo '<tr><th>Last Edited</th><td>'.get_redirect_meta($redirect_id, 'when_last_edited').' ('.gmuw_sl_get_username(get_redirect_meta($redirect_id, 'user_last_edited')).')<td></tr>';
         if ($shortlink_notes) {
-            echo '<tr><th>Notes<br /><span style="font-weight:normal;">(visible to all users)</span></th><td>'.$shortlink_notes.'<td></tr>';
+            echo '<tr><th style="width:12em;">Notes<br /><span style="font-weight:normal;">Visible to logged-in users.<br />Not publicly visible.</span></th><td>'.$shortlink_notes.'<td></tr>';
         }
         echo '</table>';
 

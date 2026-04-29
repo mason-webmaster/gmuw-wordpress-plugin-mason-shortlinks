@@ -204,7 +204,7 @@ function gmuw_sl_shortlink_add_form() {
         <?php endif; ?>
 
 		<p>
-			<label for="shortlink_notes"><strong>Notes</strong> (Visible to all users)</label><br>
+			<label for="shortlink_notes"><strong>Notes</strong><br />Visible to logged-in users. Not publicly visible.</label><br>
 			<textarea name="shortlink_notes" id="shortlink_notes" class="shortlink_notes"></textarea>
 		</p>
 
@@ -393,7 +393,7 @@ function gmuw_sl_shortlink_edit_form($redirect_id) {
             <?php endif; ?>
 
 			<tr>
-                <th><label for="shortlink_notes">Notes<br /><span style="font-weight:normal;">(visible to all users)</span></label></th>
+                <th><label for="shortlink_notes">Notes<br /><span style="font-weight:normal;">Visible to logged-in users.<br />Not publicly visible.</span></label></th>
                 <td>
 					<textarea name="shortlink_notes" id="shortlink_notes" class="shortlink_notes"><?php echo esc_textarea(get_redirect_meta($redirect_id,'gmuw_sl_shortlink_notes')); ?></textarea>
                 </td>
