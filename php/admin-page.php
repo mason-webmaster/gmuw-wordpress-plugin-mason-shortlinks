@@ -142,7 +142,7 @@ function gmuw_sl_shortlink_management_page(){
 
         //display shortlink data
         echo '<table class="shortlink_data">';
-        echo '<tr><th>Shortlink Label</th><td>'.$shortlink_label.'<td></tr>';
+        echo '<tr><th>Label</th><td>'.$shortlink_label.'<td></tr>';
         echo '<tr><th>Target URL</th><td>'.$shortlink_target_url.'<td></tr>';
         echo '<tr><th>Group</th><td>'.get_redirect_meta($redirect_id,'gmuw_sl_group').'<td></tr>';
         echo '<tr><th>Hit Count</th><td><span class="highlight-metric">'.number_format($shortlink_hits) . '</span><td></tr>';
