@@ -129,6 +129,7 @@ function gmuw_sl_shortlink_management_page(){
     $shortlink_url=home_url().'/'.$shortlink_label;
     $shortlink_target_url=gmuw_sl_get_redirect_fields_by_id($redirect_id)['action_data'];
     $shortlink_hits=gmuw_sl_get_redirect_fields_by_id($redirect_id)['last_count'];
+    $shortlink_notes=esc_html(get_redirect_meta($redirect_id,'gmuw_sl_shortlink_notes'));
 
     // heading
     if (!$is_edit) echo '<h2>Shortlink: '. $shortlink_label .' ('.$redirect_id.')</h2>';
@@ -149,6 +150,9 @@ function gmuw_sl_shortlink_management_page(){
         echo '<tr><th>User</th><td>' . gmuw_sl_get_username(get_redirect_meta($redirect_id, 'gmuw_sl_shortlink_user_id')) . '<td></tr>';
         echo '<tr><th>Created</th><td>'.get_redirect_meta($redirect_id, 'when_created').' ('.gmuw_sl_get_username(get_redirect_meta($redirect_id, 'user_created')).')<td></tr>';
         echo '<tr><th>Last Edited</th><td>'.get_redirect_meta($redirect_id, 'when_last_edited').' ('.gmuw_sl_get_username(get_redirect_meta($redirect_id, 'user_last_edited')).')<td></tr>';
+        if ($shortlink_notes) {
+            echo '<tr><th>Notes<br /><span style="font-weight:normal;">(visible to all users)</span></th><td>'.$shortlink_notes.'<td></tr>';
+        }
         echo '</table>';
 
         //display edit link, if user can edit

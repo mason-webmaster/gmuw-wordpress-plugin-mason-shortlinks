@@ -203,6 +203,11 @@ function gmuw_sl_shortlink_add_form() {
             </p>
         <?php endif; ?>
 
+		<p>
+			<label for="shortlink_notes"><strong>Notes</strong> (Visible to all users)</label><br>
+			<textarea name="shortlink_notes" id="shortlink_notes" class="shortlink_notes"></textarea>
+		</p>
+
 		<p style="margin-top:2em;">
 			<div style="display: flex; justify-content: space-between;">
 			<button type="submit" class="button button-primary">Add Shortlink</button>
@@ -236,6 +241,7 @@ function gmuw_sl_handle_form_shortlink_add() {
         $shortlink_label = '/'.sanitize_text_field( $_POST['shortlink_label'] );
         $shortlink_target = sanitize_text_field( $_POST['shortlink_target'] );
         $shortlink_group_slug = sanitize_text_field( $_POST['shortlink_group_slug'] );
+        $shortlink_notes = sanitize_textarea_field( $_POST['shortlink_notes'] );
 
         //if the group is not empty and if user doesn't have permissions for this group, bail
         if (!empty($shortlink_group_slug) && !in_array($shortlink_group_slug,gmuw_sl_get_user_groups_array())) return; 
@@ -270,6 +276,7 @@ function gmuw_sl_handle_form_shortlink_add() {
 			update_redirect_meta( $new_redirect_id, 'when_last_edited', current_time( 'mysql' ) );
 			update_redirect_meta( $new_redirect_id, 'user_last_edited', get_current_user_id() );
 			update_redirect_meta( $new_redirect_id, 'gmuw_sl_group', $shortlink_group_slug );
+			update_redirect_meta( $new_redirect_id, 'gmuw_sl_shortlink_notes', $shortlink_notes );
 
 		}
 
@@ -385,6 +392,13 @@ function gmuw_sl_shortlink_edit_form($redirect_id) {
                 <input type="hidden" name="shortlink_user_id" value="<?php echo get_redirect_meta($redirect_id,'gmuw_sl_shortlink_user_id'); ?>" />
             <?php endif; ?>
 
+			<tr>
+                <th><label for="shortlink_notes">Notes<br /><span style="font-weight:normal;">(visible to all users)</span></label></th>
+                <td>
+					<textarea name="shortlink_notes" id="shortlink_notes" class="shortlink_notes"><?php echo esc_textarea(get_redirect_meta($redirect_id,'gmuw_sl_shortlink_notes')); ?></textarea>
+                </td>
+			</tr>
+
             </table>
 
             <p>
@@ -413,6 +427,7 @@ function gmuw_sl_handle_form_shortlink_edit() {
         $redirect_label = sanitize_text_field( $_POST['redirect_label'] );
         $redirect_target = esc_url_raw( $_POST['redirect_target'] );
         $shortlink_group_slug = sanitize_text_field( $_POST['shortlink_group_slug'] );
+        $shortlink_notes = sanitize_textarea_field( $_POST['shortlink_notes'] );
 
 		//is submitted shortlink data valid?
 		if (!gmuw_sl_shortlink_data_is_valid($redirect_label,$redirect_target,'edit',$redirect_id)) {
@@ -496,6 +511,7 @@ function gmuw_sl_handle_form_shortlink_edit() {
 		update_redirect_meta( $redirect_id, 'when_last_edited', current_time( 'mysql' ) );
 		update_redirect_meta( $redirect_id, 'user_last_edited', get_current_user_id() );
 		update_redirect_meta( $redirect_id, 'gmuw_sl_group', $shortlink_group_slug );
+		update_redirect_meta( $redirect_id, 'gmuw_sl_shortlink_notes', $shortlink_notes );
 
 		//build output
 		$output_text=wp_get_current_user()->user_login." edited shortlink:\n";
