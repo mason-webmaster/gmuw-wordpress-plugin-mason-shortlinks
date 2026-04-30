@@ -206,25 +206,17 @@ function gmuw_sl_handle_redirect_export_download() {
                 break;
         }
 
-        global $wpdb;
-        $table = "{$wpdb->prefix}redirection_items";
-        $results = $wpdb->get_results("SELECT url, action_data FROM wp_redirection_items ORDER BY last_count DESC");
+        //set headers to force download
+        header('Content-Type: text/plain; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $my_filename . '"');
+        header('Pragma: no-cache');
+        header('Expires: 0');
 
-        if ($results) {
+        //output the data directly to the output stream
+        echo $my_file_contents;
 
-            //set headers to force download
-            header('Content-Type: text/plain; charset=utf-8');
-            header('Content-Disposition: attachment; filename="' . $my_filename . '"');
-            header('Pragma: no-cache');
-            header('Expires: 0');
-
-            //output the data directly to the output stream
-            echo $my_file_contents;
-
-            //stop execution so no WordPress HTML is added to the file
-            exit;
-
-        }
+        //stop execution so no WordPress HTML is added to the file
+        exit;
 
     }
 
