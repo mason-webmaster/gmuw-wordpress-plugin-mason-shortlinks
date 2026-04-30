@@ -197,11 +197,11 @@ function gmuw_sl_handle_redirect_export_download() {
         $myformat='';
         switch ($_GET['action']) {
             case 'download_redirect_export_wpe':
-                $my_filename='go-gmu-edu-wpengine-rewrite-rules-' . date('Y-m-d') . '.txt"';
+                $my_filename='go-gmu-edu-wpengine-rewrite-rules-' . date('Y-m-d') . '.txt';
                 $my_file_contents=gmuw_sl_generate_redirect_export_file_contents('wpe');
                 break;
             case 'download_redirect_export_apache':
-                $my_filename='go-gmu-edu-htaccess-redirects-' . date('Y-m-d') . '.txt"';
+                $my_filename='go-gmu-edu-htaccess-redirects-' . date('Y-m-d') . '.txt';
                 $my_file_contents=gmuw_sl_generate_redirect_export_file_contents('apache');
                 break;
         }
