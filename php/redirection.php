@@ -228,8 +228,8 @@ function gmuw_sl_handle_redirect_export_download() {
 //function to return the actual redirect export file content based on mode
 function gmuw_sl_generate_redirect_export_file_contents($mode){
 
-    //check if user has permissions
-    if (!current_user_can('manage_options')) {
+    //check if user doesn't have permissions and we're not doing cron
+    if (!current_user_can('manage_options') && !wp_doing_cron()) {
         return;
     }
 
@@ -268,5 +268,76 @@ function gmuw_sl_generate_redirect_export_file_contents($mode){
         return $return_value;
 
     }
+
+}
+
+//function to email the redirect export file
+function gmuw_sl_email_redirect_export() {
+
+    //wpe
+
+    //generate the attachment files content
+    $content_wpe = gmuw_sl_generate_redirect_export_file_contents('wpe');
+
+    //do we have anything?
+    if (empty($content_wpe)) {
+        return false; //nothing to send
+    }
+
+    //create a temporary file path
+    $upload_dir = wp_upload_dir();
+    $filename_wpe = 'go-gmu-edu-redirect-export-wpe-' . current_time('Y-m-d-His') . '.txt';
+    $file_path_wpe = $upload_dir['basedir'] . '/' . $filename_wpe;
+
+    //write the content to the file
+    file_put_contents($file_path_wpe, $content_wpe);
+
+
+    //apache
+
+    //generate the attachment files content
+    $content_apache = gmuw_sl_generate_redirect_export_file_contents('apache');
+
+    //do we have anything?
+    if (empty($content_apache)) {
+        return false; //nothing to send
+    }
+
+    //create a temporary file path
+    $upload_dir = wp_upload_dir();
+    $filename_apache = 'go-gmu-edu-redirect-export-apache-' . current_time('Y-m-d-His') . '.txt';
+    $file_path_apache = $upload_dir['basedir'] . '/' . $filename_apache;
+
+    //write the content to the file
+    file_put_contents($file_path_apache, $content_apache);
+
+
+    //prepare the email
+    $subject = 'go.gmu.edu Redirect Export '.current_time('Y-m-d-His');
+    $body    = 'go.gmu.edu redirect export files in both WPE bulk-import and Apache .htaccess format attached to this email.';
+    $headers = array('Content-Type: text/html; charset=UTF-8');
+    $attachments = array($file_path_wpe, $file_path_apache);
+
+    //send the email
+    $sent = wp_mail(get_option('admin_email'), $subject, $body, $headers, $attachments);
+
+
+    //delete the files after sending so it doesn't sit on your server
+    if (file_exists($file_path_wpe)) {
+        unlink($file_path_wpe);
+    }
+
+    //delete the files after sending so it doesn't sit on your server
+    if (file_exists($file_path_apache)) {
+        unlink($file_path_apache);
+    }
+
+    // log to simple history
+    apply_filters(
+        'simple_history_log',
+        'System automatically emailed redirect export files.'
+    );
+
+    return $sent;
 
 }

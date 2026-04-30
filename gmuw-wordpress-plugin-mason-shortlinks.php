@@ -79,6 +79,9 @@ require('php/wordpress-interface.php');
 //database
 require('php/database.php');
 
+//cron
+require('php/cron.php');
+
 //simple history
 require('php/simple-history.php');
 
