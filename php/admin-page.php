@@ -216,13 +216,13 @@ function gmuw_sl_redirects_export_content() {
         <div class="card" style="padding: 15px; border: 1px solid #ccd0d4; background: #fff; flex: 1;">
             <h3>WPEngine Bulk Import Format</h3>
             <p>Text file for <a href="https://wpengine.com/support/web-rules-engine/#Bulk_Import_Rewrite_Rules" target="_blank">bulk import of rewrite rules in the WPEngine User Portal</a>.</p>
-            <a href="<?php echo esc_url(add_query_arg('action', 'download_redirect_export_wpe')); ?>" class="button button-primary">Download WPEngine Format</a>
+            <a href="<?php echo esc_url(wp_nonce_url(add_query_arg('action', 'download_redirect_export_wpe'), 'download_redirect_export_nonce')); ?>" class="button button-primary">Download WPEngine Format</a>
         </div>
 
         <div class="card" style="padding: 15px; border: 1px solid #ccd0d4; background: #fff; flex: 1;">
             <h3>Apache .htaccess Format</h3>
             <p>Standard <code>Redirect 301</code> syntax for Apache servers. Rename to <code>.htaccess</code></p>
-            <a href="<?php echo esc_url(add_query_arg('action', 'download_redirect_export_apache')); ?>" class="button button-primary">Download .htaccess Format</a>
+            <a href="<?php echo esc_url(wp_nonce_url(add_query_arg('action', 'download_redirect_export_apache'), 'download_redirect_export_nonce')); ?>" class="button button-primary">Download .htaccess Format</a>
         </div>
 
     </div>

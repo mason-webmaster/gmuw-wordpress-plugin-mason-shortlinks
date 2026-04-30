@@ -188,6 +188,9 @@ function gmuw_sl_handle_redirect_export_download() {
     // Check if our custom trigger is in the URL
     if (isset($_GET['action']) && in_array($_GET['action'],array('download_redirect_export_wpe','download_redirect_export_apache'))) {
 
+        //verify nonce
+        check_admin_referer('download_redirect_export_nonce');
+
         //check if user has permissions
         if (!current_user_can('manage_options')) {
             wp_die('You do not have permission to export this data.');
