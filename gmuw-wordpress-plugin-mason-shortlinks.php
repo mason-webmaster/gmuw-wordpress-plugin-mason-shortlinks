@@ -9,7 +9,7 @@
  * Author:            Mason Web Administration
  * Plugin URI:        https://github.com/mason-webmaster/gmuw-wordpress-plugin-mason-shortlinks
  * Description:       Mason WordPress plugin which implements a Mason-branded shortlink management system (go.gmu.edu). Requires the Redirection plugin.
- * Version:           1.0.1
+ * Version:           1.1
  */
 
 
