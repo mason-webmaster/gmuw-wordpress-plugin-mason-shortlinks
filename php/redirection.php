@@ -193,16 +193,16 @@ function gmuw_sl_handle_redirect_export_download() {
             wp_die('You do not have permission to export this data.');
         }
 
-        //set format and filename
+        //set export file filename and file contents
         $myformat='';
         switch ($_GET['action']) {
             case 'download_redirect_export_wpe':
-                $my_format='wpe';
                 $my_filename='go-gmu-edu-wpengine-rewrite-rules-' . date('Y-m-d') . '.txt"';
+                $my_file_contents=gmuw_sl_generate_redirect_export_file_contents('wpe');
                 break;
             case 'download_redirect_export_apache':
-                $my_format='apache';
                 $my_filename='go-gmu-edu-htaccess-redirects-' . date('Y-m-d') . '.txt"';
+                $my_file_contents=gmuw_sl_generate_redirect_export_file_contents('apache');
                 break;
         }
 
@@ -218,30 +218,59 @@ function gmuw_sl_handle_redirect_export_download() {
             header('Pragma: no-cache');
             header('Expires: 0');
 
-            //add comments to .htaccess version
-            if ($my_format=='apache') {
-                echo "# Apache Redirects Export - Generated " . date('Y-m-d H:i:s') . "\n\n";
-            }
-
             //output the data directly to the output stream
-            foreach ($results as $result) {
-
-                //WPEngine format : Source [space] Destination
-                if ($my_format=='wpe') {
-                    echo trim($result->url) . ' ' . trim($result->action_data) . "\r\n";
-                }
-
-                //Apache format: Redirect 301 /source https://destination.com
-                if ($my_format=='apache') {
-                    echo "Redirect 301 " . trim($result->url) . " " . trim($result->action_data) . "\r\n";
-                }
-
-            }
+            echo $my_file_contents;
 
             //stop execution so no WordPress HTML is added to the file
             exit;
 
         }
+
+    }
+
+}
+
+//function to return the actual redirect export file content based on mode
+function gmuw_sl_generate_redirect_export_file_contents($mode){
+
+    //check if user has permissions
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+
+    //initialize return value
+    $return_value='';
+
+    //get redirects from database
+    global $wpdb;
+    $table = "{$wpdb->prefix}redirection_items";
+    $results = $wpdb->get_results("SELECT url, action_data FROM wp_redirection_items ORDER BY last_count DESC");
+
+    //if we have redirects
+    if ($results) {
+
+        //add comments to .htaccess version
+        if ($mode=='apache') {
+            $return_value.="# Apache redirects export - generated " . date('Y-m-d H:i:s') . "\n\n";
+        }
+
+        //output the data directly to the output stream
+        foreach ($results as $result) {
+
+            //WPEngine format : Source [space] Destination
+            if ($mode=='wpe') {
+                $return_value.=trim($result->url) . ' ' . trim($result->action_data) . "\r\n";
+            }
+
+            //Apache format: Redirect 301 /source https://destination.com
+            if ($mode=='apache') {
+                $return_value.="Redirect 301 " . trim($result->url) . " " . trim($result->action_data) . "\r\n";
+            }
+
+        }
+
+        //return
+        return $return_value;
 
     }
 
