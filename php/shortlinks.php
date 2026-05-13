@@ -710,15 +710,38 @@ function gmuw_sl_shortlink_data_is_valid($label,$target,$write_type,$redirection
 
     }
 
-    //if the label is a reserved label, and we are not an admin, and this label is not aleady in use by this specific redirect
-    if (in_array($label, gmuw_sl_reserved_labels_array()) && !current_user_can('manage_options') && gmuw_sl_get_redirect_record_by_label($label)->id != $redirection_id) {
+    //check for reserved label
+    //for adding
+    if ($write_type!='edit') {
 
-        // admin notice
-        add_action( 'admin_notices', function() {
-            echo '<div class="notice notice-error"><p>You have specified a reserved shortlink label. Nothing done.</p></div>';
-        });
+	    //if the label is a reserved label, and we are not an admin...
+	    if (in_array($label, gmuw_sl_reserved_labels_array()) && !current_user_can('manage_options')) {
 
-        return false;
+	        // admin notice
+	        add_action( 'admin_notices', function() {
+	            echo '<div class="notice notice-error"><p>You have specified a reserved shortlink label. Nothing done.</p></div>';
+	        });
+
+	        return false;
+
+	    }
+
+    }
+
+    //for editing
+    if ($write_type=='edit') {
+
+	    //if the label is a reserved label, and we are not an admin, and this label is not aleady in use by this specific redirect
+	    if (in_array($label, gmuw_sl_reserved_labels_array()) && !current_user_can('manage_options') && gmuw_sl_get_redirect_record_by_label($label)->id != $redirection_id) {
+
+	        // admin notice
+	        add_action( 'admin_notices', function() {
+	            echo '<div class="notice notice-error"><p>You have specified a reserved shortlink label. Nothing done.</p></div>';
+	        });
+
+	        return false;
+
+	    }
 
     }
 
