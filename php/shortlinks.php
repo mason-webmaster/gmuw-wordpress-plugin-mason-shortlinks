@@ -239,7 +239,7 @@ function gmuw_sl_handle_form_shortlink_add() {
         //if we're an admin, get specified group, otherwise use the current users group
         $shortlink_user_id = current_user_can('manage_options') ? sanitize_text_field($_POST['shortlink_user_id']) : get_current_user_id();
         $shortlink_label = '/'.sanitize_text_field( $_POST['shortlink_label'] );
-        $shortlink_target = sanitize_text_field( $_POST['shortlink_target'] );
+        $shortlink_target = sanitize_url( $_POST['shortlink_target'] );
         $shortlink_group_slug = sanitize_text_field( $_POST['shortlink_group_slug'] );
         $shortlink_notes = sanitize_textarea_field( $_POST['shortlink_notes'] );
 
